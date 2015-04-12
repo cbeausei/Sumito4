@@ -29,6 +29,7 @@
         android:text="@string/Jouer"
         android:background="@drawable/bouton"
 
+        android:layout_below="@+id/nomjeu"
         android:layout_above="@+id/tutoriel"
         android:layout_alignLeft="@+id/buttonparam"
         android:layout_alignRight="@+id/buttonparam"
@@ -68,7 +69,7 @@
         android:text="@string/Paramètres"
         android:background="@drawable/bouton"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dip"
+
          />
 
 </RelativeLayout>
