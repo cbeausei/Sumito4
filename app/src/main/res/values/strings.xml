@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">Sumito4</string>
 
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="Nouvellepartie">Nouvelle partie</string>
+    <string name="Tutoriel">Tutoriel</string>
+    <string name="Paramètres">Paramètres</string>
+    <string name="Défis">Défis</string>
+    <string name="Jouer">Jouer</string>
+    <string name="deuxjoueurslocal">Jouer contre un humain en local</string>
+    <string name="partiesolo">Partie solo</string>
+    <string name="facile">Facile</string>
+    <string name="moyen">Moyen</string>
+    <string name="difficile">Difficile</string>
+    <string name="commencerpartie">Commencer la partie</string>
+    <string name="choisirdifficulte">Choisissez votre niveau de difficulté</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_choose">ChooseActivity</string>
 </resources>

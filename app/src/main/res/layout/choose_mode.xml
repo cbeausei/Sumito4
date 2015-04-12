@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent"
+    android:background="@drawable/rz_104"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/nomjeu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:background="#000000"
+
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_alignEnd="@+id/jouerdeuxjoueurslocal"
+        android:layout_above="@+id/jouerdeuxjoueurslocal"
+        android:layout_centerInParent="true"
+        android:layout_alignLeft="@+id/partiesolo"
+        android:layout_alignRight="@+id/partiesolo"
+        android:layout_alignStart="@+id/partiesolo"
+        android:layout_marginBottom="50dip"/>
+    <Button
+        android:id="@+id/partiesolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/partiesolo"
+        android:background="@drawable/bouton"
+
+        android:layout_marginBottom="30dip"
+        android:layout_above="@+id/tutoriel"
+        android:layout_centerInParent="true"
+        android:layout_alignLeft="@+id/buttonparam"
+        android:layout_alignRight="@+id/buttonparam"
+        android:layout_alignStart="@+id/buttonparam"
+        />
+
+
+    <Button
+        android:id="@+id/jouerdeuxjoueurslocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueurslocal"
+        android:layout_above="@+id/partiesolo"
+
+        android:layout_marginBottom="30dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/buttonparam"
+        android:layout_alignRight="@+id/buttonparam"
+        android:background="@drawable/bouton"
+        android:layout_alignStart="@+id/buttonparam"/>
+
+
+</RelativeLayout>
