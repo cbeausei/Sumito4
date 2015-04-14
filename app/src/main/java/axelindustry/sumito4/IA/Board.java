@@ -1,5 +1,7 @@
 package axelindustry.sumito4.IA;
 
+import java.util.LinkedList;
+
 /**
  * Created by Clement on 08/04/2015.
  */
@@ -159,5 +161,17 @@ public class Board {
         doMove(moveWayList.getMoveWay());
         doMoveList(moveWayList.getNext());
         return;
+    }
+
+    public LinkedList<Bowl> getBowls() {
+        LinkedList<Bowl> bowlList=new LinkedList<Bowl>();
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                if (matrice[i][j]>=0) {
+                    bowlList.add(new Bowl(matrice[i][j],i,j));
+                }
+            }
+        }
+        return bowlList;
     }
 }
