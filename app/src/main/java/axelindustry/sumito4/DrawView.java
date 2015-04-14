@@ -9,46 +9,21 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawView extends View {
-    Paint paint = new Paint();
     Canvas canvas = new Canvas();
-    Bitmap boulesNoires[], boulesBlanches[], plateau, fond;
+    Bitmap boulesNoires[], boulesBlanches[], plateau, fond, bouleNoire, bouleBlanche;
     int[] posYn = new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2};
     int[] posXn = new int[]{4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8, 4, 5, 6};
     int[] posYb = new int[]{8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6};
     int[] posXb = new int[]{0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 2, 3, 4};
     float x = 10, y = 20;
-    int w, h, width, height;
+    int w = 0, h = 0, width, height;
 
     public DrawView(Context context) {
         super(context);
-        boulesNoires = new Bitmap[] {BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire)};
-        boulesBlanches = new Bitmap[] {BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche),
-                               BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche)};
+        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
+        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
+        boulesNoires = new Bitmap[14];
+        boulesBlanches = new Bitmap[14];
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
         fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
     }
@@ -60,9 +35,7 @@ public class DrawView extends View {
         return(new int[]{x, y});
     }
 
-    @Override
-    public void onDraw(final Canvas canvas) {
-        this.canvas = canvas;
+    private void dimensions(){
         h = canvas.getHeight();
         w = canvas.getWidth();
 
@@ -75,13 +48,23 @@ public class DrawView extends View {
         }
         plateau = Bitmap.createScaledBitmap(plateau, width, height, true);
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
+        for(int i = 0 ; i < 14 ; i++) {
+            boulesNoires[i] = Bitmap.createScaledBitmap(bouleNoire, height / 12, height / 12, true);
+            boulesBlanches[i] = Bitmap.createScaledBitmap(bouleBlanche, height / 12, height / 12, true);
+        }
+    }
+
+    @Override
+    public void onDraw(final Canvas canvas) {
+        this.canvas = canvas;
+        if(h != canvas.getHeight()){
+            this.dimensions();
+        }
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
         for(int i = 0 ; i < 14 ; i++) {
-            boulesNoires[i] = Bitmap.createScaledBitmap(boulesNoires[i], height/12, height/12, true);
-            boulesBlanches[i] = Bitmap.createScaledBitmap(boulesBlanches[i], height/12, height/12, true);
-            int coordinatesn[] = new int[]{};
-            int coordinatesb[] = new int[]{};
+            int coordinatesn[];
+            int coordinatesb[];
             coordinatesn = convertCoordinates(posXn[i], posYn[i]);
             coordinatesb = convertCoordinates(posXb[i], posYb[i]);
             canvas.drawBitmap(boulesNoires[i], coordinatesn[0], coordinatesn[1], null);
@@ -93,6 +76,7 @@ public class DrawView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         x = event.getRawX();
         y = event.getRawY();
+
         this.invalidate();
         return true;
     }
