@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -13,6 +12,10 @@ import android.widget.RadioGroup;
  * Created by axel on 06/04/15.
  */
 public class DifficultyLevel extends Activity {
+
+    final private String [] choice={"facile","moyen","difficile"};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +28,23 @@ public class DifficultyLevel extends Activity {
             @Override
             public void onClick(View v) {
                 Intent MainActivity=new Intent(DifficultyLevel.this,MainActivity.class);
-                MainActivity.putExtra("Niveaudifficulté",difficulty_level.getCheckedRadioButtonId());
+                String difficulty_levels;
+                switch (difficulty_level.getCheckedRadioButtonId())
+                {
+                    case R.id.facile:
+                        difficulty_levels=choice[0];
+                        break;
+                    case R.id.moyen:
+                        difficulty_levels=choice[1];
+                        break;
+                    case R.id.difficile:
+                        difficulty_levels=choice[2];
+                        break;
+                    default:
+                        difficulty_levels=choice[0];
+
+                }
+                MainActivity.putExtra("Niveaudifficulté",difficulty_levels);
                 startActivity(MainActivity);
             }
         });

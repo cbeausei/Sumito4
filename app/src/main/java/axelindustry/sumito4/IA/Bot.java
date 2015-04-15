@@ -1,5 +1,7 @@
 package axelindustry.sumito4.IA;
 
+import java.util.LinkedList;
+
 /**
  * Created by Clement on 09/04/2015.
  */
@@ -238,13 +240,17 @@ public class Bot {
         }
     }
 
-    public void play(Board board) {
+    public LinkedList<BowlMove> play(Board board) {
         this.board=board;
         if (difficulty==0) {
             findPossibles(iaColor);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
             board.doMoveList(moveWayList);
+            LinkedList<BowlMove> list=new LinkedList<BowlMove>();
+            moveWayList.getBowlMoved(list);
+            return(list);
         }
+        return(new LinkedList<BowlMove>());
     }
 }

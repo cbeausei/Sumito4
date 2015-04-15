@@ -1,5 +1,7 @@
 package axelindustry.sumito4.IA;
 
+import java.util.LinkedList;
+
 /**
  * Created by Clement on 08/04/2015.
  */
@@ -32,5 +34,10 @@ public class MoveWay {
 
     public Boolean isEqual(MoveWay moveWay) {
         return((type==moveWay.type)&(x==moveWay.x)&(y==moveWay.y)&(a==moveWay.a)&(b==moveWay.b));
+    }
+
+    public void getBowlMoved(LinkedList<BowlMove> list) {
+        BowlMove bowlMove=new BowlMove(x,y,a,b);
+        list.add(bowlMove);
     }
 }
