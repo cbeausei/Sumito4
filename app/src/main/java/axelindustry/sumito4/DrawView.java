@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.LinkedList;
+
 public class DrawView extends View {
     Canvas canvas = new Canvas();
     /* The following constant values will be used in the coordinates formulae
@@ -20,11 +22,12 @@ public class DrawView extends View {
 
      */
     double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
-    /* To begin with, we will consider 14 black and 14 white balls.
-    the picture of a white ball will be stored in memory using bouleBlanche, then every member of boulesBlanches will be a resized copy of bouleBlanche
+    /* We will consider a list of white balls
+    the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
     it works the same for black balls, of course
      */
-    Bitmap boulesNoires[], boulesBlanches[], plateau, fond, bouleNoire, bouleBlanche, bouleBleue;
+    LinkedList <DrawBall> balls;
+    Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue;
     /* posYn contains the y-coordinates of the black balls
     posXn their x-coordinates
     posYb and posXb are the equivalent for white balls
@@ -32,10 +35,11 @@ public class DrawView extends View {
     colNum being the number of the column in the coordinates defined on the figure that was uploaded on the drive
     rowNum being the number of the line in this system
      */
-    int[] posYn = new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2};
+
+   /* int[] posYn = new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2};
     int[] posXn = new int[]{4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8, 4, 5, 6};
     int[] posYb = new int[]{8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6};
-    int[] posXb = new int[]{0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 2, 3, 4};
+    int[] posXb = new int[]{0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 2, 3, 4};*/
     // the boolean selection will help us detect the phase during which the user is selecting the balls he wants to move
     boolean selection = false;
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
@@ -55,9 +59,35 @@ public class DrawView extends View {
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
         bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
 
-        // we then pre-allocate the bitmap vectors, so as not to overload the memory while drawing
-        boulesNoires = new Bitmap[14];
-        boulesBlanches = new Bitmap[14];
+        balls = new LinkedList();
+        balls.add(new DrawBall(0, 8, bouleBlanche));
+        balls.add(new DrawBall(1, 8, bouleBlanche));
+        balls.add(new DrawBall(2, 8, bouleBlanche));
+        balls.add(new DrawBall(3, 8, bouleBlanche));
+        balls.add(new DrawBall(4, 8, bouleBlanche));
+        balls.add(new DrawBall(0, 7, bouleBlanche));
+        balls.add(new DrawBall(1, 7, bouleBlanche));
+        balls.add(new DrawBall(2, 7, bouleBlanche));
+        balls.add(new DrawBall(3, 7, bouleBlanche));
+        balls.add(new DrawBall(4, 7, bouleBlanche));
+        balls.add(new DrawBall(5, 7, bouleBlanche));
+        balls.add(new DrawBall(2, 6, bouleBlanche));
+        balls.add(new DrawBall(3, 6, bouleBlanche));
+        balls.add(new DrawBall(4, 6, bouleBlanche));
+        balls.add(new DrawBall(4, 0, bouleNoire));
+        balls.add(new DrawBall(5, 0, bouleNoire));
+        balls.add(new DrawBall(6, 0, bouleNoire));
+        balls.add(new DrawBall(7, 0, bouleNoire));
+        balls.add(new DrawBall(8, 0, bouleNoire));
+        balls.add(new DrawBall(3, 1, bouleNoire));
+        balls.add(new DrawBall(4, 1, bouleNoire));
+        balls.add(new DrawBall(5, 1, bouleNoire));
+        balls.add(new DrawBall(6, 1, bouleNoire));
+        balls.add(new DrawBall(7, 1, bouleNoire));
+        balls.add(new DrawBall(8, 1, bouleNoire));
+        balls.add(new DrawBall(4, 2, bouleNoire));
+        balls.add(new DrawBall(5, 2, bouleNoire));
+        balls.add(new DrawBall(6, 2, bouleNoire));
 
         // the board and background are stored too
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
@@ -111,9 +141,8 @@ public class DrawView extends View {
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
 
         // we draw the balls proportionally to the height of the board
-        for(int i = 0 ; i < 14 ; i++) {
-            boulesNoires[i] = Bitmap.createScaledBitmap(bouleNoire, height / 12, height / 12, true);
-            boulesBlanches[i] = Bitmap.createScaledBitmap(bouleBlanche, height / 12, height / 12, true);
+        for(DrawBall e : balls) {
+            e.changeBitmap(Bitmap.createScaledBitmap(e.getBitmap(), height / 12, height / 12, true));
         }
         bouleBleue = Bitmap.createScaledBitmap(bouleBleue, height / 12, height / 12, true);
     }
@@ -135,22 +164,21 @@ public class DrawView extends View {
         // OK, the dimensions are fine, we can draw
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
-        for(int i = 0 ; i < 14 ; i++) {
+        for(DrawBall e : balls) {
             // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
-            int coordinatesn[];
-            int coordinatesb[];
-            coordinatesn = convertCoordinates(posXn[i], posYn[i]);
-            coordinatesb = convertCoordinates(posXb[i], posYb[i]);
+            int coordinates[] = convertCoordinates(e.getX(), e.getY());
 
             // Now we can draw them
-            canvas.drawBitmap(boulesNoires[i], coordinatesn[0], coordinatesn[1], null);
-            canvas.drawBitmap(boulesBlanches[i], coordinatesb[0], coordinatesb[1], null);
+            canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
 
             // In case the user is selecting, we must round the position of their finger to the nearest ball position
             if(selection) {
                 int[] coordinatesSelection = revertCoordinates((int) x, (int) y);
-                coordinatesSelection = convertCoordinates(coordinatesSelection[0], coordinatesSelection[1]);
-                canvas.drawBitmap(bouleBleue, coordinatesSelection[0], coordinatesSelection[1], null);
+                for(DrawBall ball : balls){
+                    if((ball.getX() == coordinatesSelection[0] && ball.getY() == coordinatesSelection[1])){
+                        ball.changeBitmap(bouleBleue);
+                    }
+                }
             }
         }
     }
@@ -158,7 +186,7 @@ public class DrawView extends View {
     // the following method handles all touch events coming from the user
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // ok, an event has occured. Let's locate it first
+        // ok, an event has occurred. Let's locate it first
         x = event.getRawX() - h/24;
         y = event.getRawY() - h/24;
 
