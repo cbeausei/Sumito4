@@ -22,6 +22,7 @@
         android:layout_alignRight="@+id/partiesolo"
         android:layout_alignStart="@+id/partiesolo"
         android:layout_marginBottom="50dip"/>
+
     <Button
         android:id="@+id/partiesolo"
         android:layout_width="wrap_content"
@@ -51,6 +52,7 @@
         android:layout_alignRight="@+id/buttonparam"
         android:background="@drawable/bouton"
         android:layout_alignStart="@+id/buttonparam"/>
+
 
 
 </RelativeLayout>
