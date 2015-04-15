@@ -1,5 +1,7 @@
 package axelindustry.sumito4.IA;
 
+import java.util.LinkedList;
+
 /**
  * Created by Clement on 09/04/2015.
  */
@@ -44,5 +46,12 @@ public class MoveWayList {
         moveWay.display();
         if (next!=null) next.display();
         if (next==null) System.out.println();
+    }
+
+    public void getBowlMoved(LinkedList<BowlMove> list) {
+        moveWay.getBowlMoved(list);
+        if (next!=null) {
+            next.getBowlMoved(list);
+        }
     }
 }
