@@ -9,6 +9,9 @@ import android.view.View;
 
 import java.util.LinkedList;
 
+import axelindustry.sumito4.IA.Ball;
+import axelindustry.sumito4.IA.Board;
+
 public class DrawView extends View {
     Canvas canvas = new Canvas();
     /* The following constant values will be used in the coordinates formulae
@@ -27,8 +30,10 @@ public class DrawView extends View {
     the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
     it works the same for black balls, of course
      */
+    Board board;
     LinkedList <DrawBall> balls, selectList;
-    Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, arrows, tick, cross;
+    Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
+    Bitmap[] arrows;
     /* posYn contains the y-coordinates of the black balls
     posXn their x-coordinates
     posYb and posXb are the equivalent for white balls
@@ -62,7 +67,14 @@ public class DrawView extends View {
 
         balls = new LinkedList();
         selectList = new LinkedList();
-        balls.add(new DrawBall(0, 8, bouleBlanche, 0));
+        board = new Board();
+        LinkedList<Ball> tmp = board.getBalls();
+        for(Ball e : tmp){
+            if(e.color == 1)
+                balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
+            else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+        }
+        /*balls.add(new DrawBall(0, 8, bouleBlanche, 0));
         balls.add(new DrawBall(1, 8, bouleBlanche, 0));
         balls.add(new DrawBall(2, 8, bouleBlanche, 0));
         balls.add(new DrawBall(3, 8, bouleBlanche, 0));
@@ -89,14 +101,19 @@ public class DrawView extends View {
         balls.add(new DrawBall(8, 1, bouleNoire, 1));
         balls.add(new DrawBall(4, 2, bouleNoire, 1));
         balls.add(new DrawBall(5, 2, bouleNoire, 1));
-        balls.add(new DrawBall(6, 2, bouleNoire, 1));
+        balls.add(new DrawBall(6, 2, bouleNoire, 1));*/
 
         // the board and background are stored too
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
         fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
         tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
         cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
-        arrows = BitmapFactory.decodeResource(getResources(), R.drawable.fleches);
+        arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
     }
 
     /* convertCoordinates(X, Y) returns [x, y] where:
@@ -141,7 +158,8 @@ public class DrawView extends View {
         }
         // once done, we draw accordingly
         plateau = Bitmap.createScaledBitmap(plateau, width, height, true);
-        arrows = Bitmap.createScaledBitmap(arrows, width, height, true);
+        for(int i = 0 ; i < 6 ; i++)
+            arrows[i] = Bitmap.createScaledBitmap(arrows[i], width/3, height/3, true);
 
         // the background is easier to draw: there must just be no hole
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
@@ -194,10 +212,35 @@ public class DrawView extends View {
 
         if(!selectList.isEmpty()){
             int[] coord = revertCoordinates((int)x, (int)y);
-            if(coord[0] == 6 && coord[1] == 8){
-                canvas.drawBitmap(arrows, (w - width) / 2, (h - height) / 2, null);
+            if(coord[0] < 8 && coord[1] > 12 - coord[0]){
+                Boolean[] list;
+                switch(selectList.size()){
+                    case 1:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX());
+                        break;
+                    case 2:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX());
+                        break;
+                    case 3:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX(), selectList.get(2).getY(), selectList.get(2).getX());
+                        break;
+                    default:
+                        list = new Boolean[] {false, false, false, false, false, false};
+                }
+                if(list[0])
+                    canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
+                if(list[1])
+                    canvas.drawBitmap(arrows[1], (w - width) / 2 + width / 2, (h - height) / 2, null);
+                if(list[2])
+                    canvas.drawBitmap(arrows[2], (w - width) / 2 + width / 6, (h - height) / 2, null);
+                if(list[3])
+                    canvas.drawBitmap(arrows[3], (w - width) / 2, (h - height) / 2 + height / 3, null);
+                if(list[4])
+                    canvas.drawBitmap(arrows[4], (w - width) / 2 + width / 6, (h - height) / 2 + 2 * height / 3, null);
+                if(list[5])
+                    canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
             }
-            else if(coord[0] == -2 && coord[1] == 8){
+            else if(coord[0] < 0 && coord[1] > 4){
                 for(DrawBall elem : selectList){
                     if(elem.getColour() == 0){
                         elem.changeBitmap(bouleBlanche);
