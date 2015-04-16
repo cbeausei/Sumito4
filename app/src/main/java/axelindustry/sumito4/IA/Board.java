@@ -174,4 +174,16 @@ public class Board {
         }
         return ballList;
     }
+
+    public Boolean[] getDirections(int i,int j) {
+        Boolean [] list=new Boolean[6];
+        int color=matrice[i][j];
+        Bot bot=new Bot(0,0,0,this);
+        int[] i0={0,-1,-1,0,1,1};
+        int[] j0={1,1,0,-1,-1,0};
+        for(int k=0;k<6;k++) {
+            list[k]=bot.isPossible(color,new Move(i,j,1,0,0,i0[k],j0[k]));
+        }
+        return list;
+    }
 }

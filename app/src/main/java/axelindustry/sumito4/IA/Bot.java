@@ -100,8 +100,8 @@ public class Bot {
         moveWayList.addMoveWay(moveWay);
     }
 
-    private void isPossible(int color,Move move) {
-        if ((move.n<1)|(move.n>3)) return;
+    public Boolean isPossible(int color,Move move) {
+        if ((move.n<1)|(move.n>3)) return false;
         move=normalize(move);
         int i=move.i;
         int j=move.j;
@@ -112,13 +112,13 @@ public class Bot {
         int y=move.y;
         if ((n>1) & ( ((u!=0)|(v!=1)) & ((u!=-1)|(v!=1)) & ((u!=1)|(v!=0)) )) {
             System.out.println("Error in normalization");
-            return;
+            return false;
         }
         for(int k=0;k<n;k++) {
             int a=i+k*u;
             int b=j+k*v;
             if (!((board.exist(a,b))&(board.isPlayer(a,b,color)))) {
-                return;
+                return false;
             }
             // We now know that the bloc exists and belongs to color
         }
@@ -130,8 +130,9 @@ public class Bot {
                 moveWayList=null;
                 addMoveWay(moveWay);
                 addMove(move,color,moveWayList);
-                return;
+                return true;
             }
+            else return false;
         }
         int a=0;
         int b=0;
@@ -150,13 +151,13 @@ public class Bot {
                 k=i+(n-1)*u;
                 l=j+(n-1)*v;
             }
-            if (!board.exist(a, b)) return;
+            if (!board.exist(a, b)) return false;
             if (board.isPlayer(a,b,-1)) {
                 moveWayList=null;
                 MoveWay moveWay=new MoveWay(0,k,l,a,b);
                 addMoveWay(moveWay);
                 addMove(move,color,moveWayList);
-                return;
+                return true;
             }
             if (board.isPlayer(a, b, 1-color)) {
                 if (!board.exist(a+x,b+y)) {
@@ -166,10 +167,10 @@ public class Bot {
                     addMoveWay(moveWay1);
                     addMoveWay(moveWay2);
                     addMove(move,color,moveWayList);
-                    return;
+                    return true;
                 }
                 if (board.isPlayer(a+x,b+y,color)) {
-                    return;
+                    return false;
                 }
                 if (board.isPlayer(a+x,b+y,-1)) {
                     moveWayList=null;
@@ -178,9 +179,9 @@ public class Bot {
                     addMoveWay(moveWay1);
                     addMoveWay(moveWay2);
                     addMove(move,color,moveWayList);
-                    return;
+                    return true;
                 }
-                if (n==2) return;
+                if (n==2) return false;
                 if (!board.exist(a+2*x,b+2*y)) {
                     moveWayList=null;
                     MoveWay moveWay1=new MoveWay(1,k,l,a,b);
@@ -188,7 +189,7 @@ public class Bot {
                     addMoveWay(moveWay1);
                     addMoveWay(moveWay2);
                     addMove(move,color,moveWayList);
-                    return;
+                    return true;
                 }
                 if (board.isPlayer(a+2*x,b+2*y,-1)) {
                     moveWayList=null;
@@ -197,11 +198,11 @@ public class Bot {
                     addMoveWay(moveWay1);
                     addMoveWay(moveWay2);
                     addMove(move,color,moveWayList);
-                    return;
+                    return true;
                 }
-                return;
+                return false;
             }
-            return;
+            return false;
         }
         moveWayList=null;
         for(int m=0;m<n;m++) {
@@ -209,11 +210,11 @@ public class Bot {
             b=j+m*v+y;
             addMoveWay(new MoveWay(0,a-x,b-y,a,b));
             if (!( (board.exist(a,b)) & (board.isPlayer(a,b,-1)) )) {
-                return;
+                return false;
             }
         }
         addMove(move,color,moveWayList);
-        return;
+        return true;
     }
 
     private void findPossibles(int color) {
