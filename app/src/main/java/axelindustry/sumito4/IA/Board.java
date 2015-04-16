@@ -163,15 +163,15 @@ public class Board {
         return;
     }
 
-    public LinkedList<Bowl> getBowls() {
-        LinkedList<Bowl> bowlList=new LinkedList<Bowl>();
+    public LinkedList<Ball> getBalls() {
+        LinkedList<Ball> ballList=new LinkedList<Ball>();
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
                 if (matrice[i][j]>=0) {
-                    bowlList.add(new Bowl(matrice[i][j],i,j));
+                    ballList.add(new Ball(matrice[i][j],i,j));
                 }
             }
         }
-        return bowlList;
+        return ballList;
     }
 }

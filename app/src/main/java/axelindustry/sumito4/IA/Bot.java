@@ -240,17 +240,17 @@ public class Bot {
         }
     }
 
-    public LinkedList<BowlMove> play(Board board) {
+    public LinkedList<BallMove> play(Board board) {
         this.board=board;
         if (difficulty==0) {
             findPossibles(iaColor);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
             board.doMoveList(moveWayList);
-            LinkedList<BowlMove> list=new LinkedList<BowlMove>();
-            moveWayList.getBowlMoved(list);
+            LinkedList<BallMove> list=new LinkedList<BallMove>();
+            moveWayList.getBallMoved(list);
             return(list);
         }
-        return(new LinkedList<BowlMove>());
+        return(new LinkedList<BallMove>());
     }
 }

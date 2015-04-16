@@ -48,10 +48,10 @@ public class MoveWayList {
         if (next==null) System.out.println();
     }
 
-    public void getBowlMoved(LinkedList<BowlMove> list) {
-        moveWay.getBowlMoved(list);
+    public void getBallMoved(LinkedList<BallMove> list) {
+        moveWay.getBallMoved(list);
         if (next!=null) {
-            next.getBowlMoved(list);
+            next.getBallMoved(list);
         }
     }
 }
