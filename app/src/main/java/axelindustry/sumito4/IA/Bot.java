@@ -134,10 +134,10 @@ public class Bot {
             }
             else return false;
         }
-        int a=0;
-        int b=0;
-        int k=0;
-        int l=0;
+        int a;
+        int b;
+        int k;
+        int l;
         if (((u==x)&(v==y))||((u==-x)&(v==-y))) {
             if ((u==x)&(v==y)) {
                 a=i+n*u;
@@ -248,10 +248,10 @@ public class Bot {
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
             board.doMoveList(moveWayList);
-            LinkedList<BallMove> list=new LinkedList<BallMove>();
+            LinkedList<BallMove> list=new LinkedList<>();
             moveWayList.getBallMoved(list);
             return(list);
         }
-        return(new LinkedList<BallMove>());
+        return(new LinkedList<>());
     }
 }

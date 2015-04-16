@@ -126,17 +126,11 @@ public class Board {
     }
 
     public Boolean exist(int i,int j) {
-        if ((i>=0)&(i<9)&(j>=0)&(j<9)) {
-            return (matrice[i][j]!=-2);
-        }
-        return false;
+        return (((i>=0)&(i<9)&(j>=0)&(j<9))&(matrice[i][j]!=-2));
     }
 
     public Boolean isPlayer(int i,int j,int iaColor) {
-        if (exist(i,j)) {
-            return matrice[i][j]==iaColor;
-        }
-        return false;
+        return ((exist(i,j))&(matrice[i][j]==iaColor));
     }
 
     public void doMove(MoveWay moveWay) {
@@ -152,7 +146,6 @@ public class Board {
         }
         if (type==1) {
             matrice[a][b]=-1;
-            return;
         }
     }
 
@@ -160,11 +153,10 @@ public class Board {
         if (moveWayList==null) return;
         doMove(moveWayList.getMoveWay());
         doMoveList(moveWayList.getNext());
-        return;
     }
 
     public LinkedList<Ball> getBalls() {
-        LinkedList<Ball> ballList=new LinkedList<Ball>();
+        LinkedList<Ball> ballList=new LinkedList<>();
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
                 if (matrice[i][j]>=0) {
@@ -215,7 +207,7 @@ public class Board {
             x=i2-i1;
             y=j2-j1;
         }
-        if ((i3-i1==i2-i3)&(j3-j1==j2-j3)) {
+        else if ((i3-i1==i2-i3)&(j3-j1==j2-j3)) {
             i=i1;
             j=j1;
             x=i3-i1;
