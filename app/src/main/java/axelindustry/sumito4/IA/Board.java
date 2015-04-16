@@ -196,7 +196,41 @@ public class Board {
         int[] i0={0,-1,-1,0,1,1};
         int[] j0={1,1,0,-1,-1,0};
         for(int k=0;k<6;k++) {
-            list[k]=bot.isPossible(color,new Move(i1,j1,1,x,y,i0[k],j0[k]));
+            list[k]=bot.isPossible(color,new Move(i1,j1,2,x,y,i0[k],j0[k]));
+        }
+        return list;
+    }
+
+    public Boolean[] getDirections(int i1,int j1,int i2,int j2,int i3,int j3) {
+        Boolean [] list=new Boolean[6];
+        int color=matrice[i1][j1];
+        Bot bot=new Bot(0,0,0,this);
+        int x;
+        int y;
+        int i;
+        int j;
+        if ((i2-i1==i3-i2)&(j2-j1==j3-j2)) {
+            i=i1;
+            j=j1;
+            x=i2-i1;
+            y=j2-j1;
+        }
+        if ((i3-i1==i2-i3)&(j3-j1==j2-j3)) {
+            i=i1;
+            j=j1;
+            x=i3-i1;
+            y=j3-j1;
+        }
+        else {
+            i=i2;
+            j=j2;
+            x=i1-i2;
+            y=j1-j2;
+        }
+        int[] i0={0,-1,-1,0,1,1};
+        int[] j0={1,1,0,-1,-1,0};
+        for(int k=0;k<6;k++) {
+            list[k]=bot.isPossible(color,new Move(i,j,3,x,y,i0[k],j0[k]));
         }
         return list;
     }
