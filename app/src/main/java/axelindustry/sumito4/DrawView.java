@@ -243,47 +243,41 @@ public class DrawView extends View {
         }
 
         // as soon as the finger is up, the selection is over
-        else if (selection && event.getAction() == MotionEvent.ACTION_UP && !chooseMovement && !validateMovement) {
+        else if (selection && !selectList.isEmpty() && event.getAction() == MotionEvent.ACTION_UP && !chooseMovement && !validateMovement) {
             selection = false;
             validateMovement = true;
         }
 
-        else if (event.getAction() == MotionEvent.ACTION_UP && chooseMovement){
+        else if (event.getAction() == MotionEvent.ACTION_UP && validateMovement){
             chooseMovement = true;
             validateMovement = false;
         }
-
-        if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP && chooseMovement){
-            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2) && chooseMovement){
+        else if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP){
+            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(0);
                 refresh();
-                ;
             }
             else if(list[1] && x > width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(1);
                 refresh();
-                ;
             }
             else if(list[2] && x < width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(2);
                 refresh();
-                ;
             }
-            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2) && chooseMovement){
+            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(3);
                 refresh();
-                ;
             }
-            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2) && chooseMovement){
+            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(4);
                 refresh();
-                ;
             }
-            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2) && chooseMovement){
+            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(5);
                 refresh();
-                ;
             }
+            else cancel();
         }
 
         this.invalidate();
@@ -309,13 +303,15 @@ public class DrawView extends View {
             if((vectorX == 1 && vectorY == 0) || (vectorX == -1 && vectorY == 0)
              ||(vectorX == 1 && vectorY == -1) || (vectorX == -1 && vectorY == 1)
              ||(vectorX == 0 && vectorY == 1) || (vectorX == 0 && vectorY == -1)) {
-                if (l.size() == 2) return true;
+                if (l.size() == 2) return (l.get(0).getColour ()== l.get(1).getColour());
                 else{
                     return ((l.get(2).getX() - l.get(0).getX() == vectorX && l.get(2).getY() - l.get(0).getY() == vectorY)
-                          ||(l.get(1).getX() - l.get(2).getX() == vectorX && l.get(1).getY() - l.get(2).getY() == vectorY));
+                          ||(l.get(1).getX() - l.get(2).getX() == vectorX && l.get(1).getY() - l.get(2).getY() == vectorY)
+                           && (l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour()));
                 }
             }
             else if(l.size() == 3){
+                if(!(l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour())) return false;
                 vectorX = (int) Math.ceil(vectorX / 2.);
                 vectorY = (int) Math.ceil(vectorY / 2.);
                 if ((vectorX == 1 && vectorY == 0) || (vectorX == -1 && vectorY == 0)
