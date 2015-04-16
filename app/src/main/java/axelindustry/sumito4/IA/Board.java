@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class Board {
 
     private int[][] matrice;
+    private Move[] userMove;
 
     public Board() {
         matrice=new int[9][9];
@@ -126,11 +127,17 @@ public class Board {
     }
 
     public Boolean exist(int i,int j) {
-        return (((i>=0)&(i<9)&(j>=0)&(j<9))&(matrice[i][j]!=-2));
+        if ((i>=0)&&(i<9)&&(j>=0)&&(j<9)) {
+            return (matrice[i][j] != -2);
+        }
+        return false;
     }
 
     public Boolean isPlayer(int i,int j,int iaColor) {
-        return ((exist(i,j))&(matrice[i][j]==iaColor));
+        if (exist(i,j)) {
+            return (matrice[i][j]==iaColor);
+        }
+        return false;
     }
 
     public void doMove(MoveWay moveWay) {
@@ -201,13 +208,13 @@ public class Board {
         int y;
         int i;
         int j;
-        if ((i2-i1==i3-i2)&(j2-j1==j3-j2)) {
+        if ((i2-i1==i3-i2)&&(j2-j1==j3-j2)) {
             i=i1;
             j=j1;
             x=i2-i1;
             y=j2-j1;
         }
-        else if ((i3-i1==i2-i3)&(j3-j1==j2-j3)) {
+        else if ((i3-i1==i2-i3)&&(j3-j1==j2-j3)) {
             i=i1;
             j=j1;
             x=i3-i1;
@@ -226,4 +233,8 @@ public class Board {
         }
         return list;
     }
+
+  //  public doUserMove(int angle) {
+
+    //}
 }

@@ -75,7 +75,7 @@ public class Bot {
         int n=moveNormalized.n;
         int u=moveNormalized.u;
         int v=moveNormalized.v;
-        if((n>1) & ( ((u!=0)|(v!=1)) & ((u!=-1)|(v!=1)) & ((u!=1)|(v!=0)) )) {
+        if((n>1) && ( ((u!=0)|(v!=1)) && ((u!=-1)|(v!=1)) && ((u!=1)|(v!=0)) )) {
             moveNormalized.i+=n*u;
             moveNormalized.j+=n*v;
             moveNormalized.u=v;
@@ -110,14 +110,14 @@ public class Bot {
         int v=move.v;
         int x=move.x;
         int y=move.y;
-        if ((n>1) & ( ((u!=0)|(v!=1)) & ((u!=-1)|(v!=1)) & ((u!=1)|(v!=0)) )) {
+        if ((n>1) && ( ((u!=0)|(v!=1)) && ((u!=-1)|(v!=1)) && ((u!=1)|(v!=0)) )) {
             System.out.println("Error in normalization");
             return false;
         }
         for(int k=0;k<n;k++) {
             int a=i+k*u;
             int b=j+k*v;
-            if (!((board.exist(a,b))&(board.isPlayer(a,b,color)))) {
+            if (!((board.exist(a,b))&&(board.isPlayer(a,b,color)))) {
                 return false;
             }
             // We now know that the bloc exists and belongs to color
@@ -125,7 +125,7 @@ public class Bot {
         if (n==1) {
             int a=i+x;
             int b=j+y;
-            if ((board.exist(a,b)&board.isPlayer(a,b,-1))) {
+            if ((board.exist(a,b)&&board.isPlayer(a,b,-1))) {
                 MoveWay moveWay=new MoveWay(0,i,j,a,b);
                 moveWayList=null;
                 addMoveWay(moveWay);
@@ -138,8 +138,8 @@ public class Bot {
         int b;
         int k;
         int l;
-        if (((u==x)&(v==y))||((u==-x)&(v==-y))) {
-            if ((u==x)&(v==y)) {
+        if (((u==x)&&(v==y))||((u==-x)&&(v==-y))) {
+            if ((u==x)&&(v==y)) {
                 a=i+n*u;
                 b=j+n*v;
                 k=i;
@@ -209,7 +209,7 @@ public class Bot {
             a=i+m*u+x;
             b=j+m*v+y;
             addMoveWay(new MoveWay(0,a-x,b-y,a,b));
-            if (!( (board.exist(a,b)) & (board.isPlayer(a,b,-1)) )) {
+            if (!( (board.exist(a,b)) && (board.isPlayer(a,b,-1)) )) {
                 return false;
             }
         }

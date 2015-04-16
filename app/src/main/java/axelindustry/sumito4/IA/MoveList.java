@@ -16,7 +16,7 @@ public class MoveList {
     }
 
     public void addMove(Move move,MoveWayList moveWayList) {
-        if ((this.move.isEqual(move))&(this.moveWayList.isEqual(moveWayList))) {
+        if ((this.move.isEqual(move))&&(this.moveWayList.isEqual(moveWayList))) {
             return;
         }
         if (next==null) {

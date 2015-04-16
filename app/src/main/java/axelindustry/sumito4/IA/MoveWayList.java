@@ -38,8 +38,8 @@ public class MoveWayList {
 
     public Boolean isEqual(MoveWayList moveWayList) {
         if (moveWayList==null) return true;
-        if (next==null) return ((moveWay.isEqual(moveWayList.getMoveWay()))&(moveWayList.getNext()==null));
-        return((moveWay.isEqual(moveWayList.getMoveWay()))&next.isEqual(moveWayList.getNext()));
+        if (next==null) return ((moveWay.isEqual(moveWayList.getMoveWay()))&&(moveWayList.getNext()==null));
+        return((moveWay.isEqual(moveWayList.getMoveWay()))&&next.isEqual(moveWayList.getNext()));
     }
 
     public void display() {
