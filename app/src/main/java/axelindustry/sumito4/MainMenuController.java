@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import axelindustry.sumito4.IA.Tutoriel;
+
 public class MainMenuController extends Activity {
 
     @Override
@@ -27,7 +29,8 @@ public class MainMenuController extends Activity {
         tutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent it = new Intent (MainMenuController.this, Tutoriel.class);
+                startActivity(it);
             }
         });
 

@@ -8,6 +8,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".MainMenuController"
             android:label="@string/app_name" >
@@ -17,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
@@ -26,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ChooseMode"
             android:label="@string/title_activity_choose" >
@@ -34,7 +37,18 @@
             android:name=".DifficultyLevel"
             android:label="@string/title_activity_choose" >
         </activity>
-    </application>
+
+         <activity
+            android:name=".IA.Tutoriel"
+            android:label="@string/app_name" >
+         <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+         </intent-filter>
+    </activity>
+
+</application>
 
 
 </manifest>
