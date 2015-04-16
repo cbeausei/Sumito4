@@ -21,6 +21,7 @@ public class DrawView extends View {
     rel_offset_y indicates the relative offset of the board in the picture, that is the vertical offset of the extreme top line
 
      */
+
     double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
     /* We will consider a list of white balls
     the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
