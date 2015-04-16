@@ -34,20 +34,9 @@ public class DrawView extends View {
     LinkedList <DrawBall> balls, selectList;
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
-    /* posYn contains the y-coordinates of the black balls
-    posXn their x-coordinates
-    posYb and posXb are the equivalent for white balls
-    all coordinates are expressed as follows: (colNum, rowNum)
-    colNum being the number of the column in the coordinates defined on the figure that was uploaded on the drive
-    rowNum being the number of the line in this system
-     */
 
-   /* int[] posYn = new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2};
-    int[] posXn = new int[]{4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8, 4, 5, 6};
-    int[] posYb = new int[]{8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6};
-    int[] posXb = new int[]{0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 2, 3, 4};*/
     // the boolean selection will help us detect the phase during which the user is selecting the balls he wants to move
-    boolean selection = false, chooseMovement = false;
+    boolean selection = false, chooseMovement = false, validateMovement = false;
     Boolean[] list;
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
     float x = 10, y = 20;
@@ -112,6 +101,18 @@ public class DrawView extends View {
      */
 
     // dimensions() computes the dimensions of the displayed objects whenever the size of the screen varies
+
+    private void cancel(){
+        for(DrawBall elem : selectList){
+            if(elem.getColour() == 0){
+                elem.changeBitmap(bouleBlanche);
+            }
+            else elem.changeBitmap(bouleNoire);
+        }
+        selectList.clear();
+        validateMovement = false;
+        chooseMovement = false;
+    }
     private void dimensions(){
         h = canvas.getHeight();
         w = canvas.getWidth();
@@ -181,7 +182,7 @@ public class DrawView extends View {
 
         if(!selectList.isEmpty()){
             int[] coord = revertCoordinates((int)x, (int)y);
-            if(coord[0] < 8 && coord[1] > 12 - coord[0]){
+            if(coord[0] < 8 && coord[1] > 12 - coord[0] ){
                 switch(selectList.size()){
                     case 1:
                         list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX());
@@ -209,13 +210,8 @@ public class DrawView extends View {
                     canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
                 chooseMovement = true;
             }
-            else if(coord[0] < 0 && coord[1] > 4){
-                for(DrawBall elem : selectList){
-                    if(elem.getColour() == 0){
-                        elem.changeBitmap(bouleBlanche);
-                    }
-                    else elem.changeBitmap(bouleNoire);
-                }
+            else if(coord[0] < 0 && coord[1] > 4 ){
+                cancel();
             }
             else {
                 coord = convertCoordinates(6, 8);
@@ -242,35 +238,52 @@ public class DrawView extends View {
         y = event.getRawY() - h / 24;
 
         // We must react accordingly: while the finger is down, we are in a phase of selection
-        if (event.getAction() == MotionEvent.ACTION_DOWN && !chooseMovement) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && !chooseMovement && !validateMovement) {
             selection = true;
         }
 
         // as soon as the finger is up, the selection is over
-        else if (event.getAction() == MotionEvent.ACTION_UP && !chooseMovement) {
+        else if (selection && event.getAction() == MotionEvent.ACTION_UP && !chooseMovement && !validateMovement) {
             selection = false;
+            validateMovement = true;
         }
 
-        if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP){
-            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2)){
+        else if (event.getAction() == MotionEvent.ACTION_UP && chooseMovement){
+            chooseMovement = true;
+            validateMovement = false;
+        }
+
+        if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP && chooseMovement){
+            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2) && chooseMovement){
                 board.doUserMove(0);
+                refresh();
+                ;
             }
-            else if(list[1] && x > width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2){
+            else if(list[1] && x > width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(1);
+                refresh();
+                ;
             }
-            else if(list[2] && x < width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2){
+            else if(list[2] && x < width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
                 board.doUserMove(2);
+                refresh();
+                ;
             }
-            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2)){
+            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height / 2) && chooseMovement){
                 board.doUserMove(3);
+                refresh();
+                ;
             }
-            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2)){
+            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2) && chooseMovement){
                 board.doUserMove(4);
+                refresh();
+                ;
             }
-            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2)){
+            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height / 2) && chooseMovement){
                 board.doUserMove(5);
+                refresh();
+                ;
             }
-            refresh();
         }
 
         this.invalidate();
@@ -280,6 +293,7 @@ public class DrawView extends View {
     public void refresh(){
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
+        cancel();
         for(Ball e : tmp){
             if(e.color == 1)
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
