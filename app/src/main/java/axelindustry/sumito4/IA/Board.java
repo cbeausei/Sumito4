@@ -186,4 +186,18 @@ public class Board {
         }
         return list;
     }
+
+    public Boolean[] getDirections(int i1,int j1,int i2,int j2) {
+        Boolean [] list=new Boolean[6];
+        int color=matrice[i1][j1];
+        Bot bot=new Bot(0,0,0,this);
+        int x=i2-i1;
+        int y=j2-j1;
+        int[] i0={0,-1,-1,0,1,1};
+        int[] j0={1,1,0,-1,-1,0};
+        for(int k=0;k<6;k++) {
+            list[k]=bot.isPossible(color,new Move(i1,j1,1,x,y,i0[k],j0[k]));
+        }
+        return list;
+    }
 }
