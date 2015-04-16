@@ -254,4 +254,7 @@ public class Bot {
         }
         return(new LinkedList<>());
     }
+    public MoveList getPossibles(int color) {
+        return possibles[color];
+    }
 }
