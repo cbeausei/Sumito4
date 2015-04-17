@@ -33,11 +33,11 @@ public class MoveWay {
     }
 
     public Boolean isEqual(MoveWay moveWay) {
-        return((type==moveWay.type)&(x==moveWay.x)&(y==moveWay.y)&(a==moveWay.a)&(b==moveWay.b));
+        return((type==moveWay.type)&&(x==moveWay.x)&&(y==moveWay.y)&&(a==moveWay.a)&&(b==moveWay.b));
     }
 
-    public void getBowlMoved(LinkedList<BowlMove> list) {
-        BowlMove bowlMove=new BowlMove(x,y,a,b);
-        list.add(bowlMove);
+    public void getBallMoved(LinkedList<BallMove> list) {
+        BallMove BallMove=new BallMove(x,y,a,b);
+        list.add(BallMove);
     }
 }

@@ -43,7 +43,7 @@ public class Move {
     }
 
     public Boolean isEqual(Move move) {
-        if ((i==move.i)&(j==move.j)&(n==move.n)&(u==move.u)&(v==move.v)&(x==move.x)&(y==move.y)) {
+        if ((i==move.i)&&(j==move.j)&&(n==move.n)&&(u==move.u)&&(v==move.v)&&(x==move.x)&&(y==move.y)) {
             return true;
         }
         else return false;

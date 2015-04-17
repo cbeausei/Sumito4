@@ -9,6 +9,9 @@ import android.view.View;
 
 import java.util.LinkedList;
 
+import axelindustry.sumito4.IA.Ball;
+import axelindustry.sumito4.IA.Board;
+
 public class DrawView extends View {
     Canvas canvas = new Canvas();
     /* The following constant values will be used in the coordinates formulae
@@ -21,27 +24,20 @@ public class DrawView extends View {
     rel_offset_y indicates the relative offset of the board in the picture, that is the vertical offset of the extreme top line
 
      */
+
     double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
     /* We will consider a list of white balls
     the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
     it works the same for black balls, of course
      */
-    LinkedList <DrawBall> balls;
-    Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue;
-    /* posYn contains the y-coordinates of the black balls
-    posXn their x-coordinates
-    posYb and posXb are the equivalent for white balls
-    all coordinates are expressed as follows: (colNum, rowNum)
-    colNum being the number of the column in the coordinates defined on the figure that was uploaded on the drive
-    rowNum being the number of the line in this system
-     */
+    Board board;
+    LinkedList <DrawBall> balls, selectList;
+    Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
+    Bitmap[] arrows;
 
-   /* int[] posYn = new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2};
-    int[] posXn = new int[]{4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8, 4, 5, 6};
-    int[] posYb = new int[]{8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6};
-    int[] posXb = new int[]{0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 2, 3, 4};*/
     // the boolean selection will help us detect the phase during which the user is selecting the balls he wants to move
-    boolean selection = false;
+    boolean selection = false, chooseMovement = false, validateMovement = false;
+    Boolean[] list;
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
     float x = 10, y = 20;
     /* w and h will match the dimensions of the screen
@@ -60,38 +56,21 @@ public class DrawView extends View {
         bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
 
         balls = new LinkedList();
-        balls.add(new DrawBall(0, 8, bouleBlanche));
-        balls.add(new DrawBall(1, 8, bouleBlanche));
-        balls.add(new DrawBall(2, 8, bouleBlanche));
-        balls.add(new DrawBall(3, 8, bouleBlanche));
-        balls.add(new DrawBall(4, 8, bouleBlanche));
-        balls.add(new DrawBall(0, 7, bouleBlanche));
-        balls.add(new DrawBall(1, 7, bouleBlanche));
-        balls.add(new DrawBall(2, 7, bouleBlanche));
-        balls.add(new DrawBall(3, 7, bouleBlanche));
-        balls.add(new DrawBall(4, 7, bouleBlanche));
-        balls.add(new DrawBall(5, 7, bouleBlanche));
-        balls.add(new DrawBall(2, 6, bouleBlanche));
-        balls.add(new DrawBall(3, 6, bouleBlanche));
-        balls.add(new DrawBall(4, 6, bouleBlanche));
-        balls.add(new DrawBall(4, 0, bouleNoire));
-        balls.add(new DrawBall(5, 0, bouleNoire));
-        balls.add(new DrawBall(6, 0, bouleNoire));
-        balls.add(new DrawBall(7, 0, bouleNoire));
-        balls.add(new DrawBall(8, 0, bouleNoire));
-        balls.add(new DrawBall(3, 1, bouleNoire));
-        balls.add(new DrawBall(4, 1, bouleNoire));
-        balls.add(new DrawBall(5, 1, bouleNoire));
-        balls.add(new DrawBall(6, 1, bouleNoire));
-        balls.add(new DrawBall(7, 1, bouleNoire));
-        balls.add(new DrawBall(8, 1, bouleNoire));
-        balls.add(new DrawBall(4, 2, bouleNoire));
-        balls.add(new DrawBall(5, 2, bouleNoire));
-        balls.add(new DrawBall(6, 2, bouleNoire));
+        selectList = new LinkedList();
+        board = new Board();
+        refresh();
 
         // the board and background are stored too
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
         fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
+        tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
+        cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
+        arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
+                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
     }
 
     /* convertCoordinates(X, Y) returns [x, y] where:
@@ -122,6 +101,18 @@ public class DrawView extends View {
      */
 
     // dimensions() computes the dimensions of the displayed objects whenever the size of the screen varies
+
+    private void cancel(){
+        for(DrawBall elem : selectList){
+            if(elem.getColour() == 0){
+                elem.changeBitmap(bouleBlanche);
+            }
+            else elem.changeBitmap(bouleNoire);
+        }
+        selectList.clear();
+        validateMovement = false;
+        chooseMovement = false;
+    }
     private void dimensions(){
         h = canvas.getHeight();
         w = canvas.getWidth();
@@ -136,9 +127,15 @@ public class DrawView extends View {
         }
         // once done, we draw accordingly
         plateau = Bitmap.createScaledBitmap(plateau, width, height, true);
+        for(int i = 0 ; i < 6 ; i++)
+            arrows[i] = Bitmap.createScaledBitmap(arrows[i], width/3, height/3, true);
 
         // the background is easier to draw: there must just be no hole
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
+        tick = Bitmap.createScaledBitmap(tick, height/12, height/12, true);
+        cross = Bitmap.createScaledBitmap(cross, height/12, height/12, true);
+        bouleBlanche = Bitmap.createScaledBitmap(bouleBlanche, height / 12, height / 12, true);
+        bouleNoire = Bitmap.createScaledBitmap(bouleNoire, height / 12, height / 12, true);
 
         // we draw the balls proportionally to the height of the board
         for(DrawBall e : balls) {
@@ -164,22 +161,72 @@ public class DrawView extends View {
         // OK, the dimensions are fine, we can draw
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
+
+        if(selection) {
+            int[] coordinatesSelection = revertCoordinates((int) x, (int) y);
+            for(DrawBall ball : balls){
+                if((ball.getX() == coordinatesSelection[0] && ball.getY() == coordinatesSelection[1])){
+                    selectList.remove(ball);
+                    selectList.add(ball);
+                    if(selectionIsValid(selectList))
+                        ball.changeBitmap(bouleBleue);
+                    else{
+                        selectList.remove(ball);
+                        if(ball.getColour() == 0){
+                            ball.changeBitmap(bouleBlanche);
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!selectList.isEmpty()){
+            int[] coord = revertCoordinates((int)x, (int)y);
+            if(coord[0] < 8 && coord[1] > 12 - coord[0] ){
+                switch(selectList.size()){
+                    case 1:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX());
+                        break;
+                    case 2:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX());
+                        break;
+                    case 3:
+                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX(), selectList.get(2).getY(), selectList.get(2).getX());
+                        break;
+                    default:
+                        list = new Boolean[] {false, false, false, false, false, false};
+                }
+                if(list[0])
+                    canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
+                if(list[1])
+                    canvas.drawBitmap(arrows[1], (w - width) / 2 + width / 2, (h - height) / 2, null);
+                if(list[2])
+                    canvas.drawBitmap(arrows[2], (w - width) / 2 + width / 6, (h - height) / 2, null);
+                if(list[3])
+                    canvas.drawBitmap(arrows[3], (w - width) / 2, (h - height) / 2 + height / 3, null);
+                if(list[4])
+                    canvas.drawBitmap(arrows[4], (w - width) / 2 + width / 6, (h - height) / 2 + 2 * height / 3, null);
+                if(list[5])
+                    canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
+                chooseMovement = true;
+            }
+            else if(coord[0] < 0 && coord[1] > 4 ){
+                cancel();
+            }
+            else {
+                coord = convertCoordinates(6, 8);
+                canvas.drawBitmap(tick, coord[0], coord[1], null);
+                coord = convertCoordinates(-2, 8);
+                canvas.drawBitmap(cross, coord[0], coord[1], null);
+            }
+        }
+
         for(DrawBall e : balls) {
             // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
             int coordinates[] = convertCoordinates(e.getX(), e.getY());
 
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
-
-            // In case the user is selecting, we must round the position of their finger to the nearest ball position
-            if(selection) {
-                int[] coordinatesSelection = revertCoordinates((int) x, (int) y);
-                for(DrawBall ball : balls){
-                    if((ball.getX() == coordinatesSelection[0] && ball.getY() == coordinatesSelection[1])){
-                        ball.changeBitmap(bouleBleue);
-                    }
-                }
-            }
         }
     }
 
@@ -187,20 +234,93 @@ public class DrawView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // ok, an event has occurred. Let's locate it first
-        x = event.getRawX() - h/24;
-        y = event.getRawY() - h/24;
+        x = event.getRawX() - h / 24;
+        y = event.getRawY() - h / 24;
 
         // We must react accordingly: while the finger is down, we are in a phase of selection
-        if(event.getAction() == MotionEvent.ACTION_DOWN){
+        if (event.getAction() == MotionEvent.ACTION_DOWN && !chooseMovement && !validateMovement) {
             selection = true;
         }
 
         // as soon as the finger is up, the selection is over
-        else if(event.getAction() == MotionEvent.ACTION_UP){
+        else if (selection && !selectList.isEmpty() && event.getAction() == MotionEvent.ACTION_UP && !chooseMovement && !validateMovement) {
             selection = false;
+            validateMovement = true;
+        }
+
+        else if (event.getAction() == MotionEvent.ACTION_UP && validateMovement){
+            chooseMovement = true;
+            validateMovement = false;
+        }
+        else if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP){
+            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(0);
+                refresh();
+            }
+            else if(list[1] && x > width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(1);
+                refresh();
+            }
+            else if(list[2] && x < width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(2);
+                refresh();
+            }
+            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(3);
+                refresh();
+            }
+            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(4);
+                refresh();
+            }
+            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
+                board.doUserMove(5);
+                refresh();
+            }
+            else cancel();
         }
 
         this.invalidate();
         return true;
+    }
+
+    public void refresh(){
+        LinkedList<Ball> tmp = board.getBalls();
+        balls.clear();
+        cancel();
+        for(Ball e : tmp){
+            if(e.color == 1)
+                balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
+            else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+        }
+    }
+
+    public boolean selectionIsValid(LinkedList <DrawBall> l){
+        if(l.size() > 3) return false;
+        else if(l.size() < 2) return true;
+        else{
+            int vectorX = l.get(0).getX() - l.get(1).getX(), vectorY = l.get(0).getY() - l.get(1).getY();
+            if((vectorX == 1 && vectorY == 0) || (vectorX == -1 && vectorY == 0)
+             ||(vectorX == 1 && vectorY == -1) || (vectorX == -1 && vectorY == 1)
+             ||(vectorX == 0 && vectorY == 1) || (vectorX == 0 && vectorY == -1)) {
+                if (l.size() == 2) return (l.get(0).getColour ()== l.get(1).getColour());
+                else{
+                    return ((l.get(2).getX() - l.get(0).getX() == vectorX && l.get(2).getY() - l.get(0).getY() == vectorY)
+                          ||(l.get(1).getX() - l.get(2).getX() == vectorX && l.get(1).getY() - l.get(2).getY() == vectorY)
+                           && (l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour()));
+                }
+            }
+            else if(l.size() == 3){
+                if(!(l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour())) return false;
+                vectorX = (int) Math.ceil(vectorX / 2.);
+                vectorY = (int) Math.ceil(vectorY / 2.);
+                if ((vectorX == 1 && vectorY == 0) || (vectorX == -1 && vectorY == 0)
+                        || (vectorX == 1 && vectorY == -1) || (vectorX == -1 && vectorY == 1)
+                        || (vectorX == 0 && vectorY == 1) || (vectorX == 0 && vectorY == -1)) {
+                    return (l.get(2).getX() - l.get(1).getX() == vectorX && l.get(2).getY() - l.get(1).getY() == vectorY);
+                } else return false;
+            }
+            else return false;
+        }
     }
 }

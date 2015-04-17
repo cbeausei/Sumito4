@@ -38,8 +38,8 @@ public class MoveWayList {
 
     public Boolean isEqual(MoveWayList moveWayList) {
         if (moveWayList==null) return true;
-        if (next==null) return ((moveWay.isEqual(moveWayList.getMoveWay()))&(moveWayList.getNext()==null));
-        return((moveWay.isEqual(moveWayList.getMoveWay()))&next.isEqual(moveWayList.getNext()));
+        if (next==null) return ((moveWay.isEqual(moveWayList.getMoveWay()))&&(moveWayList.getNext()==null));
+        return((moveWay.isEqual(moveWayList.getMoveWay()))&&next.isEqual(moveWayList.getNext()));
     }
 
     public void display() {
@@ -48,10 +48,10 @@ public class MoveWayList {
         if (next==null) System.out.println();
     }
 
-    public void getBowlMoved(LinkedList<BowlMove> list) {
-        moveWay.getBowlMoved(list);
+    public void getBallMoved(LinkedList<BallMove> list) {
+        moveWay.getBallMoved(list);
         if (next!=null) {
-            next.getBowlMoved(list);
+            next.getBallMoved(list);
         }
     }
 }
