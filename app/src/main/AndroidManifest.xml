@@ -27,6 +27,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".TestIaActivity"
+            android:label="@string/title_activity_main" >
+
+        </activity>
+        <activity
             android:name=".ChooseMode"
             android:label="@string/title_activity_choose" >
         </activity>

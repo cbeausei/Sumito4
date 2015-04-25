@@ -27,7 +27,7 @@ public class DifficultyLevel extends Activity {
         commencer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent MainActivity=new Intent(DifficultyLevel.this,MainActivity.class);
+                Intent MainActivity=new Intent(DifficultyLevel.this,TestIaActivity.class);
                 String difficulty_levels;
                 switch (difficulty_level.getCheckedRadioButtonId())
                 {
