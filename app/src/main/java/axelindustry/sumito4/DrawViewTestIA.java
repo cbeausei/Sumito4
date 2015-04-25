@@ -79,13 +79,8 @@ public class DrawViewTestIA extends View {
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
     }
-    public DrawViewTestIA(Context context, int difficulty, int agressivity){
-        super(context);
-        bot1=new Bot(0,0,1,board);
 
-    }
-
-    public DrawViewTestIA(Context context, Boolean testIA){
+    public DrawViewTestIA(Context context, Boolean testIA,int difficulty, int agressivity){
         super(context);
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
@@ -109,10 +104,10 @@ public class DrawViewTestIA extends View {
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
-        bot1=new Bot(0,0,1,board);
-        bot2=new Bot(1,0,1,board);
-        ia=testIA;
+        bot1=new Bot(0,difficulty,agressivity,board);
 
+        ia=testIA;
+        if(ia)    bot2=new Bot(1,0,1,board);
 
     }
 
@@ -279,7 +274,7 @@ public class DrawViewTestIA extends View {
         // ok, an event has occurred. Let's locate it first
         x = event.getRawX() - h / 24;
         y = event.getRawY() - h / 24;
-        if(ia=false){
+        if(ia==false){
             // We must react accordingly: while the finger is down, we are in a phase of selection
             if (event.getAction() == MotionEvent.ACTION_DOWN && !chooseMovement && !validateMovement) {
                 selection = true;

@@ -13,7 +13,7 @@
     <string name="partiesolo">Partie solo</string>
     <string name="facile">Facile</string>
     <string name="moyen">Moyen</string>
-    <string name="difficile">Difficile</string>
+    <string name="difficile">IA vs IA</string>
     <string name="commencerpartie">Commencer la partie</string>
     <string name="choisirdifficulte">Choisissez votre niveau de difficulté</string>
     <string name="title_activity_main">MainActivity</string>

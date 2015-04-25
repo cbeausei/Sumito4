@@ -20,18 +20,28 @@ public class TestIaActivity extends Activity {
         if(niveaudifficulté!=null) {
             if (niveaudifficulté.contentEquals("facile")) {
                 Log.d("afficher", "facile");
+                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,false,0,1);
+                drawViewTestIA.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewTestIA);
             }
             if (niveaudifficulté.contentEquals("moyen")) {
                 Log.d("afficher", "moyen");
+                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,false,0,1);
+                drawViewTestIA.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewTestIA);
             }
             if (niveaudifficulté.contentEquals("difficile")){
                 Log.d("afficher", "difficile");
+                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,true,0,1);
+                drawViewTestIA.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewTestIA);
             }
         }
-
-        DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,true);
-        drawViewTestIA.setBackgroundColor(Color.WHITE);
-        setContentView(drawViewTestIA);
+        else {
+            DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this, true, 0, 1);
+            drawViewTestIA.setBackgroundColor(Color.WHITE);
+            setContentView(drawViewTestIA);
+        }
     }
 
 
