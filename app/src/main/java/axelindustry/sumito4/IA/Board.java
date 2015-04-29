@@ -1,5 +1,7 @@
 package axelindustry.sumito4.IA;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 
 /**
@@ -64,67 +66,67 @@ public class Board {
 
     public void display() {
         for(int i=0;i<4;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=4;i<9;i++) {
-            System.out.print(convert(matrice[0][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[0][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<3;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=3;i<9;i++) {
-            System.out.print(convert(matrice[1][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[1][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<2;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=2;i<9;i++) {
-            System.out.print(convert(matrice[2][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[2][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<1;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=1;i<9;i++) {
-            System.out.print(convert(matrice[3][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[3][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<9;i++) {
-            System.out.print(convert(matrice[4][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[4][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<1;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=0;i<8;i++) {
-            System.out.print(convert(matrice[5][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[5][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<2;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=0;i<7;i++) {
-            System.out.print(convert(matrice[6][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[6][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<3;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=0;i<6;i++) {
-            System.out.print(convert(matrice[7][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[7][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
+        Log.d("test","\n");
         for(int i=0;i<4;i++)
-            System.out.print(" ");
+            Log.d("test"," ");
         for(int i=0;i<5;i++) {
-            System.out.print(convert(matrice[8][i]));
-            System.out.print(" ");
+            Log.d("test",convert(matrice[8][i]));
+            Log.d("test"," ");
         }
-        System.out.print("\n");
-        System.out.print("\n");
+        Log.d("test","\n");
+        Log.d("test","\n");
     }
 
     public Boolean exist(int i,int j) {

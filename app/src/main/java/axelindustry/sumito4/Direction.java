@@ -11,5 +11,4 @@ public enum Direction {
     West,
     South,
     SouthEast;
-
 }

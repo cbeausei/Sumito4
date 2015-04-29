@@ -76,8 +76,8 @@ public class Bot {
         int u=moveNormalized.u;
         int v=moveNormalized.v;
         if((n>1) && ( ((u!=0)|(v!=1)) && ((u!=-1)|(v!=1)) && ((u!=1)|(v!=0)) )) {
-            moveNormalized.i+=n*u;
-            moveNormalized.j+=n*v;
+            moveNormalized.i+=(n-1)*u;
+            moveNormalized.j+=(n-1)*v;
             moveNormalized.u=v;
             moveNormalized.v=u;
         }
