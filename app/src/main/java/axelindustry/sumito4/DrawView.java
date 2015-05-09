@@ -1,3 +1,20 @@
+/*
+Class DrawView
+Written by Bruno Quercia
+
+This class implements the core of the graphic interface: it handles the drawing of the board, and the
+selection of the user
+
+Since the user will have brand different behaviours from the moment he / she starts to select balls
+to the moment he / she finishes a move, this class will have to adapt its behaviour accordingly.
+
+Therefore it is virtually equivalent to a finite automaton, whose transitions can either be an event
+coming from the user (basically a touch event), or the achievement of an intern algorithm.
+
+Originally, 5 states were planned, but in order to handle the possibles evolutions, the current state
+is stored in a 1-byte variable.
+ */
+
 package axelindustry.sumito4;
 
 import android.content.Context;
@@ -14,6 +31,7 @@ import axelindustry.sumito4.IA.Board;
 
 public class DrawView extends View {
     Canvas canvas = new Canvas();
+
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
     rel_span_x indicates the relative space between a position and its nearest lateral neighbour
@@ -25,13 +43,23 @@ public class DrawView extends View {
 
      */
 
-    double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
+    private static final double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
+
+    //Let us now define the states we will be using. Names are more eloquent than raw numbers.
+
+    private static final byte INITIAL_STATE = 1, PROCESSING_SELECTION = 2, END_SELECTION = 3, PROCESSING_MOVEMENT_CHOICE = 4, EXECUTE_MOVEMENT = 5;
+
+    //To remember the current state, we will need a variable... state.
+
+    private byte state;
+
     /* We will consider a list of white balls
     the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
     it works the same for black balls, of course
      */
     Board board;
     LinkedList <DrawBall> balls, selectList;
+    DrawBall startBall, endBall;
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
 
@@ -45,7 +73,7 @@ public class DrawView extends View {
     evidently, width <= w and height <= h
     There is always at least one case of equality, rarely both
      */
-    int w = 0, h = 0, width, height;
+    int w = 0, h = 0, width, height, move;
 
 
     public DrawView(Context context) {
@@ -60,17 +88,20 @@ public class DrawView extends View {
         board = new Board();
         refresh();
 
+        // we begin with the initial state
+        state = INITIAL_STATE;
+
         // the board and background are stored too
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
         fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
         tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
         cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
         arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
-                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
-                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
-                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
-                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
-                              BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
+                BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
+                BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
+                BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
+                BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
+                BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
     }
 
     /* convertCoordinates(X, Y) returns [x, y] where:
@@ -162,25 +193,7 @@ public class DrawView extends View {
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
 
-        if(selection) {
-            int[] coordinatesSelection = revertCoordinates((int) x, (int) y);
-            for(DrawBall ball : balls){
-                if((ball.getX() == coordinatesSelection[0] && ball.getY() == coordinatesSelection[1])){
-                    selectList.remove(ball);
-                    selectList.add(ball);
-                    if(selectionIsValid(selectList))
-                        ball.changeBitmap(bouleBleue);
-                    else{
-                        selectList.remove(ball);
-                        if(ball.getColour() == 0){
-                            ball.changeBitmap(bouleBlanche);
-                        }
-                    }
-                }
-            }
-        }
-
-        if(!selectList.isEmpty()){
+       /* if(!selectList.isEmpty()){
             int[] coord = revertCoordinates((int)x, (int)y);
             if(coord[0] < 8 && coord[1] > 12 - coord[0] ){
                 switch(selectList.size()){
@@ -219,7 +232,7 @@ public class DrawView extends View {
                 coord = convertCoordinates(-2, 8);
                 canvas.drawBitmap(cross, coord[0], coord[1], null);
             }
-        }
+        }*/
 
         for(DrawBall e : balls) {
             // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
@@ -234,50 +247,107 @@ public class DrawView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // ok, an event has occurred. Let's locate it first
-        x = event.getRawX() - h / 24;
-        y = event.getRawY() - h / 24;
+        x = event.getRawX();
+        y = event.getRawY();
 
-        // We must react accordingly: while the finger is down, we are in a phase of selection
-        if (event.getAction() == MotionEvent.ACTION_DOWN && !chooseMovement && !validateMovement) {
-            selection = true;
+        // We must react accordingly: as soon as the finger is down, we enter a phase of selection
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            switch(state){
+                case INITIAL_STATE:
+                    state = PROCESSING_SELECTION;
+                    startBall = balls.getFirst();
+                    int[] coords = revertCoordinates((int)(x - h/24), (int)(y - h/24));
+                    for(DrawBall e: balls){
+                        if(Math.pow(e.getX() - coords[0], 2) + Math.pow(e.getY() - coords[1], 2) < Math.pow(startBall.getX() - coords[0], 2) + Math.pow(startBall.getY() - coords[1], 2)){
+                            startBall = e;
+                        }
+                    }
+                    // OK, now startBall contains the nearest ball to the beginning of the selection
+                    break;
+                case END_SELECTION:
+                    state = PROCESSING_MOVEMENT_CHOICE;
+                    break;
+            }
         }
 
         // as soon as the finger is up, the selection is over
-        else if (selection && !selectList.isEmpty() && event.getAction() == MotionEvent.ACTION_UP && !chooseMovement && !validateMovement) {
-            selection = false;
-            validateMovement = true;
+        else if (event.getAction() == MotionEvent.ACTION_UP) {
+            switch(state){
+                case PROCESSING_SELECTION:
+                    if(selectList.isEmpty()) state = INITIAL_STATE;
+                    else state = END_SELECTION;
+                    break;
+                case PROCESSING_MOVEMENT_CHOICE:
+                    state = EXECUTE_MOVEMENT;
+                    board.doUserMove(move);
+                    refresh();
+                    break;
+            }
         }
-
-        else if (event.getAction() == MotionEvent.ACTION_UP && validateMovement){
-            chooseMovement = true;
-            validateMovement = false;
-        }
-        else if(chooseMovement && event.getAction() == MotionEvent.ACTION_UP){
-            if(list[0] && x > width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(0);
-                refresh();
+        else if(state == PROCESSING_SELECTION){
+            int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
+            float absc = x - coord[0] - h/24, ord = y - coord[1] - h/24;
+            int distance = Math.min((int)(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
+            // OK, we know the number of balls. We must then determine the vector angle.
+            float tan = ord / absc;
+            if(Math.abs(tan) <= Math.sqrt(3)/3){
+                absc = Math.signum(absc);
+                ord = 0;
+            } // that concludes angles 0 and pi
+            else if(absc >= 0 && ord <= 0){
+                absc = 1;
+                ord = -1;
+            } // angle pi/3
+            else if(absc <= 0 && ord <= 0){
+                absc = 0;
+                ord = -1;
+            } // angle 2pi/3
+            else if(absc <= 0 && ord >= 0){
+                absc = -1;
+                ord = 1;
+            } // angle 4pi/3
+            else{
+                absc = 0;
+                ord = 1;
+            } // angle 5pi/3
+            for(DrawBall e : selectList){
+                if(e.getColour() == 0)
+                    e.changeBitmap(bouleBlanche);
+                else e.changeBitmap(bouleNoire);
             }
-            else if(list[1] && x > width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(1);
-                refresh();
+            selectList.clear();
+            startBall.changeBitmap(bouleBleue);
+            selectList.add(startBall);
+            if(distance > 1){
+                for(DrawBall e : balls){
+                    if(e.getX() == startBall.getX() + absc && e.getY() == startBall.getY() + ord){
+                        e.changeBitmap(bouleBleue);
+                        selectList.add(e);
+                    }
+                }
+                if(!selectionIsValid(selectList)){
+                    DrawBall e = selectList.getLast();
+                    if(e.getColour() == 0)
+                        e.changeBitmap(bouleBlanche);
+                    else e.changeBitmap(bouleNoire);
+                    selectList.removeLast();
+                }
+                if(distance == 3 && selectList.size() == 2){
+                    for(DrawBall e : balls){
+                        if(e.getX() == startBall.getX() + 2 * absc && e.getY() == startBall.getY() + 2 * ord){
+                            e.changeBitmap(bouleBleue);
+                            selectList.add(e);
+                        }
+                    }
+                    if(!selectionIsValid(selectList)){
+                        DrawBall e = selectList.getLast();
+                        if(e.getColour() == 0)
+                            e.changeBitmap(bouleBlanche);
+                        else e.changeBitmap(bouleNoire);
+                        selectList.removeLast();
+                    }
+                }
             }
-            else if(list[2] && x < width / 2 + (w-width) / 2 && y < height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(2);
-                refresh();
-            }
-            else if(list[3] && x < width / 2 + (w-width) / 2 && y > height / 3 + (h - height) / 2 && y < 2 * height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(3);
-                refresh();
-            }
-            else if(list[4] && x < width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(4);
-                refresh();
-            }
-            else if(list[5] && x > width / 2 + (w-width) / 2 && y > 2 * height / 3 + (h - height) / 2 && chooseMovement){
-                board.doUserMove(5);
-                refresh();
-            }
-            else cancel();
         }
 
         this.invalidate();
@@ -301,13 +371,13 @@ public class DrawView extends View {
         else{
             int vectorX = l.get(0).getX() - l.get(1).getX(), vectorY = l.get(0).getY() - l.get(1).getY();
             if((vectorX == 1 && vectorY == 0) || (vectorX == -1 && vectorY == 0)
-             ||(vectorX == 1 && vectorY == -1) || (vectorX == -1 && vectorY == 1)
-             ||(vectorX == 0 && vectorY == 1) || (vectorX == 0 && vectorY == -1)) {
+                    ||(vectorX == 1 && vectorY == -1) || (vectorX == -1 && vectorY == 1)
+                    ||(vectorX == 0 && vectorY == 1) || (vectorX == 0 && vectorY == -1)) {
                 if (l.size() == 2) return (l.get(0).getColour ()== l.get(1).getColour());
                 else{
                     return ((l.get(2).getX() - l.get(0).getX() == vectorX && l.get(2).getY() - l.get(0).getY() == vectorY)
-                          ||(l.get(1).getX() - l.get(2).getX() == vectorX && l.get(1).getY() - l.get(2).getY() == vectorY)
-                           && (l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour()));
+                            ||(l.get(1).getX() - l.get(2).getX() == vectorX && l.get(1).getY() - l.get(2).getY() == vectorY)
+                            && (l.get(0).getColour() == l.get(1).getColour() && l.get(1).getColour() == l.get(2).getColour()));
                 }
             }
             else if(l.size() == 3){
