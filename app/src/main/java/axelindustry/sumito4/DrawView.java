@@ -62,9 +62,6 @@ public class DrawView extends View {
     DrawBall startBall;
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
-
-    // the boolean selection will help us detect the phase during which the user is selecting the balls he wants to move
-    boolean selection = false, chooseMovement = false, validateMovement = false;
     Boolean[] list;
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
     float x = 10, y = 20, start_x, start_y;
@@ -74,7 +71,6 @@ public class DrawView extends View {
     There is always at least one case of equality, rarely both
      */
     int w = 0, h = 0, width, height, move;
-
 
     public DrawView(Context context) {
         super(context);
@@ -141,8 +137,6 @@ public class DrawView extends View {
             else elem.changeBitmap(bouleNoire);
         }
         selectList.clear();
-        validateMovement = false;
-        chooseMovement = false;
     }
     private void dimensions(){
         h = canvas.getHeight();
@@ -163,16 +157,16 @@ public class DrawView extends View {
 
         // the background is easier to draw: there must just be no hole
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
-        tick = Bitmap.createScaledBitmap(tick, height/12, height/12, true);
-        cross = Bitmap.createScaledBitmap(cross, height/12, height/12, true);
-        bouleBlanche = Bitmap.createScaledBitmap(bouleBlanche, height / 12, height / 12, true);
-        bouleNoire = Bitmap.createScaledBitmap(bouleNoire, height / 12, height / 12, true);
+        tick = Bitmap.createScaledBitmap(tick, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
+        cross = Bitmap.createScaledBitmap(cross, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
+        bouleBlanche = Bitmap.createScaledBitmap(bouleBlanche, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
+        bouleNoire = Bitmap.createScaledBitmap(bouleNoire, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
 
         // we draw the balls proportionally to the height of the board
         for(DrawBall e : balls) {
-            e.changeBitmap(Bitmap.createScaledBitmap(e.getBitmap(), height / 12, height / 12, true));
+            e.changeBitmap(Bitmap.createScaledBitmap(e.getBitmap(), (int)(rel_b_h * height), (int)(rel_b_h * height), true));
         }
-        bouleBleue = Bitmap.createScaledBitmap(bouleBleue, height / 12, height / 12, true);
+        bouleBleue = Bitmap.createScaledBitmap(bouleBleue, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
     }
 
     /* the core of the drawing phase happens here:
@@ -206,7 +200,6 @@ public class DrawView extends View {
                 canvas.drawBitmap(arrows[4], (w - width) / 2 + width / 6, (h - height) / 2 + 2 * height / 3, null);
             if(list[5] && move == 5)
                 canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
-            chooseMovement = true;
         }
 
         for(DrawBall e : balls) {
@@ -231,7 +224,7 @@ public class DrawView extends View {
                 case INITIAL_STATE:
                     state = PROCESSING_SELECTION;
                     startBall = balls.getFirst();
-                    int[] coords = revertCoordinates((int)(x - h/24), (int)(y - h/24));
+                    int[] coords = revertCoordinates((int)(x - rel_b_h*height/2), (int)(y - rel_b_h*height/2));
                     for(DrawBall e: balls){
                         if(Math.pow(e.getX() - coords[0], 2) + Math.pow(e.getY() - coords[1], 2) < Math.pow(startBall.getX() - coords[0], 2) + Math.pow(startBall.getY() - coords[1], 2)){
                             startBall = e;
@@ -283,7 +276,7 @@ public class DrawView extends View {
         else{
             if(state == PROCESSING_SELECTION){
                 int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
-                float absc = x - coord[0] - h/24, ord = y - coord[1] - h/24;
+                float absc = x - coord[0] - (int)(rel_b_h*height/2), ord = y - coord[1] - (int)(rel_b_h*height/2);
                 int distance = Math.min((int)(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
                 // OK, we know the number of balls. We must then determine the vector angle.
                 float tan = ord / absc;
