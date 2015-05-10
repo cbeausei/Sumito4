@@ -314,10 +314,10 @@ public class DrawViewIa extends View {
                         if (list[move]) {
                             board.doUserMove(move);
                             // Execute the movement of the IA
+                            bot1.play(board);
+
                         }
                         state = INITIAL_STATE;
-                        refresh();
-                        bot1.play(board);
                         refresh();
                         break;
                 }
