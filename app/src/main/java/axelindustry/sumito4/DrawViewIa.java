@@ -14,6 +14,8 @@ import axelindustry.sumito4.IA.Ball;
 import axelindustry.sumito4.IA.Board;
 import axelindustry.sumito4.IA.Bot;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Created by axel on 10/05/15.
  */
@@ -80,9 +82,11 @@ public class DrawViewIa extends View {
      */
     int w = 0, h = 0, width, height, move;
 
-    Boolean ia;
-    Bot bot1;
-    Bot bot2;
+    private Boolean ia;
+    private Bot bot1;
+    private Bot bot2;
+    private byte turn;
+
 
     public DrawViewIa(Context context) {
         super(context);
@@ -90,7 +94,7 @@ public class DrawViewIa extends View {
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
         bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
-
+        turn=0;
         balls = new LinkedList();
         selectList = new LinkedList();
         board = new Board();
@@ -144,7 +148,10 @@ public class DrawViewIa extends View {
         bot1=new Bot(0,difficulty,agressivity,board);
 
         ia=testIA;
-        if(ia)    bot2=new Bot(1,0,1,board);
+        if(ia) {
+            bot2=new Bot(1,0,1,board);
+            turn=1;
+        }
     }
 
     /* convertCoordinates(X, Y) returns [x, y] where:
@@ -256,6 +263,7 @@ public class DrawViewIa extends View {
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
         }
+
     }
 
     // the following method handles all touch events coming from the user
@@ -265,114 +273,101 @@ public class DrawViewIa extends View {
         x = event.getRawX();
         y = event.getRawY();
         if(!ia) {
-            // We must react accordingly: as soon as the finger is down, we enter a phase of selection
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                switch (state) {
-                    case INITIAL_STATE:
-                        state = PROCESSING_SELECTION;
-                        startBall = balls.getFirst();
-                        int[] coords = revertCoordinates((int) (x - rel_b_h * height / 2), (int) (y - rel_b_h * height / 2));
-                        for (DrawBall e : balls) {
-                            if (Math.pow(e.getX() - coords[0], 2) + Math.pow(e.getY() - coords[1], 2) < Math.pow(startBall.getX() - coords[0], 2) + Math.pow(startBall.getY() - coords[1], 2)) {
-                                startBall = e;
+                // We must react accordingly: as soon as the finger is down, we enter a phase of selection
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    switch (state) {
+                        case INITIAL_STATE:
+                            state = PROCESSING_SELECTION;
+                            startBall = balls.getFirst();
+                            int[] coords = revertCoordinates((int) (x - rel_b_h * height / 2), (int) (y - rel_b_h * height / 2));
+                            for (DrawBall e : balls) {
+                                if (Math.pow(e.getX() - coords[0], 2) + Math.pow(e.getY() - coords[1], 2) < Math.pow(startBall.getX() - coords[0], 2) + Math.pow(startBall.getY() - coords[1], 2)) {
+                                    startBall = e;
+                                }
                             }
-                        }
-                        // OK, now startBall contains the nearest ball to the beginning of the selection
-                        break;
-                    case END_SELECTION:
-                        state = PROCESSING_MOVEMENT_CHOICE;
-                        start_x = x;
-                        start_y = y;
-                        break;
-                }
-            }
-
-            // as soon as the finger is up, the selection is over
-            else if (event.getAction() == MotionEvent.ACTION_UP) {
-                switch (state) {
-                    case PROCESSING_SELECTION:
-                        if (selectList.isEmpty()) state = INITIAL_STATE;
-                        else {
-                            state = END_SELECTION;
-                            switch (selectList.size()) {
-                                case 1:
-                                    list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX());
-                                    break;
-                                case 2:
-                                    list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX());
-                                    break;
-                                case 3:
-                                    list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX(), selectList.get(2).getY(), selectList.get(2).getX());
-                                    break;
-                                default:
-                                    list = new Boolean[]{false, false, false, false, false, false};
-                            }
-                        }
-                        break;
-                    case PROCESSING_MOVEMENT_CHOICE:
-                        state = EXECUTE_MOVEMENT;
-                        if (list[move]) {
-                            board.doUserMove(move);
-                            // Execute the movement of the IA
-                            bot1.play(board);
-
-                        }
-                        state = INITIAL_STATE;
-                        refresh();
-                        break;
-                }
-            } else {
-                if (state == PROCESSING_SELECTION) {
-                    int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
-                    float absc = x - coord[0] - (int) (rel_b_h * height / 2), ord = y - coord[1] - (int) (rel_b_h * height / 2);
-                    int distance = Math.min((int) (Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
-                    // OK, we know the number of balls. We must then determine the vector angle.
-                    float tan = ord / absc;
-                    if (Math.abs(tan) <= Math.sqrt(3) / 3) {
-                        absc = Math.signum(absc);
-                        ord = 0;
-                    } // that concludes angles 0 and pi
-                    else if (absc >= 0 && ord <= 0) {
-                        absc = 1;
-                        ord = -1;
-                    } // angle pi/3
-                    else if (absc <= 0 && ord <= 0) {
-                        absc = 0;
-                        ord = -1;
-                    } // angle 2pi/3
-                    else if (absc <= 0 && ord >= 0) {
-                        absc = -1;
-                        ord = 1;
-                    } // angle 4pi/3
-                    else {
-                        absc = 0;
-                        ord = 1;
-                    } // angle 5pi/3
-                    for (DrawBall e : selectList) {
-                        if (e.getColour() == 0)
-                            e.changeBitmap(bouleBlanche);
-                        else e.changeBitmap(bouleNoire);
+                            // OK, now startBall contains the nearest ball to the beginning of the selection
+                            break;
+                        case END_SELECTION:
+                            state = PROCESSING_MOVEMENT_CHOICE;
+                            start_x = x;
+                            start_y = y;
+                            break;
                     }
-                    selectList.clear();
-                    startBall.changeBitmap(bouleBleue);
-                    selectList.add(startBall);
-                    if (distance > 1) {
-                        for (DrawBall e : balls) {
-                            if (e.getX() == startBall.getX() + absc && e.getY() == startBall.getY() + ord) {
-                                e.changeBitmap(bouleBleue);
-                                selectList.add(e);
+                }
+
+                // as soon as the finger is up, the selection is over
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    switch (state) {
+                        case PROCESSING_SELECTION:
+                            if (selectList.isEmpty()) state = INITIAL_STATE;
+                            else {
+                                state = END_SELECTION;
+                                switch (selectList.size()) {
+                                    case 1:
+                                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX());
+                                        break;
+                                    case 2:
+                                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX());
+                                        break;
+                                    case 3:
+                                        list = board.getDirections(selectList.get(0).getY(), selectList.get(0).getX(), selectList.get(1).getY(), selectList.get(1).getX(), selectList.get(2).getY(), selectList.get(2).getX());
+                                        break;
+                                    default:
+                                        list = new Boolean[]{false, false, false, false, false, false};
+                                }
                             }
-                        }
-                        if (!selectionIsValid(selectList)) {
-                            DrawBall e = selectList.getLast();
+                            break;
+                        case PROCESSING_MOVEMENT_CHOICE:
+                            state = EXECUTE_MOVEMENT;
+                            if (list[move]) {
+                                board.doUserMove(move);
+                                // Execute the movement of the IA
+                                bot1.play(board);
+
+                            }
+                            state = INITIAL_STATE;
+                            turn = 1;
+                            refresh();
+                            break;
+                    }
+                } else {
+                    if (state == PROCESSING_SELECTION) {
+                        int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
+                        float absc = x - coord[0] - (int) (rel_b_h * height / 2), ord = y - coord[1] - (int) (rel_b_h * height / 2);
+                        int distance = Math.min((int) (Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
+                        // OK, we know the number of balls. We must then determine the vector angle.
+                        float tan = ord / absc;
+                        if (Math.abs(tan) <= Math.sqrt(3) / 3) {
+                            absc = Math.signum(absc);
+                            ord = 0;
+                        } // that concludes angles 0 and pi
+                        else if (absc >= 0 && ord <= 0) {
+                            absc = 1;
+                            ord = -1;
+                        } // angle pi/3
+                        else if (absc <= 0 && ord <= 0) {
+                            absc = 0;
+                            ord = -1;
+                        } // angle 2pi/3
+                        else if (absc <= 0 && ord >= 0) {
+                            absc = -1;
+                            ord = 1;
+                        } // angle 4pi/3
+                        else {
+                            absc = 0;
+                            ord = 1;
+                        } // angle 5pi/3
+                        for (DrawBall e : selectList) {
                             if (e.getColour() == 0)
                                 e.changeBitmap(bouleBlanche);
                             else e.changeBitmap(bouleNoire);
-                            selectList.removeLast();
                         }
-                        if (distance == 3 && selectList.size() == 2) {
+                        selectList.clear();
+                        startBall.changeBitmap(bouleBleue);
+                        selectList.add(startBall);
+                        if (distance > 1) {
                             for (DrawBall e : balls) {
-                                if (e.getX() == startBall.getX() + 2 * absc && e.getY() == startBall.getY() + 2 * ord) {
+                                if (e.getX() == startBall.getX() + absc && e.getY() == startBall.getY() + ord) {
                                     e.changeBitmap(bouleBleue);
                                     selectList.add(e);
                                 }
@@ -384,39 +379,65 @@ public class DrawViewIa extends View {
                                 else e.changeBitmap(bouleNoire);
                                 selectList.removeLast();
                             }
+                            if (distance == 3 && selectList.size() == 2) {
+                                for (DrawBall e : balls) {
+                                    if (e.getX() == startBall.getX() + 2 * absc && e.getY() == startBall.getY() + 2 * ord) {
+                                        e.changeBitmap(bouleBleue);
+                                        selectList.add(e);
+                                    }
+                                }
+                                if (!selectionIsValid(selectList)) {
+                                    DrawBall e = selectList.getLast();
+                                    if (e.getColour() == 0)
+                                        e.changeBitmap(bouleBlanche);
+                                    else e.changeBitmap(bouleNoire);
+                                    selectList.removeLast();
+                                }
+                            }
                         }
+                    } else if (state == PROCESSING_MOVEMENT_CHOICE) {
+                        float absc = x - start_x, ord = y - start_y;
+                        float tan = ord / absc;
+                        if (Math.abs(tan) <= Math.sqrt(3) / 3) {
+                            move = 3 * (int) (1 - Math.signum(absc)) / 2;
+                        } // that concludes angles 0 and pi
+                        else if (absc >= 0 && ord <= 0) {
+                            move = 1;
+                        } // angle pi/3
+                        else if (absc <= 0 && ord <= 0) {
+                            move = 2;
+                        } // angle 2pi/3
+                        else if (absc <= 0 && ord >= 0) {
+                            move = 4;
+                        } // angle 4pi/3
+                        else {
+                            move = 5;
+                        } // angle 5pi/3
                     }
-                } else if (state == PROCESSING_MOVEMENT_CHOICE) {
-                    float absc = x - start_x, ord = y - start_y;
-                    float tan = ord / absc;
-                    if (Math.abs(tan) <= Math.sqrt(3) / 3) {
-                        move = 3 * (int) (1 - Math.signum(absc)) / 2;
-                    } // that concludes angles 0 and pi
-                    else if (absc >= 0 && ord <= 0) {
-                        move = 1;
-                    } // angle pi/3
-                    else if (absc <= 0 && ord <= 0) {
-                        move = 2;
-                    } // angle 2pi/3
-                    else if (absc <= 0 && ord >= 0) {
-                        move = 4;
-                    } // angle 4pi/3
-                    else {
-                        move = 5;
-                    } // angle 5pi/3
                 }
-            }
+
+
         }
         else {
             if (board != null) {
                 if (bot1 != null) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        bot1.play(board);
-                        bot2.play(board);
-                        Log.d("test", "Passe dans boucle");
-                        refresh();
-                        this.invalidate();
-                        return true;
+                        if(turn==1) {
+                            bot1.play(board);
+                            refresh();
+
+                            turn=2;
+                            this.invalidate();
+                            return true;
+                        }
+                        else{
+                            bot2.play(board);
+                            refresh();
+
+                            turn=1;
+                            this.invalidate();
+                            return true;
+                        }
                     }
                 }
             }
@@ -428,6 +449,7 @@ public class DrawViewIa extends View {
     }
 
     public void refresh(){
+
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
         cancel();
