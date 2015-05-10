@@ -9,7 +9,7 @@ import android.util.Log;
 /**
  * Created by axel on 19/04/15.
  */
-public class TestIaActivity extends Activity {
+public class IaActivity extends Activity {
     String niveaudifficulté;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,27 +20,27 @@ public class TestIaActivity extends Activity {
         if(niveaudifficulté!=null) {
             if (niveaudifficulté.contentEquals("facile")) {
                 Log.d("afficher", "facile");
-                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,false,0,1);
-                drawViewTestIA.setBackgroundColor(Color.WHITE);
-                setContentView(drawViewTestIA);
+                DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
+                drawViewIa.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewIa);
             }
             if (niveaudifficulté.contentEquals("moyen")) {
                 Log.d("afficher", "moyen");
-                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,false,0,1);
-                drawViewTestIA.setBackgroundColor(Color.WHITE);
-                setContentView(drawViewTestIA);
+                OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this,false,0,1);
+                oldSelectiondontdelete.setBackgroundColor(Color.WHITE);
+                setContentView(oldSelectiondontdelete);
             }
             if (niveaudifficulté.contentEquals("difficile")){
                 Log.d("afficher", "difficile");
-                DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this,true,0,1);
-                drawViewTestIA.setBackgroundColor(Color.WHITE);
-                setContentView(drawViewTestIA);
+                DrawViewIa drawViewIa = new DrawViewIa(this,true,0,1);
+                drawViewIa.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewIa);
             }
         }
         else {
-            DrawViewTestIA drawViewTestIA = new DrawViewTestIA(this, true, 0, 1);
-            drawViewTestIA.setBackgroundColor(Color.WHITE);
-            setContentView(drawViewTestIA);
+            OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this, true, 0, 1);
+            oldSelectiondontdelete.setBackgroundColor(Color.WHITE);
+            setContentView(oldSelectiondontdelete);
         }
     }
 
