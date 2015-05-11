@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +42,15 @@ is stored in a 1-byte variable.
 
 public class DrawViewIa extends View {
     Canvas canvas = new Canvas();
+
+    private Runnable mMyRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            playIa();
+        }
+    };
 
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
@@ -322,7 +332,10 @@ public class DrawViewIa extends View {
                             if (list[move]) {
                                 board.doUserMove(move);
                                 // Execute the movement of the IA
-                                bot1.play(board);
+                                refresh();
+                                Handler handler = new Handler();
+                                handler.postDelayed(mMyRunnable, 1000);
+                                //bot1.play(board);
 
                             }
                             state = INITIAL_STATE;
@@ -487,5 +500,11 @@ public class DrawViewIa extends View {
             }
             else return false;
         }
+    }
+
+    private void playIa(){
+        bot1.play(board);
+        refresh();
+        this.invalidate();
     }
 }
