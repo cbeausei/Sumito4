@@ -9,6 +9,7 @@ public class Bot {
     private Board board;
     private MoveWayList moveWayList;
     private int difficulty;
+    private int intensity=1;
     private int aggressivity;
     //private int seuil=-1;
     private MoveList[] possibles;
@@ -49,6 +50,23 @@ public class Bot {
         return s;
     }
 
+    private int sum2(int color,Board board) {
+        int s=sum(color,board);
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                if (board.isPlayer(i,j,color)) {
+                    if (board.isPlayer(i+1,j,color)) s+=intensity;
+                    if (board.isPlayer(i+1,j+1,color)) s+=intensity;
+                    if (board.isPlayer(i,j+1,color)) s+=intensity;
+                    if (board.isPlayer(i,j-1,color)) s+=intensity;
+                    if (board.isPlayer(i-1,j,color)) s+=intensity;
+                    if (board.isPlayer(i-1,j-1,color)) s+=intensity;
+                }
+            }
+        }
+        return s;
+    }
+
     private MoveWayList bestMove(int color,Board board) {
         int valMax=-10000;
         MoveWayList moveWayList=new MoveWayList();
@@ -58,6 +76,23 @@ public class Bot {
             Board boardToTest=new Board(board);
             boardToTest.doMoveList(moveWayListToCompare);
             int valTemp=sum(color,boardToTest);
+            if (valTemp>valMax) {
+                valMax=valTemp;
+                moveWayList=moveWayListToCompare;
+            }
+        }
+        return moveWayList;
+    }
+
+    private MoveWayList bestMove2(int color,Board board) {
+        int valMax=-10000;
+        MoveWayList moveWayList=new MoveWayList();
+        while (possibles[color]!=null) {
+            MoveWayList moveWayListToCompare=possibles[color].getMoveWayList();
+            possibles[color]=possibles[color].getNext();
+            Board boardToTest=new Board(board);
+            boardToTest.doMoveList(moveWayListToCompare);
+            int valTemp=sum2(color,boardToTest);
             if (valTemp>valMax) {
                 valMax=valTemp;
                 moveWayList=moveWayListToCompare;
@@ -78,8 +113,8 @@ public class Bot {
         if((n>1) && ( ((u!=0)|(v!=1)) && ((u!=-1)|(v!=1)) && ((u!=1)|(v!=0)) )) {
             moveNormalized.i+=(n-1)*u;
             moveNormalized.j+=(n-1)*v;
-            moveNormalized.u=v;
-            moveNormalized.v=u;
+            moveNormalized.u=-u;
+            moveNormalized.v=-v;
         }
         return(moveNormalized);
     }
@@ -217,7 +252,7 @@ public class Bot {
         return true;
     }
 
-    private void findPossibles(int color) {
+    private void findPossibles(int color,Board board) {
         possibles[color]=null;
         int[][] directions={{1, 0}, {0, 1}, {-1, 1}};
         for(int i=0;i<9;i++) {
@@ -241,19 +276,90 @@ public class Bot {
         }
     }
 
-    public LinkedList<BallMove> play(Board board) {
+    public void play(Board board) {
         this.board=board;
         if (difficulty==0) {
-            findPossibles(iaColor);
+            findPossibles(iaColor,board);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
             board.doMoveList(moveWayList);
-            LinkedList<BallMove> list=new LinkedList<>();
-            moveWayList.getBallMoved(list);
-            return(list);
         }
-        return(new LinkedList<>());
+        if (difficulty==1) {
+            findPossibles(iaColor,board);
+            MoveList possiblesTemp=possibles[iaColor];
+            MoveWayList moveWayListTemp=new MoveWayList();
+            int valMax=-10000;
+            while (possiblesTemp!=null) {
+                MoveWayList moveWayList=possiblesTemp.getMoveWayList();
+                Board boardTemp=new Board(board);
+                boardTemp.doMoveList(moveWayList);
+                findPossibles(1-iaColor,boardTemp);
+                MoveWayList moveWayList2=bestMove(1-iaColor,boardTemp);
+                boardTemp.doMoveList(moveWayList2);
+                int valTemp=sum(iaColor,boardTemp);
+                if (valTemp>valMax) {
+                    valMax=valTemp;
+                    moveWayListTemp=moveWayList;
+                }
+                possiblesTemp=possiblesTemp.getNext();
+            }
+            board.doMoveList(moveWayListTemp);
+        }
+        if (difficulty==2) {
+            findPossibles(iaColor,board);
+            MoveList possiblesTemp=possibles[iaColor];
+            MoveWayList moveWayListTemp=new MoveWayList();
+            int valMax=-10000;
+            while (possiblesTemp!=null) {
+                MoveWayList moveWayList=possiblesTemp.getMoveWayList();
+                Board boardTemp=new Board(board);
+                boardTemp.doMoveList(moveWayList);
+                findPossibles(1-iaColor,boardTemp);
+                MoveWayList moveWayList2=bestMove(1-iaColor,boardTemp);
+                boardTemp.doMoveList(moveWayList2);
+                findPossibles(iaColor,boardTemp);
+                MoveWayList moveWayList3=bestMove(iaColor,boardTemp);
+                boardTemp.doMoveList(moveWayList3);
+                int valTemp=sum(iaColor,boardTemp);
+                if (valTemp>valMax) {
+                    valMax=valTemp;
+                    moveWayListTemp=moveWayList;
+                }
+                possiblesTemp=possiblesTemp.getNext();
+            }
+            board.doMoveList(moveWayListTemp);
+        }
+        if (difficulty==3) {
+            findPossibles(iaColor,board);
+            MoveWayList moveWayList=bestMove2(iaColor,board);
+            board.doMoveList(moveWayList);
+        }
+        if (difficulty==4) {
+            findPossibles(iaColor,board);
+            MoveList possiblesTemp=possibles[iaColor];
+            MoveWayList moveWayListTemp=new MoveWayList();
+            int valMax=-10000;
+            while (possiblesTemp!=null) {
+                MoveWayList moveWayList=possiblesTemp.getMoveWayList();
+                Board boardTemp=new Board(board);
+                boardTemp.doMoveList(moveWayList);
+                findPossibles(1-iaColor,boardTemp);
+                MoveWayList moveWayList2=bestMove(1-iaColor,boardTemp);
+                boardTemp.doMoveList(moveWayList2);
+                findPossibles(iaColor,boardTemp);
+                MoveWayList moveWayList3=bestMove2(iaColor,boardTemp);
+                boardTemp.doMoveList(moveWayList3);
+                int valTemp=sum(iaColor,boardTemp);
+                if (valTemp>valMax) {
+                    valMax=valTemp;
+                    moveWayListTemp=moveWayList;
+                }
+                possiblesTemp=possiblesTemp.getNext();
+            }
+            board.doMoveList(moveWayListTemp);
+        }
     }
+
     public MoveList getPossibles(int color) {
         return possibles[color];
     }
