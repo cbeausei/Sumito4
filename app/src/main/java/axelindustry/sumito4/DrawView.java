@@ -33,7 +33,7 @@ import axelindustry.sumito4.IA.Board;
 public class DrawView extends View {
     Canvas canvas = new Canvas();
 
-    private Runnable mMyRunnable = new Runnable()
+    private Runnable movementLauncher = new Runnable()
     {
         @Override
         public void run()
@@ -429,7 +429,7 @@ public class DrawView extends View {
             movement_rel_offset+=10;
             this.invalidate();
             Handler handler = new Handler();
-            handler.postDelayed(mMyRunnable, 40);
+            handler.postDelayed(movementLauncher, 40);
         }
         else{
             board.doUserMove(move);

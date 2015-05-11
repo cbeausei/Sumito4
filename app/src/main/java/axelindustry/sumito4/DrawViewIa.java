@@ -43,6 +43,17 @@ is stored in a 1-byte variable.
 public class DrawViewIa extends View {
     Canvas canvas = new Canvas();
 
+    private Runnable movementLauncher = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            executeMovement();
+        }
+    };
+
+    private int movement_rel_offset;
+
     private Runnable mMyRunnable = new Runnable()
     {
         @Override
@@ -269,6 +280,10 @@ public class DrawViewIa extends View {
         for(DrawBall e : balls) {
             // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
             int coordinates[] = convertCoordinates(e.getX(), e.getY());
+            if(selectList.contains(e) && state == EXECUTE_MOVEMENT){
+                coordinates[0] += movement_rel_offset * rel_span_x * height * Math.cos(3.1416*move/3) / 100;
+                coordinates[1] -= movement_rel_offset * rel_span_x * height * Math.sin(3.1416*move/3) / 100;
+            }
 
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
@@ -329,18 +344,16 @@ public class DrawViewIa extends View {
                             break;
                         case PROCESSING_MOVEMENT_CHOICE:
                             state = EXECUTE_MOVEMENT;
-                            if (list[move]) {
-                                board.doUserMove(move);
+                            if(list[move]) {
+                                executeMovement();
+                                //board.doUserMove(move);
                                 // Execute the movement of the IA
-                                refresh();
-                                Handler handler = new Handler();
-                                handler.postDelayed(mMyRunnable, 1000);
-                                //bot1.play(board);
-
                             }
-                            state = INITIAL_STATE;
-                            turn = 1;
-                            refresh();
+                            else {
+                                refresh();
+                                this.invalidate();
+                                state = INITIAL_STATE;
+                            }
                             break;
                     }
                 } else {
@@ -471,6 +484,7 @@ public class DrawViewIa extends View {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
             else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
         }
+        movement_rel_offset = 0;
     }
 
     public boolean selectionIsValid(LinkedList <DrawBall> l){
@@ -506,5 +520,22 @@ public class DrawViewIa extends View {
         bot1.play(board);
         refresh();
         this.invalidate();
+    }
+
+    private void executeMovement(){
+        if(movement_rel_offset < 100) {
+            movement_rel_offset+=10;
+            this.invalidate();
+            Handler handler = new Handler();
+            handler.postDelayed(movementLauncher, 40);
+        }
+        else{
+            board.doUserMove(move);
+            state = INITIAL_STATE;
+            refresh();
+            this.invalidate();
+            Handler handler = new Handler();
+            handler.postDelayed(mMyRunnable, 1000);
+        }
     }
 }
