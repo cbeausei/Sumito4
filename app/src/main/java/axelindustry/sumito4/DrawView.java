@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,6 +32,16 @@ import axelindustry.sumito4.IA.Board;
 
 public class DrawView extends View {
     Canvas canvas = new Canvas();
+
+    private Runnable mMyRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            executeMovement();
+        }
+    };
+    private int movement_rel_offset;
 
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
@@ -205,6 +216,10 @@ public class DrawView extends View {
         for(DrawBall e : balls) {
             // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
             int coordinates[] = convertCoordinates(e.getX(), e.getY());
+            if(selectList.contains(e) && state == EXECUTE_MOVEMENT){
+                coordinates[0] += movement_rel_offset * rel_span_x * height * Math.cos(3.1416*move/3) / 100;
+                coordinates[1] -= movement_rel_offset * rel_span_x * height * Math.sin(3.1416*move/3) / 100;
+            }
 
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
@@ -265,11 +280,10 @@ public class DrawView extends View {
                 case PROCESSING_MOVEMENT_CHOICE:
                     state = EXECUTE_MOVEMENT;
                     if(list[move]) {
-                        board.doUserMove(move);
+                        executeMovement();
+                        //board.doUserMove(move);
                         // Execute the movement of the IA
                     }
-                    state = INITIAL_STATE;
-                    refresh();
                     break;
             }
         }
@@ -373,6 +387,7 @@ public class DrawView extends View {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
             else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
         }
+        movement_rel_offset = 0;
     }
 
     public boolean selectionIsValid(LinkedList <DrawBall> l){
@@ -401,6 +416,21 @@ public class DrawView extends View {
                 } else return false;
             }
             else return false;
+        }
+    }
+
+    private void executeMovement(){
+        if(movement_rel_offset < 100) {
+            movement_rel_offset+=10;
+            this.invalidate();
+            Handler handler = new Handler();
+            handler.postDelayed(mMyRunnable, 40);
+        }
+        else{
+            board.doUserMove(move);
+            state = INITIAL_STATE;
+            refresh();
+            this.invalidate();
         }
     }
 }
