@@ -284,6 +284,11 @@ public class DrawView extends View {
                         //board.doUserMove(move);
                         // Execute the movement of the IA
                     }
+                    else{
+                        refresh();
+                        this.invalidate();
+                        state = INITIAL_STATE;
+                    }
                     break;
             }
         }
