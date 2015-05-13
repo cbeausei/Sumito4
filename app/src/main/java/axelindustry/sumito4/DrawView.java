@@ -128,8 +128,8 @@ public class DrawView extends View {
         - (X, Y) is the position in the grid whiches representation on the screen is the closest to (x, y)
      */
     private int[] revertCoordinates(int x, int y){
-        y = (int)(1/rel_span_y/height*(y +(height-h)/2 +rel_b_h*height/2-rel_offset_y*height));
-        x = (int)(1/rel_span_x/height*(x + (width-w)/2 +rel_b_h*height/2-rel_offset_x*height)+2-y/2);
+        y = (int)Math.floor(1/rel_span_y/height*(y +(height-h)/2 +rel_b_h*height/2-rel_offset_y*height)-0.5);
+        x = (int)Math.floor(1/rel_span_x/height*(x + (width-w)/2 +rel_b_h*height/2-rel_offset_x*height)+2-y/2);
         return(new int[]{x, y});
     }
 
@@ -295,7 +295,7 @@ public class DrawView extends View {
         else{
             if(state == PROCESSING_SELECTION){
                 int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
-                float absc = x - coord[0] - (int)(rel_b_h*height/2), ord = y - coord[1] - (int)(rel_b_h*height/2);
+                float absc = x - coord[0] - (int)(rel_b_h*height/2), ord = y - coord[1] - (int)(rel_b_h*height);
                 int distance = Math.min((int)(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
                 // OK, we know the number of balls. We must then determine the vector angle.
                 float tan = ord / absc;
