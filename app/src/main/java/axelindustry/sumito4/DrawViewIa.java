@@ -43,25 +43,9 @@ is stored in a 1-byte variable.
 public class DrawViewIa extends View {
     Canvas canvas = new Canvas();
 
-    private Runnable movementLauncher = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            executeMovement();
-        }
-    };
-
+    //for the animation
     private int movement_rel_offset;
 
-    private Runnable mMyRunnable = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            playIa();
-        }
-    };
 
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
@@ -91,6 +75,14 @@ public class DrawViewIa extends View {
     Board board;
     LinkedList<DrawBall> balls, selectList;
     DrawBall startBall;
+
+    //scoreballplayer is a white drawball and scoreball ai a black drawball
+    private DrawBall scoreballplayer;
+    private DrawBall scoreballai;
+
+    private int [] score;
+    //
+
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
     Boolean[] list;
@@ -149,7 +141,18 @@ public class DrawViewIa extends View {
         balls = new LinkedList();
         selectList = new LinkedList();
         board = new Board();
+//
+        //28 balls in the game in the beginning and 14 for each player
+        score = new int[]{28/2, 28/2};
+//
         refresh();
+
+
+//
+        scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
+        scoreballai =new DrawBall(1, 1, bouleNoire, 1);
+//
+
 
         // we begin with the initial state
         state = INITIAL_STATE;
@@ -187,6 +190,21 @@ public class DrawViewIa extends View {
         return(new int[]{x, y});
     }
 
+
+    //these two classes are just a little modification of convertCoordinates to match better the top and the bottom of the board
+    private int[] convertCoordinatesScoretop(int x, int y){
+        int absc = (int)(((x+y/2.0-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
+        y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
+        x = absc;
+        return(new int[]{x, y});
+    }
+    private int[] convertCoordinatesScorebottom(int x, int y){
+        int absc = (int)(((x+y/2.2-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
+        y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
+        x = absc;
+        return(new int[]{x, y});
+    }
+
     /* revertCoordinates(x, y) returns [X, Y] where:
         - (x, y) is a pixel on the screen
         - (X, Y) is the position in the grid whiches representation on the screen is the closest to (x, y)
@@ -213,6 +231,7 @@ public class DrawViewIa extends View {
         }
         selectList.clear();
     }
+
     private void dimensions(){
         h = canvas.getHeight();
         w = canvas.getWidth();
@@ -242,6 +261,10 @@ public class DrawViewIa extends View {
             e.changeBitmap(Bitmap.createScaledBitmap(e.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
         }
         bouleBleue = Bitmap.createScaledBitmap(bouleBleue, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
+        // the score balls same size as the others
+        scoreballplayer.changeBitmap(Bitmap.createScaledBitmap(scoreballplayer.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
+        scoreballai.changeBitmap(Bitmap.createScaledBitmap(scoreballai.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
+
     }
 
     /* the core of the drawing phase happens here:
@@ -289,6 +312,15 @@ public class DrawViewIa extends View {
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
         }
 
+        for(int i=0;i<score[0]&&i<5;i++) {
+            int coordinate[] = convertCoordinatesScoretop(5 + i, -2);
+            canvas.drawBitmap(scoreballplayer.getBitmap(), coordinate[0], coordinate[1], null);
+        }
+
+        for(int i=0;i<score[1]&&i<5;i++) {
+            int coordinate[] = convertCoordinatesScorebottom(0 + i, 9);
+            canvas.drawBitmap(scoreballai.getBitmap(), (coordinate[0]), (coordinate[1]), null);
+        }
     }
 
     // the following method handles all touch events coming from the user
@@ -479,10 +511,16 @@ public class DrawViewIa extends View {
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
         cancel();
+        score[0]=14;score[1]=14;
         for(Ball e : tmp){
-            if(e.color == 1)
+            if(e.color == 1) {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
-            else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+                score[0]-=1;
+            }
+            else {
+                balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+                score[1]-=1;
+            }
         }
         movement_rel_offset = 0;
     }
@@ -538,4 +576,23 @@ public class DrawViewIa extends View {
             handler.postDelayed(mMyRunnable, 1000);
         }
     }
+
+    private Runnable movementLauncher = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            executeMovement();
+        }
+    };
+
+
+    private Runnable mMyRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            playIa();
+        }
+    };
 }
