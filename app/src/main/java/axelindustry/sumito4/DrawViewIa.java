@@ -211,7 +211,8 @@ public class DrawViewIa extends View {
      */
     private int[] revertCoordinates(int x, int y){
         y = (int)Math.floor(1/rel_span_y/height*(y +(height-h)/2 +rel_b_h*height/2-rel_offset_y*height)-0.5);
-        x = (int)Math.floor(1/rel_span_x/height*(x + (width-w)/2 +rel_b_h*height/2-rel_offset_x*height)+2-y/2-0.5);
+        if ((y%2)==1) x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2);
+        else x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2 + 0.5);
         return(new int[]{x, y});
     }
 
