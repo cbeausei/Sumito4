@@ -276,13 +276,15 @@ public class Bot {
         }
     }
 
-    public void play(Board board) {
+    public LinkedList<BallMove> play(Board board) {
         this.board=board;
         if (difficulty==0) {
             findPossibles(iaColor,board);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
+            Board boardTemp= new Board(board);
             board.doMoveList(moveWayList);
+            return(board.differences(boardTemp,board));
         }
         if (difficulty==1) {
             findPossibles(iaColor,board);
@@ -303,7 +305,9 @@ public class Bot {
                 }
                 possiblesTemp=possiblesTemp.getNext();
             }
-            board.doMoveList(moveWayListTemp);
+            Board boardTemp= new Board(board);
+            board.doMoveList(moveWayList);
+            return(board.differences(boardTemp,board));
         }
         if (difficulty==2) {
             findPossibles(iaColor,board);
@@ -327,12 +331,16 @@ public class Bot {
                 }
                 possiblesTemp=possiblesTemp.getNext();
             }
-            board.doMoveList(moveWayListTemp);
+            Board boardTemp= new Board(board);
+            board.doMoveList(moveWayList);
+            return(board.differences(boardTemp,board));
         }
         if (difficulty==3) {
             findPossibles(iaColor,board);
             MoveWayList moveWayList=bestMove2(iaColor,board);
+            Board boardTemp= new Board(board);
             board.doMoveList(moveWayList);
+            return(board.differences(boardTemp,board));
         }
         if (difficulty==4) {
             findPossibles(iaColor,board);
@@ -356,8 +364,11 @@ public class Bot {
                 }
                 possiblesTemp=possiblesTemp.getNext();
             }
-            board.doMoveList(moveWayListTemp);
+            Board boardTemp= new Board(board);
+            board.doMoveList(moveWayList);
+            return(board.differences(boardTemp,board));
         }
+        return new LinkedList<>();
     }
 
     public MoveList getPossibles(int color) {
