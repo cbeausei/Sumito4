@@ -257,4 +257,300 @@ public class Board {
             doMoveList(moveWayList);
         }
     }
+
+    private void initiate() {
+        matrice=new int[9][9];
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                matrice[i][j]=-2;
+            }
+        }
+        for(int j=4;j<9;j++)
+            matrice[0][j]=-1;
+        for(int j=3;j<9;j++)
+            matrice[1][j]=-1;
+        for(int j=2;j<9;j++)
+            matrice[2][j]=-1;
+        for(int j=1;j<9;j++)
+            matrice[3][j]=-1;
+        for(int j=0;j<9;j++)
+            matrice[4][j]=-1;
+        for(int j=0;j<8;j++)
+            matrice[5][j]=-1;
+        for(int j=0;j<7;j++)
+            matrice[6][j]=-1;
+        for(int j=0;j<6;j++)
+            matrice[7][j]=-1;
+        for(int j=0;j<5;j++)
+            matrice[8][j]=-1;
+    }
+
+    private void daisy() {
+        initiate();
+        matrice[0][4]=1;
+        matrice[0][5]=1;
+        matrice[0][7]=0;
+        matrice[0][8]=0;
+        matrice[1][3]=1;
+        matrice[1][4]=1;
+        matrice[1][5]=1;
+        matrice[1][6]=0;
+        matrice[1][7]=0;
+        matrice[1][8]=0;
+        matrice[2][3]=1;
+        matrice[2][4]=1;
+        matrice[2][6]=0;
+        matrice[2][7]=0;
+        matrice[6][1]=0;
+        matrice[6][2]=0;
+        matrice[6][4]=1;
+        matrice[6][5]=1;
+        matrice[7][0]=0;
+        matrice[7][1]=0;
+        matrice[7][2]=0;
+        matrice[7][3]=1;
+        matrice[7][4]=1;
+        matrice[7][5]=1;
+        matrice[8][0]=0;
+        matrice[8][1]=0;
+        matrice[8][3]=1;
+        matrice[8][4]=1;
+    }
+
+    private void alien() {
+        initiate();
+        matrice[0][4]=0;
+        matrice[0][6]=0;
+        matrice[0][8]=0;
+        matrice[1][4]=0;
+        matrice[1][5]=1;
+        matrice[1][6]=1;
+        matrice[1][7]=0;
+        matrice[2][3]=0;
+        matrice[2][4]=1;
+        matrice[2][5]=0;
+        matrice[2][6]=1;
+        matrice[2][7]=0;
+        matrice[3][4]=0;
+        matrice[3][5]=0;
+        matrice[5][3]=1;
+        matrice[5][4]=1;
+        matrice[6][1]=1;
+        matrice[6][2]=0;
+        matrice[6][3]=1;
+        matrice[6][4]=0;
+        matrice[6][5]=1;
+        matrice[7][1]=1;
+        matrice[7][2]=0;
+        matrice[7][3]=0;
+        matrice[7][4]=1;
+        matrice[8][0]=1;
+        matrice[8][2]=1;
+        matrice[8][4]=1;
+    }
+
+    private void domination() {
+        initiate();
+        matrice[1][3]=1;
+        matrice[1][8]=0;
+        matrice[2][2]=1;
+        matrice[2][3]=1;
+        matrice[2][7]=0;
+        matrice[2][8]=0;
+        matrice[3][1]=1;
+        matrice[3][2]=1;
+        matrice[3][3]=1;
+        matrice[3][4]=1;
+        matrice[3][6]=0;
+        matrice[3][7]=0;
+        matrice[3][8]=0;
+        matrice[4][3]=0;
+        matrice[4][5]=0;
+        matrice[5][0]=0;
+        matrice[5][1]=0;
+        matrice[5][2]=0;
+        matrice[5][4]=1;
+        matrice[5][5]=1;
+        matrice[5][6]=1;
+        matrice[5][7]=1;
+        matrice[6][0]=0;
+        matrice[6][1]=0;
+        matrice[6][5]=1;
+        matrice[6][6]=1;
+        matrice[7][0]=0;
+        matrice[7][5]=1;
+    }
+
+    private void infiltration() {
+        initiate();
+        matrice[0][5]=0;
+        matrice[0][6]=1;
+        matrice[0][7]=0;
+        matrice[1][4]=0;
+        matrice[1][5]=0;
+        matrice[1][6]=0;
+        matrice[1][7]=0;
+        matrice[2][3]=0;
+        matrice[2][4]=1;
+        matrice[2][5]=0;
+        matrice[2][6]=1;
+        matrice[2][7]=0;
+        matrice[3][2]=0;
+        matrice[3][7]=0;
+        matrice[5][1]=1;
+        matrice[5][6]=1;
+        matrice[6][1]=1;
+        matrice[6][2]=0;
+        matrice[6][3]=1;
+        matrice[6][4]=0;
+        matrice[6][5]=1;
+        matrice[7][1]=1;
+        matrice[7][2]=1;
+        matrice[7][3]=1;
+        matrice[7][4]=1;
+        matrice[8][1]=1;
+        matrice[8][2]=0;
+        matrice[8][3]=1;
+    }
+
+    private void wall() {
+        initiate();
+        matrice[0][6]=1;
+        matrice[2][3]=1;
+        matrice[2][4]=1;
+        matrice[2][5]=1;
+        matrice[2][6]=1;
+        matrice[2][7]=1;
+        matrice[3][1]=1;
+        matrice[3][2]=1;
+        matrice[3][3]=1;
+        matrice[3][4]=1;
+        matrice[3][5]=1;
+        matrice[3][6]=1;
+        matrice[3][7]=1;
+        matrice[3][8]=1;
+        matrice[5][0]=0;
+        matrice[5][1]=0;
+        matrice[5][2]=0;
+        matrice[5][3]=0;
+        matrice[5][4]=0;
+        matrice[5][5]=0;
+        matrice[5][6]=0;
+        matrice[5][7]=0;
+        matrice[6][1]=0;
+        matrice[6][2]=0;
+        matrice[6][3]=0;
+        matrice[6][4]=0;
+        matrice[6][5]=0;
+        matrice[8][2]=0;
+    }
+
+    private void fujiyama() {
+        initiate();
+        matrice[0][4]=1;
+        matrice[0][5]=1;
+        matrice[0][6]=1;
+        matrice[0][7]=1;
+        matrice[0][8]=1;
+        matrice[1][4]=1;
+        matrice[1][5]=0;
+        matrice[1][6]=0;
+        matrice[1][7]=1;
+        matrice[2][4]=1;
+        matrice[2][5]=0;
+        matrice[2][6]=1;
+        matrice[3][4]=1;
+        matrice[3][5]=1;
+        matrice[5][3]=0;
+        matrice[5][4]=0;
+        matrice[6][2]=0;
+        matrice[6][3]=1;
+        matrice[6][4]=0;
+        matrice[7][1]=0;
+        matrice[7][2]=1;
+        matrice[7][3]=1;
+        matrice[7][4]=0;
+        matrice[8][0]=0;
+        matrice[8][1]=0;
+        matrice[8][2]=0;
+        matrice[8][3]=0;
+        matrice[8][4]=0;
+    }
+
+    private void snakes() {
+        initiate();
+        matrice[0][4]=0;
+        matrice[0][5]=0;
+        matrice[0][6]=0;
+        matrice[0][7]=0;
+        matrice[0][8]=0;
+        matrice[1][3]=0;
+        matrice[2][2]=0;
+        matrice[3][1]=0;
+        matrice[4][1]=0;
+        matrice[5][1]=0;
+        matrice[5][2]=0;
+        matrice[4][3]=0;
+        matrice[3][4]=0;
+        matrice[3][5]=0;
+        matrice[5][3]=1;
+        matrice[5][4]=1;
+        matrice[4][5]=1;
+        matrice[3][6]=1;
+        matrice[3][7]=1;
+        matrice[4][7]=1;
+        matrice[5][7]=1;
+        matrice[6][6]=1;
+        matrice[7][5]=1;
+        matrice[8][4]=1;
+        matrice[8][3]=1;
+        matrice[8][2]=1;
+        matrice[8][1]=1;
+        matrice[8][0]=1;
+    }
+
+    private void checkerboard() {
+        initiate();
+        matrice[1][3]=0;
+        matrice[1][4]=1;
+        matrice[1][5]=0;
+        matrice[1][6]=1;
+        matrice[1][7]=0;
+        matrice[1][8]=1;
+        matrice[3][1]=1;
+        matrice[3][2]=0;
+        matrice[3][3]=1;
+        matrice[3][4]=0;
+        matrice[3][5]=1;
+        matrice[3][6]=0;
+        matrice[3][7]=1;
+        matrice[3][8]=0;
+        matrice[5][0]=0;
+        matrice[5][1]=1;
+        matrice[5][2]=0;
+        matrice[5][3]=1;
+        matrice[5][4]=0;
+        matrice[5][5]=1;
+        matrice[5][6]=0;
+        matrice[5][7]=1;
+        matrice[7][0]=1;
+        matrice[7][1]=0;
+        matrice[7][2]=1;
+        matrice[7][3]=0;
+        matrice[7][4]=1;
+        matrice[7][5]=0;
+    }
+
+    public void initiateChallenge(int number) {
+        if (number==1) daisy();
+        if (number==2) alien();
+        if (number==3) domination();
+        if (number==4) infiltration();
+        if (number==5) wall();
+        if (number==6) fujiyama();
+        if (number==7) snakes();
+        if (number==8) checkerboard();
+    }
+
+
 }
