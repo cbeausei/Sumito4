@@ -541,6 +541,8 @@ public class Board {
         matrice[7][5]=0;
     }
 
+//Challenges
+
     public void initiateChallenge(int number) {
         if (number==1) daisy();
         if (number==2) alien();
