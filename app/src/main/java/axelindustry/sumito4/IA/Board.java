@@ -54,7 +54,8 @@ public class Board {
     }
 
     public int get(int i,int j) {
-        return matrice[i][j];
+        if (exist(i,j)) return matrice[i][j];
+        else return(-3);
     }
 
     private String convert(int n) {
@@ -249,13 +250,59 @@ public class Board {
         return list;
     }
 
-    public void doUserMove(int angle) {
+    private int abs(int x) {
+        if (x>=0) return x;
+        else return(-x);
+    }
+
+    private int maxAbs(int x,int y) {
+        if (abs(x)>=abs(y)) return(abs(x));
+        else return(abs(y));
+    }
+
+    public LinkedList<BallMove> differences(Board board1,Board board2) {
+        LinkedList<BallMove> ballMoveList=new LinkedList<>();
+        int iStart=0;
+        int jStart=0;
+        int iOther=0;
+        int jOther=0;
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                if (board1.get(i,j)!=board2.get(i,j)) {
+                    if (board2.get(i,j)==-1) {
+                        iStart=i;
+                        jStart=j;
+                    }
+                    if (board2.get(i,j)!=-1) {
+                        iOther=i;
+                        jOther=j;
+                    }
+                }
+            }
+        }
+        int i=iOther-iStart;
+        int j=jOther-jStart;
+        int a=maxAbs(i,j);
+        i=i/a;
+        j=j/a;
+        while(board1.get(iStart,jStart)>=0) {
+            ballMoveList.add(new BallMove(iStart,jStart,iStart+i,jStart+j));
+            iStart+=i;
+            jStart+=j;
+        }
+        return ballMoveList;
+    }
+
+    public LinkedList<BallMove> doUserMove(int angle) {
         Move move=userMove[angle];
         Bot bot=new Bot(0,0,0,this);
         if (bot.isPossible(colorTemp,move)) {
             MoveWayList moveWayList=bot.getPossibles(colorTemp).getMoveWayList();
+            Board boardTemp=new Board(this);
             doMoveList(moveWayList);
+            return differences(boardTemp,this);
         }
+        return new LinkedList<>();
     }
 
     private void initiate() {
