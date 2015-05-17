@@ -111,6 +111,13 @@ public class DrawViewIa extends View {
         balls = new LinkedList();
         selectList = new LinkedList();
         board = new Board();
+
+        score = new int[]{28/2, 28/2};
+
+        //
+        scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
+        scoreballai =new DrawBall(1, 1, bouleNoire, 1);
+
         refresh();
 
         // we begin with the initial state
@@ -132,50 +139,19 @@ public class DrawViewIa extends View {
 
 
     public DrawViewIa(Context context,Boolean testIA,int difficulty, int agressivity) {
-        super(context);
-        // let's store the bitmaps in memory
-        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
-        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
-        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
-
-        balls = new LinkedList();
-        selectList = new LinkedList();
-        board = new Board();
-//
-        //28 balls in the game in the beginning and 14 for each player
-        score = new int[]{28/2, 28/2};
-//
-        refresh();
-
-
-//
-        scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
-        scoreballai =new DrawBall(1, 1, bouleNoire, 1);
-//
-
-
-        // we begin with the initial state
-        state = INITIAL_STATE;
-
-        // the board and background are stored too
-        plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
-        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
-        tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
-        cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
-        arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
-                BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
-                BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
-                BitmapFactory.decodeResource(getResources(), R.drawable.fleche3),
-                BitmapFactory.decodeResource(getResources(), R.drawable.fleche4),
-                BitmapFactory.decodeResource(getResources(), R.drawable.fleche5)};
-
+        this(context);
         bot1=new Bot(0,difficulty,agressivity,board);
-
         ia=testIA;
         if(ia) {
             bot2=new Bot(1,0,1,board);
             turn=1;
         }
+    }
+
+    public DrawViewIa(Context context,Boolean testIA,int difficulty, int agressivity,int defi) {
+        this(context,testIA,difficulty,agressivity);
+        board.initiateChallenge(defi);
+        refresh();
     }
 
     /* convertCoordinates(X, Y) returns [x, y] where:

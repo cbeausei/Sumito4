@@ -13,9 +13,17 @@
     <string name="partiesolo">Partie solo</string>
     <string name="facile">Facile</string>
     <string name="moyen">Moyen</string>
-    <string name="difficile">IA vs IA</string>
+    <string name="difficile">Difficile</string>
     <string name="commencerpartie">Commencer la partie</string>
     <string name="choisirdifficulte">Choisissez votre niveau de difficulté</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_choose">ChooseActivity</string>
+    <string name="Daisy_defi1">Daisy</string>
+    <string name="Alien_defi2">Alien</string>
+    <string name="Domination_defi3">Domination</string>
+    <string name="Infiltration_defi4">Infiltration</string>
+    <string name="Wall_defi5">Wall</string>
+    <string name="Fujiyama_defi6">Fujiyama</string>
+    <string name="Snakes_defi7">Snakes</string>
+    <string name="Checkboard_defi8">Checkboard</string>
 </resources>

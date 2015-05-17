@@ -26,9 +26,13 @@ public class IaActivity extends Activity {
             }
             if (niveaudifficulté.contentEquals("moyen")) {
                 Log.d("afficher", "moyen");
-                OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this,false,0,1);
+                /*OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this,false,0,1);
                 oldSelectiondontdelete.setBackgroundColor(Color.WHITE);
                 setContentView(oldSelectiondontdelete);
+                */
+                DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
+                drawViewIa.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewIa);
             }
             if (niveaudifficulté.contentEquals("difficile")){
                 Log.d("afficher", "difficile");

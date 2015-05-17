@@ -46,7 +46,8 @@ public class MainMenuController extends Activity {
         challenges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent it = new Intent (MainMenuController.this, ChallengeActivity.class);
+                startActivity(it);
             }
         });
 
