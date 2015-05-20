@@ -38,7 +38,8 @@ public class MainMenuController extends Activity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent it = new Intent (MainMenuController.this, Informations.class);
+                startActivity(it);
             }
         });
 
