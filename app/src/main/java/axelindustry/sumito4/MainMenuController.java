@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import axelindustry.sumito4.IA.Tutoriel;
+import axelindustry.sumito4.IA.Rules;
 
 public class MainMenuController extends Activity {
 
@@ -29,7 +29,7 @@ public class MainMenuController extends Activity {
         tutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent (MainMenuController.this, Tutoriel.class);
+                Intent it = new Intent (MainMenuController.this, Rules.class);
                 startActivity(it);
             }
         });
