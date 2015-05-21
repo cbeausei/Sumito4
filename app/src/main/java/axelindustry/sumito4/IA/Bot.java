@@ -1,11 +1,17 @@
 package axelindustry.sumito4.IA;
 
+import android.app.Activity;
+import android.media.MediaPlayer;
+
 import java.util.LinkedList;
+
+import axelindustry.sumito4.MainActivity;
+import axelindustry.sumito4.R;
 
 /**
  * Created by Clement on 09/04/2015.
  */
-public class Bot {
+public class Bot extends Activity{
     private Board board;
     private MoveWayList moveWayList;
     private int difficulty;
@@ -277,6 +283,11 @@ public class Bot {
     }
 
     public LinkedList<BallMove> play(Board board) {
+
+        MediaPlayer player;
+        player=MediaPlayer.create(this,R.raw.aba);
+        player.start();
+
         this.board=board;
         if (difficulty==0) {
             findPossibles(iaColor,board);
