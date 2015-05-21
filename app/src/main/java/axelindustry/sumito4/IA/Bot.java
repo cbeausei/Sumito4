@@ -284,9 +284,9 @@ public class Bot extends Activity{
 
     public LinkedList<BallMove> play(Board board) {
 
-        MediaPlayer player;
-        player=MediaPlayer.create(this,R.raw.aba);
-        player.start();
+        //MediaPlayer player;
+        //player=MediaPlayer.create(this,R.raw.aba);
+        //player.start();
 
         this.board=board;
         if (difficulty==0) {
