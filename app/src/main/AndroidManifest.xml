@@ -48,6 +48,10 @@
             android:label="@string/title_activity_choose" >
         </activity>
         <activity
+            android:name=".Tutoriel"
+            android:label="@string/title_activity_choose" >
+        </activity>
+        <activity
             android:name=".DifficultyLevel"
             android:label="@string/title_activity_choose" >
         </activity>

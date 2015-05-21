@@ -588,7 +588,9 @@ public class Board {
         matrice[7][5]=0;
     }
 
+
 //Challenges
+
 
     public void initiateChallenge(int number) {
         if (number==1) daisy();
@@ -599,6 +601,17 @@ public class Board {
         if (number==6) fujiyama();
         if (number==7) snakes();
         if (number==8) checkerboard();
+        //tutoriel
+        if (number==9) position1();
+    }
+//Tutoriel
+
+    public void position1(){
+        initiate();
+        matrice[4][2]=1;
+        matrice[4][3]=1;
+        matrice[4][4]=1;
+
     }
 
 
