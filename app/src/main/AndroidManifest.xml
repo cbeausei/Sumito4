@@ -48,7 +48,7 @@
             android:label="@string/title_activity_choose" >
         </activity>
         <activity
-            android:name=".Tutoriel"
+            android:name=".Tutorial"
             android:label="@string/title_activity_choose" >
         </activity>
         <activity

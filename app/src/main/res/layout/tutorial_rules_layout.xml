@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fond">
+    <Button
+        android:id="@+id/tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Tutoriel"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bouton"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/regles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Règles"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tutorial"
+        android:background="@drawable/bouton"
+        android:layout_alignLeft="@+id/tutorial"
+        android:layout_alignRight="@+id/tutorial"/>
+</RelativeLayout>

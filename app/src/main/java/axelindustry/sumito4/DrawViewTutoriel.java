@@ -9,11 +9,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.os.Handler;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Intent;
 
 import java.util.LinkedList;
 
@@ -32,7 +39,7 @@ import axelindustry.sumito4.IA.Bot;
 
 public class DrawViewTutoriel extends View {
     Canvas canvas = new Canvas();
-
+    OnCustomEventListener mListener;
     private Runnable movementLauncher = new Runnable()
     {
         @Override
@@ -42,6 +49,8 @@ public class DrawViewTutoriel extends View {
         }
     };
     private int movement_rel_offset;
+
+    private boolean tutorial=false;
 
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
@@ -74,6 +83,7 @@ public class DrawViewTutoriel extends View {
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
     Boolean[] list;
+
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
     float x = 10, y = 20, start_x, start_y;
     /* w and h will match the dimensions of the screen
@@ -116,7 +126,11 @@ public class DrawViewTutoriel extends View {
         board.initiateChallenge(tutoriel);
         refresh();
     }
-
+    public DrawViewTutoriel(Context context,AttributeSet attrs){
+        this(context);
+        board.initiateChallenge(9);
+        refresh();
+    }
     /* convertCoordinates(X, Y) returns [x, y] where:
         - X is the column number in the game grid
         - Y is the row number in the game grid
@@ -146,6 +160,9 @@ public class DrawViewTutoriel extends View {
      */
 
     // dimensions() computes the dimensions of the displayed objects whenever the size of the screen varies
+    public byte getState(){
+        return state;
+    }
 
     private void cancel(){
         for(DrawBall elem : selectList){
@@ -200,15 +217,67 @@ public class DrawViewTutoriel extends View {
         if(h != canvas.getHeight()){
             this.dimensions();
         }
-
         // OK, the dimensions are fine, we can draw
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
-        int test=convertCoordinates(4,4)[0];
-        int test2=convertCoordinates(4,4)[1];
-        Paint paint =new Paint();
-        paint.setTextSize(80);
-        canvas.drawText("test",w/2,h/2, paint);
+        Path path=new Path();
+        path.addRect(0,h/20,w,h/10, Path.Direction.CW);
+        Paint p = new Paint();
+        p.setTextSize(h / 30);
+        p.setColor(Color.WHITE);
+        p.setLinearText(true);
+        if (state==INITIAL_STATE&&!tutorial) {
+            TextPaint mTextPaint=new TextPaint(p);
+            String beginofselection="Pour selectionner une,deux ou trois boules passez votre doigts sur celles-ci";
+            StaticLayout mTextLayout = new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            canvas.save();
+            canvas.translate(0, h / 30);
+            mTextLayout.draw(canvas);
+            canvas.restore();
+        }
+        else if(tutorial){
+            TextPaint mTextPaint=new TextPaint(p);
+            String beginofselection="Bravo vous avez réussi le tutoriel de séléction vous pouvez continuez à tester si vous le souhaitez";
+            StaticLayout mTextLayout = new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            canvas.save();
+            canvas.translate(0, h / 30);
+            mTextLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (state==PROCESSING_SELECTION&&!tutorial) {
+            TextPaint mTextPaint=new TextPaint(p);
+            String processingselection="Relevez votre doigt lorsque vous êtes satisfait de la séléction ";
+            StaticLayout mTextLayout = new StaticLayout(processingselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            canvas.save();
+            canvas.translate(0, h / 30);
+            mTextLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (state==END_SELECTION&&!tutorial){
+
+            TextPaint mTextPaint=new TextPaint(p);
+            String endofselection="Maintenant pour choisir votre mouvement appuyez  sur une des boules sélectionnées";
+            StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            canvas.save();
+            canvas.translate(0, h/30);
+            mTextLayout.draw(canvas);
+            canvas.restore();
+        }
+        if(state==PROCESSING_MOVEMENT_CHOICE&&!tutorial){
+            TextPaint mTextPaint=new TextPaint(p);
+            String endofselection="Restez appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
+            StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+            canvas.save();
+            canvas.translate(0, h/30);
+            mTextLayout.draw(canvas);
+            canvas.restore();
+        }
+        if(state==EXECUTE_MOVEMENT){
+            tutorial=true;
+        }
+
+
+
         if(state == PROCESSING_MOVEMENT_CHOICE){
             if(list[0] && move == 0)
                 canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
@@ -235,6 +304,7 @@ public class DrawViewTutoriel extends View {
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
         }
+
     }
 
     // the following method handles all touch events coming from the user
@@ -243,6 +313,7 @@ public class DrawViewTutoriel extends View {
         // ok, an event has occurred. Let's locate it first
         x = event.getRawX();
         y = event.getRawY();
+
 
         // We must react accordingly: as soon as the finger is down, we enter a phase of selection
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -305,9 +376,9 @@ public class DrawViewTutoriel extends View {
         }
         else{
             if(state == PROCESSING_SELECTION){
-                int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
-                float absc = x - coord[0] - (int)(rel_b_h*height/2), ord = y - coord[1] - (int)(rel_b_h*height);
-                int distance = Math.min((int)(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
+                int[] coord = convertCoordinates(startBall.getX(), startBall.getY()+1);
+                float absc = x - coord[0], ord = y - coord[1];
+                int distance = Math.min((int)Math.round(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord - rel_span_x / 2, 2)) / rel_span_x / height), 3);
                 // OK, we know the number of balls. We must then determine the vector angle.
                 float tan = ord / absc;
                 if(Math.abs(tan) <= Math.sqrt(3)/3){
@@ -391,6 +462,7 @@ public class DrawViewTutoriel extends View {
             }
         }
 
+
         this.invalidate();
         return true;
     }
@@ -450,4 +522,14 @@ public class DrawViewTutoriel extends View {
             this.invalidate();
         }
     }
+
+
+    public interface OnCustomEventListener {
+        public void onEvent();
+    }
+
+    public void setCustomEventListener(OnCustomEventListener eventListener) {
+        mListener = eventListener;
+    }
+
 }

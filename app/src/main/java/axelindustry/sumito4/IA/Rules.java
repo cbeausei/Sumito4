@@ -1,7 +1,6 @@
 package axelindustry.sumito4.IA;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -21,7 +20,7 @@ public class Rules extends Activity {
 
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.page_tutorial);
+        setContentView(R.layout.page_rules);
 
         texttutoriel = (TextView)this.findViewById(R.id.texttutoriel);
         returns = (Button)this.findViewById(R.id.returns);

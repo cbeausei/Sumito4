@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+<TextView
+    android:id="@+id/textttutoriel"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:text="Sélectionnez une boule deux ou trois boules"
+    android:textSize="30sp"/>
+
+    <axelindustry.sumito4.DrawViewTutoriel
+        android:id="@+id/viewtutorial"
+        android:layout_below="@+id/textttutoriel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
