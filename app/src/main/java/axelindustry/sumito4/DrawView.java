@@ -295,9 +295,9 @@ public class DrawView extends View {
         }
         else{
             if(state == PROCESSING_SELECTION){
-                int[] coord = convertCoordinates(startBall.getX(), startBall.getY());
-                float absc = x - coord[0] - (int)(rel_b_h*height/2), ord = y - coord[1] - (int)(rel_b_h*height);
-                int distance = Math.min((int)(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord, 2)) / rel_span_x / height), 3);
+                int[] coord = convertCoordinates(startBall.getX(), startBall.getY()+1);
+                float absc = x - coord[0], ord = y - coord[1];
+                int distance = Math.min((int)Math.round(Math.sqrt(Math.pow(absc, 2) + Math.pow(ord - rel_span_x / 2, 2)) / rel_span_x / height), 3);
                 // OK, we know the number of balls. We must then determine the vector angle.
                 float tan = ord / absc;
                 if(Math.abs(tan) <= Math.sqrt(3)/3){
