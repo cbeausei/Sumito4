@@ -256,7 +256,7 @@ public class DrawViewTutoriel extends View {
         if (state==END_SELECTION&&!tutorial){
 
             TextPaint mTextPaint=new TextPaint(p);
-            String endofselection="Maintenant pour choisir votre mouvement appuyez  sur une des boules sélectionnées";
+            String endofselection="Maintenant pour choisir votre mouvement restez appuyé  sur une des boules sélectionnées";
             StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             canvas.save();
             canvas.translate(0, h/30);
@@ -265,7 +265,7 @@ public class DrawViewTutoriel extends View {
         }
         if(state==PROCESSING_MOVEMENT_CHOICE&&!tutorial){
             TextPaint mTextPaint=new TextPaint(p);
-            String endofselection="Restez appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
+            String endofselection="Maintenez votre doigt appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
             StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             canvas.save();
             canvas.translate(0, h/30);

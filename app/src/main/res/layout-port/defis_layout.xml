@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/fond"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
@@ -10,10 +10,14 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:layout_centerHorizontal="true"
-        android:textSize="30dip"
-        android:textColor="#FFFFFF"/>
+        android:textSize="40dip"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_above="@+id/r1"
+        android:layout_marginBottom="30dp"/>
 
     <RelativeLayout
+        android:id="@+id/r1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
@@ -94,7 +98,6 @@
             android:text="@string/Checkboard_defi8"
             android:layout_toRightOf="@id/defi7"
             android:layout_below="@id/defi6"
-            android:layout_alignRight="@id/defi6"
             />
     </RelativeLayout>
 </RelativeLayout>

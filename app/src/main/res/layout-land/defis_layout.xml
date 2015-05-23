@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/fond"
     android:layout_centerHorizontal="true"
@@ -9,11 +9,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:textSize="30dip"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        />
 
     <RelativeLayout
+        android:id="@+id/r1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">

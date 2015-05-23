@@ -3,6 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fond">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:textSize="40dip"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_above="@+id/regles"
+        android:layout_marginBottom="30dp"/>
+
     <Button
         android:id="@+id/tutorial"
         android:layout_width="wrap_content"

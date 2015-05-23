@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/parent"
+android:background="@drawable/fond"
+android:gravity="center"
+    >
+
+<TextView
+    android:id="@+id/nomjeu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/app_name"
+    android:textStyle="bold"
+    android:textSize="20dp"
+    android:textColor="#FFFFFF"
+    android:gravity="center"
+    android:layout_above="@+id/nouvellepartie"
+    android:layout_alignLeft="@+id/buttonparam"
+    android:layout_alignRight="@+id/buttonparam"
+    />
+<Button
+    android:id="@+id/nouvellepartie"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Jouer"
+    android:background="@drawable/bouton"
+    android:layout_centerHorizontal="true"
+    android:layout_above="@+id/tutoriel"
+    android:layout_alignLeft="@+id/buttonparam"
+    android:layout_alignRight="@+id/buttonparam"
+    />
+
+
+<Button
+    android:id="@+id/tutoriel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Tutoriel"
+    android:layout_above="@+id/defis"
+
+    android:layout_alignLeft="@+id/buttonparam"
+    android:layout_alignRight="@+id/buttonparam"
+    android:background="@drawable/bouton"
+
+    />
+
+<Button
+    android:id="@+id/defis"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Défis"
+
+    android:layout_above="@+id/buttonparam"
+    android:layout_alignLeft="@+id/buttonparam"
+    android:layout_alignRight="@+id/buttonparam"
+    android:background="@drawable/bouton"
+
+    />
+
+<Button
+    android:id="@+id/buttonparam"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Informations"
+    android:background="@drawable/bouton"
+    android:layout_alignParentBottom="true"
+
+    />
+</RelativeLayout>
