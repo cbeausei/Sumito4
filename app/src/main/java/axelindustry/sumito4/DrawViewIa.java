@@ -567,9 +567,9 @@ public class DrawViewIa extends View {
     }
 
     private void executeMovement(){
-        if(movement_rel_offset ==0) {
+        if(movement_rel_offset == 0) {
             int nb = board.doUserMove(move).size();
-            if(nb > 1){
+            if(nb > 1) {
                 int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
                 for (DrawBall e : balls) {
                     if ((e.getX() == startBall.getX() + nb * vectorX
@@ -579,6 +579,7 @@ public class DrawViewIa extends View {
                         selectList.add(e);
                     }
                 }
+            }
         }
         if(movement_rel_offset < 100) {
             movement_rel_offset+=10;
