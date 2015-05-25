@@ -4,25 +4,30 @@
     android:layout_height="match_parent"
     android:id="@+id/parent"
     android:background="@drawable/fond"
-    android:gravity="left"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
     >
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logo"
+        android:layout_alignParentRight="true"
         android:scaleType="fitCenter"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/nouvellepartie"
-        android:layout_alignBottom="@+id/nouvellepartie"
+        android:layout_alignParentBottom="@+id/nouvellepartie"
+        android:layout_above="@id/plateau"
         />
     <ImageView
+        android:id="@+id/plateau"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cadre"
         android:scaleType="fitCenter"
-        android:layout_below="@+id/logo"
         android:layout_toRightOf="@+id/defis"
         android:layout_marginBottom="20dp"
+        android:layout_alignTop="@+id/tutoriel"
         />
     <Button
         android:id="@+id/nouvellepartie"
@@ -33,6 +38,8 @@
         android:layout_above="@+id/tutoriel"
         android:layout_alignLeft="@+id/buttonparam"
         android:layout_alignRight="@+id/buttonparam"
+
+
         />
 
 
@@ -71,5 +78,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="30dp"
         android:layout_marginBottom="20dp"
+
         />
 </RelativeLayout>
