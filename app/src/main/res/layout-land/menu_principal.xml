@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/nouvellepartie"
         android:layout_alignParentBottom="@+id/nouvellepartie"
-        android:layout_above="@id/plateau"
+        android:layout_above="@+id/plateau"
         />
     <ImageView
         android:id="@+id/plateau"
