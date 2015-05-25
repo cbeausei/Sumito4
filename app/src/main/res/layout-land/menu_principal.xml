@@ -4,22 +4,25 @@
     android:layout_height="match_parent"
     android:id="@+id/parent"
     android:background="@drawable/fond"
-    android:gravity="center"
+    android:gravity="left"
     >
-
-    <TextView
-        android:id="@+id/nomjeu"
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-
-        android:layout_above="@+id/nouvellepartie"
-        android:layout_alignLeft="@+id/buttonparam"
-        android:layout_alignRight="@+id/buttonparam"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter"
+        android:layout_toRightOf="@+id/nouvellepartie"
+        android:layout_alignBottom="@+id/nouvellepartie"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cadre"
+        android:scaleType="fitCenter"
+        android:layout_below="@+id/logo"
+        android:layout_toRightOf="@+id/defis"
+        android:layout_marginBottom="20dp"
         />
     <Button
         android:id="@+id/nouvellepartie"
@@ -27,7 +30,6 @@
         android:layout_height="wrap_content"
         android:text="@string/Jouer"
         android:background="@drawable/bouton"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/tutoriel"
         android:layout_alignLeft="@+id/buttonparam"
         android:layout_alignRight="@+id/buttonparam"
@@ -67,6 +69,7 @@
         android:text="@string/Informations"
         android:background="@drawable/bouton"
         android:layout_alignParentBottom="true"
-
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="20dp"
         />
 </RelativeLayout>
