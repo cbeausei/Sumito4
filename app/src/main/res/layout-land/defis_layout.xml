@@ -11,6 +11,7 @@
     android:src="@drawable/logo"
     android:scaleType="fitCenter"
     android:layout_above="@+id/r1"
+        android:layout_centerHorizontal="true"
     />
 
     <RelativeLayout
