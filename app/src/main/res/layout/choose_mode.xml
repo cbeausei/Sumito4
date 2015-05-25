@@ -7,22 +7,15 @@
     android:gravity="center"
     >
 
-    <TextView
-        android:id="@+id/nomjeu"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="30dp"
-        android:textStyle="bold"
-
-        android:textColor="#FFFFFF"
-        android:gravity="center"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter"
         android:layout_above="@+id/jouerdeuxjoueurslocal"
-        android:layout_centerInParent="true"
-        android:layout_alignLeft="@+id/partiesolo"
-        android:layout_alignRight="@+id/partiesolo"
-        android:layout_alignStart="@+id/partiesolo"
-        android:layout_marginBottom="50dip"/>
+        android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@id/jouerdeuxjoueurslocal"
+        />
 
     <Button
         android:id="@+id/partiesolo"
@@ -30,13 +23,11 @@
         android:layout_height="wrap_content"
         android:text="@string/partiesolo"
         android:background="@drawable/bouton"
-
-        android:layout_marginBottom="30dip"
-        android:layout_above="@+id/tutoriel"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_alignLeft="@+id/buttonparam"
-        android:layout_alignRight="@+id/buttonparam"
-        android:layout_alignStart="@+id/buttonparam"
+        android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@id/jouerdeuxjoueurslocal"
+
         />
 
 
