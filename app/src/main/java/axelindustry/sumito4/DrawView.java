@@ -422,13 +422,15 @@ public class DrawView extends View {
 
     private void executeMovement(){
         int nb = board.doUserMove(move).size();
-        int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
-        for(DrawBall e: balls){
-            if((e.getX() == startBall.getX() + nb * vectorX
-                    && e.getY() == startBall.getY() + nb * vectorY)
-                    ||(e.getX() == startBall.getX() + (nb - 1) * vectorX
-                    && e.getY() == startBall.getY() + (nb - 1) * vectorY)){
-                selectList.add(e);
+        if(nb > 1) {
+            int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
+            for (DrawBall e : balls) {
+                if ((e.getX() == startBall.getX() + nb * vectorX
+                        && e.getY() == startBall.getY() + nb * vectorY)
+                        || (e.getX() == startBall.getX() + (nb - 1) * vectorX
+                        && e.getY() == startBall.getY() + (nb - 1) * vectorY)) {
+                    selectList.add(e);
+                }
             }
         }
         if(movement_rel_offset < 100) {
