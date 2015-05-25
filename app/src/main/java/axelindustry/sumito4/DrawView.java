@@ -1,16 +1,12 @@
 /*
 Class DrawView
 Written by Bruno Quercia
-
 This class implements the core of the graphic interface: it handles the drawing of the board, and the
 selection of the user
-
 Since the user will have brand different behaviours from the moment he / she starts to select balls
 to the moment he / she finishes a move, this class will have to adapt its behaviour accordingly.
-
 Therefore it is virtually equivalent to a finite automaton, whose transitions can either be an event
 coming from the user (basically a touch event), or the achievement of an intern algorithm.
-
 Originally, 5 states were planned, but in order to handle the possibles evolutions, the current state
 is stored in a 1-byte variable.
  */
@@ -51,7 +47,6 @@ public class DrawView extends View {
     rel_span_y indicates the relative distance between two lines
     /!\ rel_span_y is not a distance between neighbour positions /!\
     rel_offset_y indicates the relative offset of the board in the picture, that is the vertical offset of the extreme top line
-
      */
 
     private static final double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
@@ -128,7 +123,7 @@ public class DrawView extends View {
         - (X, Y) is the position in the grid whiches representation on the screen is the closest to (x, y)
      */
     private int[] revertCoordinates(int x, int y){
-        y = (int)Math.floor(1/rel_span_y/height*(y +(height-h)/2 +rel_b_h*height/2-rel_offset_y*height)-0.5);
+        y = (int)Math.floor(1 / rel_span_y / height * (y + (height - h) / 2 + rel_b_h * height / 2 - rel_offset_y * height) - 0.5);
         if ((y%2)==1) x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2);
         else x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2 + 0.5);
         return(new int[]{x, y});
@@ -199,7 +194,7 @@ public class DrawView extends View {
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
 
-       if(state == PROCESSING_MOVEMENT_CHOICE){
+        if(state == PROCESSING_MOVEMENT_CHOICE){
             if(list[0] && move == 0)
                 canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
             if(list[1] && move == 1)
@@ -426,6 +421,16 @@ public class DrawView extends View {
     }
 
     private void executeMovement(){
+        int nb = board.doUserMove(move).size();
+        int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
+        for(DrawBall e: balls){
+            if((e.getX() == startBall.getX() + nb * vectorX
+                    && e.getY() == startBall.getY() + nb * vectorY)
+                    ||(e.getX() == startBall.getX() + (nb - 1) * vectorX
+                    && e.getY() == startBall.getY() + (nb - 1) * vectorY)){
+                selectList.add(e);
+            }
+        }
         if(movement_rel_offset < 100) {
             movement_rel_offset+=10;
             this.invalidate();
@@ -433,7 +438,6 @@ public class DrawView extends View {
             handler.postDelayed(movementLauncher, 40);
         }
         else{
-            board.doUserMove(move);
             state = INITIAL_STATE;
             refresh();
             this.invalidate();

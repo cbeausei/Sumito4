@@ -532,12 +532,22 @@ public class DrawViewIa extends View {
     }
 
     private void playIa(){
-        bot1.play(board);
+        LinkedList movementBalls = bot1.play(board);
         refresh();
         this.invalidate();
     }
 
     private void executeMovement(){
+        int nb = board.doUserMove(move).size();
+        int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
+        for(DrawBall e: balls){
+            if((e.getX() == startBall.getX() + nb * vectorX
+                    && e.getY() == startBall.getY() + nb * vectorY)
+                    ||(e.getX() == startBall.getX() + (nb - 1) * vectorX
+                    && e.getY() == startBall.getY() + (nb - 1) * vectorY)){
+                selectList.add(e);
+            }
+        }
         if(movement_rel_offset < 100) {
             movement_rel_offset+=10;
             this.invalidate();
@@ -545,7 +555,6 @@ public class DrawViewIa extends View {
             handler.postDelayed(movementLauncher, 40);
         }
         else{
-            board.doUserMove(move);
             state = INITIAL_STATE;
             refresh();
             this.invalidate();
