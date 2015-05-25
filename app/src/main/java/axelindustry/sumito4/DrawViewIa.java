@@ -12,6 +12,7 @@ import android.view.View;
 import java.util.LinkedList;
 
 import axelindustry.sumito4.IA.Ball;
+import axelindustry.sumito4.IA.BallMove;
 import axelindustry.sumito4.IA.Board;
 import axelindustry.sumito4.IA.Bot;
 
@@ -532,20 +533,50 @@ public class DrawViewIa extends View {
     }
 
     private void playIa(){
-        LinkedList movementBalls = bot1.play(board);
-        refresh();
-        this.invalidate();
+        LinkedList <BallMove> movementBalls = bot1.play(board);
+        BallMove ball = movementBalls.getFirst();
+        int absc = ball.toJ - ball.fromJ, ord = ball.toI - ball.fromI;
+        if(absc == 1 && ord == 0){
+            move = 0;
+        }
+        else if(absc == 1 && ord == -1){
+            move = 1;
+        }
+        else if(absc == 0 && ord == -1){
+            move = 2;
+        }
+        else if(absc == -1 && ord == 0){
+            move = 3;
+        }
+        else if(absc == -1 && ord == 1){
+            move = 4;
+        }
+        else if(absc == 0 && ord == 1){
+            move = 5;
+        }
+        for(DrawBall e: balls){
+            for(BallMove m: movementBalls){
+                if(m.fromJ == e.getX() && m.fromI == e.getY()){
+                    selectList.add(e);
+                }
+            }
+        }
+        movement_rel_offset = 1;
+        state = EXECUTE_MOVEMENT;
+        executeMovement();
     }
 
     private void executeMovement(){
-        int nb = board.doUserMove(move).size();
-        int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
-        for(DrawBall e: balls){
-            if((e.getX() == startBall.getX() + nb * vectorX
-                    && e.getY() == startBall.getY() + nb * vectorY)
-                    ||(e.getX() == startBall.getX() + (nb - 1) * vectorX
-                    && e.getY() == startBall.getY() + (nb - 1) * vectorY)){
-                selectList.add(e);
+        if(movement_rel_offset == 0) {
+            int nb = board.doUserMove(move).size();
+            int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
+            for (DrawBall e : balls) {
+                if ((e.getX() == startBall.getX() + nb * vectorX
+                        && e.getY() == startBall.getY() + nb * vectorY)
+                        || (e.getX() == startBall.getX() + (nb - 1) * vectorX
+                        && e.getY() == startBall.getY() + (nb - 1) * vectorY)) {
+                    selectList.add(e);
+                }
             }
         }
         if(movement_rel_offset < 100) {
@@ -556,10 +587,12 @@ public class DrawViewIa extends View {
         }
         else{
             state = INITIAL_STATE;
+            if(movement_rel_offset == 100) {
+                Handler handler = new Handler();
+                handler.postDelayed(mMyRunnable, 1000);
+            }
             refresh();
             this.invalidate();
-            Handler handler = new Handler();
-            handler.postDelayed(mMyRunnable, 1000);
         }
     }
 
@@ -572,12 +605,9 @@ public class DrawViewIa extends View {
         }
     };
 
-
-    private Runnable mMyRunnable = new Runnable()
-    {
+    private Runnable mMyRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             playIa();
         }
     };
