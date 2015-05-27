@@ -1,8 +1,11 @@
 package axelindustry.sumito4;
 
+//import com.facebook.FacebookSdk;
+//import com.facebook.share.widget.LikeView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +19,12 @@ public class ChooseMode extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.choose_mode);
+        //LikeView likeView = (LikeView) findViewById(R.id.like_view);
+        //likeView.setObjectIdAndType(
+                //"https://www.facebook.com/FacebookDevelopers",
+                //LikeView.ObjectType.PAGE);
 
         Button gamealone=(Button) findViewById(R.id.partiesolo);
         gamealone.setOnClickListener(new View.OnClickListener() {
@@ -24,6 +32,16 @@ public class ChooseMode extends Activity {
             public void onClick(View v) {
                 Intent sologame=new Intent(ChooseMode.this,DifficultyLevel.class);
                 startActivity(sologame);
+            }
+        });
+
+        Button like=(Button) findViewById(R.id.like);
+        gamealone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.google.fr");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
 
