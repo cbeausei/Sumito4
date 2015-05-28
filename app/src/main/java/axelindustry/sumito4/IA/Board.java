@@ -588,6 +588,21 @@ public class Board {
         matrice[7][5]=0;
     }
 
+    public int[] getSize(){
+        int [] size={0,0};
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                if(this.matrice[i][j]==0) {
+                    size[0]+=1;
+                }
+                else if ( this.matrice[i][j]==1){
+                    size[1]+=1;
+                }
+            }
+        }
+        return size;
+    }
+
 
 //Challenges
 
@@ -605,6 +620,7 @@ public class Board {
         if (number==9) position1();
     }
 //Tutoriel
+
 
     public void position1(){
         initiate();

@@ -82,6 +82,8 @@ public class DrawViewIa extends View {
     private DrawBall scoreballai;
 
     private int [] score;
+    private int numberofwhiteballsbegining;
+    private int numberofblackballsbegining;
     //
 
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
@@ -113,7 +115,9 @@ public class DrawViewIa extends View {
         selectList = new LinkedList();
         board = new Board();
 
-        score = new int[]{28/2, 28/2};
+        score=board.getSize();
+        numberofblackballsbegining=score[1];
+        numberofwhiteballsbegining=score[0];
 
         //
         scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
@@ -489,7 +493,7 @@ public class DrawViewIa extends View {
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
         cancel();
-        score[0]=14;score[1]=14;
+        score[0]=numberofwhiteballsbegining;score[1]=numberofblackballsbegining;
         for(Ball e : tmp){
             if(e.color == 1) {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
