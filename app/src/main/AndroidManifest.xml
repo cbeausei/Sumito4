@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="axelindustry.sumito4" >
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/bouleblanche"

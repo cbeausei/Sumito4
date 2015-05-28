@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,15 +36,7 @@ public class ChooseMode extends Activity {
             }
         });
 
-        Button like=(Button) findViewById(R.id.like);
-        gamealone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("http://www.google.fr");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
+
 
         Button multiplayerlocalmode=(Button) findViewById(R.id.jouerdeuxjoueurslocal);
         multiplayerlocalmode.setOnClickListener(new View.OnClickListener() {

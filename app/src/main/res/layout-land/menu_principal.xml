@@ -80,4 +80,13 @@
         android:layout_marginBottom="20dp"
 
         />
+    <Button
+        android:id="@+id/like"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/facebook_like_thumb"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
 </RelativeLayout>
