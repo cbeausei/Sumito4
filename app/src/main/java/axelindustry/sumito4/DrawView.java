@@ -59,6 +59,16 @@ public class DrawView extends View {
 
     private byte state;
 
+
+    //scoreballplayer is a white drawball and scoreball ai a black drawball
+    private DrawBall scoreballplayer;
+    private DrawBall scoreballai;
+
+    private int [] score;
+    private int numberofwhiteballsbegining;
+    private int numberofblackballsbegining;
+    //
+
     /* We will consider a list of white balls
     the picture of a white ball will be stored in memory using bouleBlanche, then every member of balls will be a resized copy of bouleBlanche
     it works the same for black balls, of course
@@ -76,10 +86,11 @@ public class DrawView extends View {
     evidently, width <= w and height <= h
     There is always at least one case of equality, rarely both
      */
-    int w = 0, h = 0, width, height, move;
+    int w = 0, h = 0, width, height, move, colour;
 
     public DrawView(Context context) {
         super(context);
+        colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
@@ -88,6 +99,16 @@ public class DrawView extends View {
         balls = new LinkedList();
         selectList = new LinkedList();
         board = new Board();
+
+
+        //Score
+        score=board.getSize();
+        numberofblackballsbegining=score[1];
+        numberofwhiteballsbegining=score[0];
+        scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
+        scoreballai =new DrawBall(1, 1, bouleNoire, 1);
+        //
+
         refresh();
 
         // we begin with the initial state
@@ -136,6 +157,20 @@ public class DrawView extends View {
 
     // dimensions() computes the dimensions of the displayed objects whenever the size of the screen varies
 
+    //these two classes are just a little modification of convertCoordinates to match better the top and the bottom of the board
+    private int[] convertCoordinatesScoretop(int x, int y){
+        int absc = (int)(((x+y/2.0-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
+        y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
+        x = absc;
+        return(new int[]{x, y});
+    }
+    private int[] convertCoordinatesScorebottom(int x, int y){
+        int absc = (int)(((x+y/2.2-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
+        y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
+        x = absc;
+        return(new int[]{x, y});
+    }
+
     private void cancel(){
         for(DrawBall elem : selectList){
             if(elem.getColour() == 0){
@@ -174,6 +209,9 @@ public class DrawView extends View {
             e.changeBitmap(Bitmap.createScaledBitmap(e.getBitmap(), (int)(rel_b_h * height), (int)(rel_b_h * height), true));
         }
         bouleBleue = Bitmap.createScaledBitmap(bouleBleue, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
+        // the score balls same size as the others
+        scoreballplayer.changeBitmap(Bitmap.createScaledBitmap(scoreballplayer.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
+        scoreballai.changeBitmap(Bitmap.createScaledBitmap(scoreballai.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
     }
 
     /* the core of the drawing phase happens here:
@@ -220,6 +258,16 @@ public class DrawView extends View {
             // Now we can draw them
             canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
         }
+
+        for(int i=0;i<score[0]&&i<5;i++) {
+            int coordinate[] = convertCoordinatesScoretop(5 + i, -2);
+            canvas.drawBitmap(scoreballplayer.getBitmap(), coordinate[0], coordinate[1], null);
+        }
+
+        for(int i=0;i<score[1]&&i<5;i++) {
+            int coordinate[] = convertCoordinatesScorebottom(0 + i, 9);
+            canvas.drawBitmap(scoreballai.getBitmap(), (coordinate[0]), (coordinate[1]), null);
+        }
     }
 
     // the following method handles all touch events coming from the user
@@ -241,6 +289,7 @@ public class DrawView extends View {
                             startBall = e;
                         }
                     }
+                    if(startBall.getColour() != colour) state = INITIAL_STATE;
                     // OK, now startBall contains the nearest ball to the beginning of the selection
                     break;
                 case END_SELECTION:
@@ -383,15 +432,22 @@ public class DrawView extends View {
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
         cancel();
+        score[0]=numberofwhiteballsbegining;score[1]=numberofblackballsbegining;
         for(Ball e : tmp){
-            if(e.color == 1)
+            if(e.color == 1) {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
-            else balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+                score[0]-=1;
+            }
+            else {
+                balls.add(new DrawBall(e.j, e.i, bouleNoire, 1));
+                score[1]-=1;
+            }
         }
         movement_rel_offset = 0;
     }
 
     public boolean selectionIsValid(LinkedList <DrawBall> l){
+        if(!l.isEmpty() && l.getFirst().getColour() != colour) return false;
         if(l.size() > 3) return false;
         else if(l.size() < 2) return true;
         else{
@@ -421,6 +477,7 @@ public class DrawView extends View {
     }
 
     private void executeMovement(){
+        colour = 1 - colour;
         int nb = board.doUserMove(move).size();
         if(nb > 1) {
             int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();

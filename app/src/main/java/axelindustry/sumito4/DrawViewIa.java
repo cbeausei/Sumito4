@@ -82,6 +82,8 @@ public class DrawViewIa extends View {
     private DrawBall scoreballai;
 
     private int [] score;
+    private int numberofwhiteballsbegining;
+    private int numberofblackballsbegining;
     //
 
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
@@ -94,7 +96,7 @@ public class DrawViewIa extends View {
     evidently, width <= w and height <= h
     There is always at least one case of equality, rarely both
      */
-    int w = 0, h = 0, width, height, move;
+    int w = 0, h = 0, width, height, move, colour;
 
     private Boolean ia;
     private Bot bot1;
@@ -104,6 +106,7 @@ public class DrawViewIa extends View {
 
     public DrawViewIa(Context context) {
         super(context);
+        colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
@@ -113,7 +116,9 @@ public class DrawViewIa extends View {
         selectList = new LinkedList();
         board = new Board();
 
-        score = new int[]{28/2, 28/2};
+        score=board.getSize();
+        numberofblackballsbegining=score[1];
+        numberofwhiteballsbegining=score[0];
 
         //
         scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
@@ -320,6 +325,7 @@ public class DrawViewIa extends View {
                                     startBall = e;
                                 }
                             }
+                            if(startBall.getColour() != colour) state = INITIAL_STATE;
                             // OK, now startBall contains the nearest ball to the beginning of the selection
                             break;
                         case END_SELECTION:
@@ -489,7 +495,7 @@ public class DrawViewIa extends View {
         LinkedList<Ball> tmp = board.getBalls();
         balls.clear();
         cancel();
-        score[0]=14;score[1]=14;
+        score[0]=numberofwhiteballsbegining;score[1]=numberofblackballsbegining;
         for(Ball e : tmp){
             if(e.color == 1) {
                 balls.add(new DrawBall(e.j, e.i, bouleBlanche, 0));
