@@ -96,7 +96,7 @@ public class DrawViewIa extends View {
     evidently, width <= w and height <= h
     There is always at least one case of equality, rarely both
      */
-    int w = 0, h = 0, width, height, move;
+    int w = 0, h = 0, width, height, move, colour;
 
     private Boolean ia;
     private Bot bot1;
@@ -106,6 +106,7 @@ public class DrawViewIa extends View {
 
     public DrawViewIa(Context context) {
         super(context);
+        colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
@@ -324,6 +325,7 @@ public class DrawViewIa extends View {
                                     startBall = e;
                                 }
                             }
+                            if(startBall.getColour() != colour) state = INITIAL_STATE;
                             // OK, now startBall contains the nearest ball to the beginning of the selection
                             break;
                         case END_SELECTION:

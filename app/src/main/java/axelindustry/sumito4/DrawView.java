@@ -86,10 +86,11 @@ public class DrawView extends View {
     evidently, width <= w and height <= h
     There is always at least one case of equality, rarely both
      */
-    int w = 0, h = 0, width, height, move;
+    int w = 0, h = 0, width, height, move, colour;
 
     public DrawView(Context context) {
         super(context);
+        colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
         bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
@@ -288,6 +289,7 @@ public class DrawView extends View {
                             startBall = e;
                         }
                     }
+                    if(startBall.getColour() != colour) state = INITIAL_STATE;
                     // OK, now startBall contains the nearest ball to the beginning of the selection
                     break;
                 case END_SELECTION:
@@ -445,6 +447,7 @@ public class DrawView extends View {
     }
 
     public boolean selectionIsValid(LinkedList <DrawBall> l){
+        if(!l.isEmpty() && l.getFirst().getColour() != colour) return false;
         if(l.size() > 3) return false;
         else if(l.size() < 2) return true;
         else{
@@ -474,6 +477,7 @@ public class DrawView extends View {
     }
 
     private void executeMovement(){
+        colour = 1 - colour;
         int nb = board.doUserMove(move).size();
         if(nb > 1) {
             int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
