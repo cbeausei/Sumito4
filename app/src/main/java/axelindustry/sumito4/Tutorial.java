@@ -5,12 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import axelindustry.sumito4.IA.Rules;
 
@@ -32,9 +28,9 @@ public class Tutorial extends Activity  {
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
-                DrawViewTutoriel drawViewIa = new DrawViewTutoriel(context, 9);
-                drawViewIa.setBackgroundColor(Color.WHITE);
-                setContentView(drawViewIa);
+                DrawViewTutorial drawViewTutorial = new DrawViewTutorial(context, 9);
+                drawViewTutorial.setBackgroundColor(Color.WHITE);
+                setContentView(drawViewTutorial);
             }
         });
         Button regles=(Button) findViewById(R.id.regles);

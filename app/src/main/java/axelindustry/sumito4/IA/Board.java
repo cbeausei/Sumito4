@@ -57,7 +57,7 @@ public class Board {
         if (exist(i,j)) return matrice[i][j];
         else return(-3);
     }
-
+/*
     private String convert(int n) {
         if(n==1) return "*";
         if(n==0) return "^";
@@ -129,7 +129,7 @@ public class Board {
         Log.d("test","\n");
         Log.d("test","\n");
     }
-
+*/
     public Boolean exist(int i,int j) {
         if ((i>=0)&&(i<9)&&(j>=0)&&(j<9)) {
             return (matrice[i][j] != -2);

@@ -29,7 +29,7 @@ import axelindustry.sumito4.IA.Board;
 public class DrawView extends View {
     Canvas canvas = new Canvas();
 
-    private Runnable movementLauncher = new Runnable()
+    protected Runnable movementLauncher = new Runnable()
     {
         @Override
         public void run()
@@ -37,7 +37,7 @@ public class DrawView extends View {
             executeMovement();
         }
     };
-    private int movement_rel_offset;
+    protected int movement_rel_offset;
 
     /* The following constant values will be used in the coordinates formulae
     /!\ THE TERM "RELATIVE" MUST BE UNDERSTOOD AS "RELATIVELY TO THE HEIGHT OF THE BOARD IMAGE" /!\
@@ -49,24 +49,24 @@ public class DrawView extends View {
     rel_offset_y indicates the relative offset of the board in the picture, that is the vertical offset of the extreme top line
      */
 
-    private static final double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
+    protected static final double rel_span_x = 45/516.0, rel_offset_x = 29/129.0, rel_b_h = 1/12.0, rel_span_y = 78/8.0/129.0, rel_offset_y = 26/129.0;
 
     //Let us now define the states we will be using. Names are more eloquent than raw numbers.
 
-    private static final byte INITIAL_STATE = 1, PROCESSING_SELECTION = 2, END_SELECTION = 3, PROCESSING_MOVEMENT_CHOICE = 4, EXECUTE_MOVEMENT = 5;
+    protected static final byte INITIAL_STATE = 1, PROCESSING_SELECTION = 2, END_SELECTION = 3, PROCESSING_MOVEMENT_CHOICE = 4, EXECUTE_MOVEMENT = 5;
 
     //To remember the current state, we will need a variable... state.
 
-    private byte state;
+    protected byte state;
 
 
     //scoreballplayer is a white drawball and scoreball ai a black drawball
-    private DrawBall scoreballplayer;
-    private DrawBall scoreballai;
+    protected DrawBall scoreballplayer;
+    protected DrawBall scoreballai;
 
-    private int [] score;
-    private int numberofwhiteballsbegining;
-    private int numberofblackballsbegining;
+    protected int [] score;
+    protected int numberofwhiteballsbegining;
+    protected int numberofblackballsbegining;
     //
 
     /* We will consider a list of white balls
@@ -132,7 +132,7 @@ public class DrawView extends View {
         - Y is the row number in the game grid
         - (x, y) is the pixel matching the centre of the position (X, Y) on the screen
      */
-    private int[] convertCoordinates(int x, int y){
+    protected int[] convertCoordinates(int x, int y){
         int absc = (int)(((x+y/2.0-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
         y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/2)*height + (h-height)/2.0);
         x = absc;
@@ -143,7 +143,7 @@ public class DrawView extends View {
         - (x, y) is a pixel on the screen
         - (X, Y) is the position in the grid whiches representation on the screen is the closest to (x, y)
      */
-    private int[] revertCoordinates(int x, int y){
+    protected int[] revertCoordinates(int x, int y){
         y = (int)Math.floor(1 / rel_span_y / height * (y + (height - h) / 2 + rel_b_h * height / 2 - rel_offset_y * height) - 0.5);
         if ((y%2)==1) x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2);
         else x = (int) Math.floor(1 / rel_span_x / height * (x + (width - w) / 2 + rel_b_h * height / 2 - rel_offset_x * height) + 2 - y / 2 + 0.5);
@@ -158,20 +158,20 @@ public class DrawView extends View {
     // dimensions() computes the dimensions of the displayed objects whenever the size of the screen varies
 
     //these two classes are just a little modification of convertCoordinates to match better the top and the bottom of the board
-    private int[] convertCoordinatesScoretop(int x, int y){
+    protected int[] convertCoordinatesScoretop(int x, int y){
         int absc = (int)(((x+y/2.0-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
         y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
         x = absc;
         return(new int[]{x, y});
     }
-    private int[] convertCoordinatesScorebottom(int x, int y){
+    protected int[] convertCoordinatesScorebottom(int x, int y){
         int absc = (int)(((x+y/2.2-2.0)*rel_span_x+rel_offset_x-rel_b_h/2)*height + (w-width)/2.0);
         y = (int)((y*rel_span_y+rel_offset_y-rel_b_h/9)*height + (h-height)/2.0);
         x = absc;
         return(new int[]{x, y});
     }
 
-    private void cancel(){
+    protected void cancel(){
         for(DrawBall elem : selectList){
             if(elem.getColour() == 0){
                 elem.changeBitmap(bouleBlanche);
@@ -180,7 +180,7 @@ public class DrawView extends View {
         }
         selectList.clear();
     }
-    private void dimensions(){
+    protected void dimensions(){
         h = canvas.getHeight();
         w = canvas.getWidth();
 
@@ -476,7 +476,7 @@ public class DrawView extends View {
         }
     }
 
-    private void executeMovement(){
+    protected void executeMovement(){
         colour = 1 - colour;
         int nb = board.doUserMove(move).size();
         if(nb > 1) {
