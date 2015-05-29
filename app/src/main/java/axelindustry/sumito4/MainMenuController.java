@@ -55,7 +55,7 @@ public class MainMenuController extends Activity {
             @Override
             public void onClick(View v) {
 
-                Uri uri = Uri.parse("https://www.facebook.com/sumito4");
+                Uri uri = Uri.parse("https://www.facebook.com/sumilonethegame");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
