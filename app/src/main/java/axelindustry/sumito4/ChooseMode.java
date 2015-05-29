@@ -47,6 +47,15 @@ public class ChooseMode extends Activity {
             }
         });
 
+        Button multiplayerbluetooth=(Button) findViewById(R.id.jouerdeuxjoueursbluetooth);
+        multiplayerbluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent multibluetooth=new Intent(ChooseMode.this,BluetoothActivity.class);
+                startActivity(multibluetooth);
+            }
+        });
+
     }
 
     /*

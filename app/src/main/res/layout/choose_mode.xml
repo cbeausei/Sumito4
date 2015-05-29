@@ -37,15 +37,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/deuxjoueurslocal"
-        android:layout_above="@+id/partiesolo"
 
-        android:layout_marginBottom="30dip"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/buttonparam"
-        android:layout_alignRight="@+id/buttonparam"
         android:background="@drawable/bouton"
-        android:layout_alignStart="@+id/buttonparam"/>
+        android:layout_centerVertical="true" />
 
+    <Button
+        android:id="@+id/jouerdeuxjoueursbluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueursbluetooth"
+        android:background="@drawable/bouton"
+        android:layout_above="@+id/partiesolo"
+        android:layout_alignLeft="@+id/partiesolo"
+        android:layout_alignStart="@+id/partiesolo"
+        android:layout_marginBottom="39dp" />
 
 
 </RelativeLayout>

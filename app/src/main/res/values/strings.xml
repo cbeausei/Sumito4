@@ -10,6 +10,7 @@
     <string name="Défis">Défis</string>
     <string name="Jouer">Jouer</string>
     <string name="deuxjoueurslocal">Jouer contre un humain en local</string>
+    <string name="deuxjoueursbluetooth">Jouer contre un humain en bluetooth</string>
     <string name="partiesolo">Partie solo</string>
     <string name="facile">Facile</string>
     <string name="moyen">Moyen</string>
@@ -39,6 +40,7 @@
                 "le 3 contre 1,\n" +
                 "le 2 contre 1\n" +
                 "Dès que la sixième bille d’un joueur est éjectée du tablier de jeu, son adversaire a gagné.\n"</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
 
 </resources>
 
