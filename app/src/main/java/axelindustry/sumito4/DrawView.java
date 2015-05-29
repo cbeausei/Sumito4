@@ -17,7 +17,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Handler;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -68,6 +73,12 @@ public class DrawView extends View {
     protected int [] score;
     protected int numberofwhiteballsbegining;
     protected int numberofblackballsbegining;
+    // firstTimeDrawStaticLayout represent the first Time we have to draw a static layout
+    protected  boolean firstTimeDrawStaticLayout;
+    protected Paint p;
+    protected String victorymsg;
+    protected TextPaint mTextPaint;
+    protected StaticLayout staticLayout;
     //
 
     /* We will consider a list of white balls
@@ -108,6 +119,7 @@ public class DrawView extends View {
         numberofwhiteballsbegining=score[0];
         scoreballplayer = new DrawBall(0,0, bouleBlanche, 0);
         scoreballai =new DrawBall(1, 1, bouleNoire, 1);
+        firstTimeDrawStaticLayout=true;
         //
 
         refresh();
@@ -215,6 +227,21 @@ public class DrawView extends View {
         scoreballai.changeBitmap(Bitmap.createScaledBitmap(scoreballai.getBitmap(), (int) (rel_b_h * height), (int) (rel_b_h * height), true));
     }
 
+    protected void staticLayoutCreation(){
+        p = new Paint();
+        p.setTextSize(h / 10);
+        p.setColor(Color.BLACK);
+        p.setLinearText(true);
+        mTextPaint = new TextPaint(p);
+        if(score[0]>score[1]) {
+            victorymsg = "Les boules blanches ont gagné !";
+        }
+        else {
+            victorymsg="Les boules noires ont gagné !";
+        }
+        staticLayout = new StaticLayout(victorymsg, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+    }
+
     /* the core of the drawing phase happens here:
     onDraw is called whenever something has changed, have it an actual influence on the drawing or not, eg:
      - when the screen is rotated
@@ -228,46 +255,61 @@ public class DrawView extends View {
         if(h != canvas.getHeight()){
             this.dimensions();
         }
+        if (!(score[0]>5||score[1]>5)) {
+            // OK, the dimensions are fine, we can draw
+            canvas.drawBitmap(fond, 0, 0, null);
+            canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
 
-        // OK, the dimensions are fine, we can draw
-        canvas.drawBitmap(fond, 0, 0, null);
-        canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
-
-        if(state == PROCESSING_MOVEMENT_CHOICE){
-            if(list[0] && move == 0)
-                canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
-            if(list[1] && move == 1)
-                canvas.drawBitmap(arrows[1], (w - width) / 2 + width / 2, (h - height) / 2, null);
-            if(list[2] && move == 2)
-                canvas.drawBitmap(arrows[2], (w - width) / 2 + width / 6, (h - height) / 2, null);
-            if(list[3] && move == 3)
-                canvas.drawBitmap(arrows[3], (w - width) / 2, (h - height) / 2 + height / 3, null);
-            if(list[4] && move == 4)
-                canvas.drawBitmap(arrows[4], (w - width) / 2 + width / 6, (h - height) / 2 + 2 * height / 3, null);
-            if(list[5] && move == 5)
-                canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
-        }
-
-        for(DrawBall e : balls) {
-            // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
-            int coordinates[] = convertCoordinates(e.getX(), e.getY());
-            if(selectList.contains(e) && state == EXECUTE_MOVEMENT){
-                coordinates[0] += movement_rel_offset * rel_span_x * height * Math.cos(3.1416*move/3) / 100;
-                coordinates[1] -= movement_rel_offset * rel_span_x * height * Math.sin(3.1416*move/3) / 100;
+            if (state == PROCESSING_MOVEMENT_CHOICE) {
+                if (list[0] && move == 0)
+                    canvas.drawBitmap(arrows[0], (w - width) / 2 + 2 * width / 3, (h - height) / 2 + height / 3, null);
+                if (list[1] && move == 1)
+                    canvas.drawBitmap(arrows[1], (w - width) / 2 + width / 2, (h - height) / 2, null);
+                if (list[2] && move == 2)
+                    canvas.drawBitmap(arrows[2], (w - width) / 2 + width / 6, (h - height) / 2, null);
+                if (list[3] && move == 3)
+                    canvas.drawBitmap(arrows[3], (w - width) / 2, (h - height) / 2 + height / 3, null);
+                if (list[4] && move == 4)
+                    canvas.drawBitmap(arrows[4], (w - width) / 2 + width / 6, (h - height) / 2 + 2 * height / 3, null);
+                if (list[5] && move == 5)
+                    canvas.drawBitmap(arrows[5], (w - width) / 2 + width / 2, (h - height) / 2 + 2 * height / 3, null);
             }
 
-            // Now we can draw them
-            canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
-        }
+            for (DrawBall e : balls) {
+                // We have the coordinates of the balls in the game grid. We must compute the coordinates of their representation on the screen
+                int coordinates[] = convertCoordinates(e.getX(), e.getY());
+                if (selectList.contains(e) && state == EXECUTE_MOVEMENT) {
+                    coordinates[0] += movement_rel_offset * rel_span_x * height * Math.cos(3.1416 * move / 3) / 100;
+                    coordinates[1] -= movement_rel_offset * rel_span_x * height * Math.sin(3.1416 * move / 3) / 100;
+                }
 
-        for(int i=0;i<score[0]&&i<5;i++) {
-            int coordinate[] = convertCoordinatesScoretop(5 + i, -2);
-            canvas.drawBitmap(scoreballplayer.getBitmap(), coordinate[0], coordinate[1], null);
-        }
+                // Now we can draw them
+                canvas.drawBitmap(e.getBitmap(), coordinates[0], coordinates[1], null);
+            }
 
-        for(int i=0;i<score[1]&&i<5;i++) {
-            int coordinate[] = convertCoordinatesScorebottom(0 + i, 9);
-            canvas.drawBitmap(scoreballai.getBitmap(), (coordinate[0]), (coordinate[1]), null);
+            for (int i = 0; i < score[0] && i < 5; i++) {
+                int coordinate[] = convertCoordinatesScoretop(5 + i, -2);
+                canvas.drawBitmap(scoreballplayer.getBitmap(), coordinate[0], coordinate[1], null);
+            }
+
+            for (int i = 0; i < score[1] && i < 5; i++) {
+                int coordinate[] = convertCoordinatesScorebottom(0 + i, 9);
+                canvas.drawBitmap(scoreballai.getBitmap(), (coordinate[0]), (coordinate[1]), null);
+            }
+        }
+        else {
+            canvas.drawBitmap(fond, 0, 0, null);
+
+            if(firstTimeDrawStaticLayout){
+                firstTimeDrawStaticLayout=false;
+                staticLayoutCreation();
+            }
+            canvas.save();
+            canvas.translate(w/3, h /3);
+            if(staticLayout!=null) {
+                staticLayout.draw(canvas);
+            }
+            canvas.restore();
         }
     }
 
