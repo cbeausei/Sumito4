@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/bouleblanche"
+        android:icon="@drawable/icone"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 

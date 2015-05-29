@@ -29,12 +29,17 @@ import axelindustry.sumito4.IA.Board;
 
 
 public class DrawViewTutorial extends DrawView {
-    Canvas canvas = new Canvas();
-    OnCustomEventListener mListener;
+    private Canvas canvas = new Canvas();
+    private OnCustomEventListener mListener;
+    private TextPaint mTextPaint;
 
 
+    private String beginofselection , endtutorial,processingselection,endofselection,processingmovementchoice;
+
+    private StaticLayout beginofselectionLayout,endLayout,processingselectionLayout,endofselectionLayout,processingmovementchoiceLayout;
+    private Paint p;
     private boolean tutorial=false;
-
+    private int firstDraw=0;
 
 
     public DrawViewTutorial(Context context) {
@@ -43,7 +48,7 @@ public class DrawViewTutorial extends DrawView {
     }
 
     public DrawViewTutorial(Context context, int tutorial){
-        super(context);
+        this(context);
         board.initiateChallenge(tutorial);
         refresh();
     }
@@ -53,6 +58,23 @@ public class DrawViewTutorial extends DrawView {
         refresh();
     }
 
+    private void layoutcreation(){
+        p = new Paint();
+        p.setTextSize(h / 30);
+        p.setColor(Color.WHITE);
+        p.setLinearText(true);
+        mTextPaint=new TextPaint(p);
+        beginofselection="Pour selectionner une,deux ou trois boules passez votre doigts sur celles-ci";
+        endtutorial="Bravo vous avez réussi le tutoriel de séléction vous pouvez continuez à tester si vous le souhaitez";
+        processingselection="Relevez votre doigt lorsque vous êtes satisfait de la séléction ";
+        endofselection="Maintenant pour choisir votre mouvement restez appuyé  sur une des boules sélectionnées";
+        processingmovementchoice="Maintenez votre doigt appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
+        endLayout = new StaticLayout(endtutorial, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        beginofselectionLayout=new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        endofselectionLayout=new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        processingselectionLayout = new StaticLayout(processingselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        processingmovementchoiceLayout=new StaticLayout(processingmovementchoice, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+    }
 
 
 
@@ -72,61 +94,47 @@ public class DrawViewTutorial extends DrawView {
             this.dimensions();
         }
 
+        if(firstDraw==0){
+            layoutcreation();
+            firstDraw++;
+
+        }
         // OK, the dimensions are fine, we can draw
         canvas.drawBitmap(fond, 0, 0, null);
         canvas.drawBitmap(plateau, (w - width) / 2, (h - height) / 2, null);
 
-        Path path=new Path();
-        path.addRect(0,h/20,w,h/10, Path.Direction.CW);
-        Paint p = new Paint();
-        p.setTextSize(h / 30);
-        p.setColor(Color.WHITE);
-        p.setLinearText(true);
         if (state==INITIAL_STATE&&!tutorial) {
-            TextPaint mTextPaint=new TextPaint(p);
-            String beginofselection="Pour selectionner une,deux ou trois boules passez votre doigts sur celles-ci";
-            StaticLayout mTextLayout = new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
             canvas.save();
             canvas.translate(0, h / 30);
-            mTextLayout.draw(canvas);
+            beginofselectionLayout.draw(canvas);
             canvas.restore();
         }
         else if(tutorial){
             colour=0;
-            TextPaint mTextPaint=new TextPaint(p);
-            String beginofselection="Bravo vous avez réussi le tutoriel de séléction vous pouvez continuez à tester si vous le souhaitez";
-            StaticLayout mTextLayout = new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             canvas.save();
             canvas.translate(0, h / 30);
-            mTextLayout.draw(canvas);
+            endLayout.draw(canvas);
             canvas.restore();
         }
         if (state==PROCESSING_SELECTION&&!tutorial) {
-            TextPaint mTextPaint=new TextPaint(p);
-            String processingselection="Relevez votre doigt lorsque vous êtes satisfait de la séléction ";
-            StaticLayout mTextLayout = new StaticLayout(processingselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
             canvas.save();
             canvas.translate(0, h / 30);
-            mTextLayout.draw(canvas);
+            processingselectionLayout.draw(canvas);
             canvas.restore();
         }
         if (state==END_SELECTION&&!tutorial){
 
-            TextPaint mTextPaint=new TextPaint(p);
-            String endofselection="Maintenant pour choisir votre mouvement restez appuyé  sur une des boules sélectionnées";
-            StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             canvas.save();
             canvas.translate(0, h/30);
-            mTextLayout.draw(canvas);
+            endofselectionLayout.draw(canvas);
             canvas.restore();
         }
         if(state==PROCESSING_MOVEMENT_CHOICE&&!tutorial){
-            TextPaint mTextPaint=new TextPaint(p);
-            String endofselection="Maintenez votre doigt appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
-            StaticLayout mTextLayout = new StaticLayout(endofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             canvas.save();
             canvas.translate(0, h/30);
-            mTextLayout.draw(canvas);
+            processingmovementchoiceLayout.draw(canvas);
             canvas.restore();
         }
 

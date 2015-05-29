@@ -47,19 +47,19 @@ public class Tutorial extends Activity  {
 
         textView = (TextView) findViewById(R.id.textttutoriel);
         drawViewTutoriel=(DrawViewTutoriel) findViewById(R.id.viewtutorial);
-        Log.d("test", "bcpdemots");
+        Log.d("logo", "bcpdemots");
     if(drawViewTutoriel!=null) {
-        Log.d("test","test444");
+        Log.d("logo","test444");
         drawViewTutoriel.setCustomEventListener(new DrawViewTutoriel.OnCustomEventListener() {
 
             @Override
             public void onEvent() {
                 byte state = drawViewTutoriel.getState();
-                Log.d("test", "test1");
+                Log.d("logo", "test1");
 
                 if (state == 3) {
                     textView.setText("ttttttttttttttest");
-                    Log.d("test", "test2");
+                    Log.d("logo", "test2");
                 }
             }
 
@@ -70,20 +70,20 @@ public class Tutorial extends Activity  {
 
     @Override
     public void onEvent() {
-        Log.d("test", "test3");
+        Log.d("logo", "test3");
 
     }
 
 
     /*private void executeMovement(){
-        Log.d("test", "test");
+        Log.d("logo", "logo");
         Handler handler = new Handler();
         handler.postDelayed(movementLauncher, 400);
         byte state = drawViewTutoriel.getState();
 
 
         textView.setText("ttttttttttttttest");
-            Log.d("test", "test");
+            Log.d("logo", "logo");
 
     }
     private Runnable movementLauncher = new Runnable() {

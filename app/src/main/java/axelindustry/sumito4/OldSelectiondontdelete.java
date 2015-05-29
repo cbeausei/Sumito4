@@ -334,7 +334,7 @@ public class OldSelectiondontdelete extends View {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         bot1.play(board);
                         bot2.play(board);
-                        Log.d("test", "Passe dans boucle");
+                        Log.d("logo", "Passe dans boucle");
                         refresh();
                         this.invalidate();
                     }
