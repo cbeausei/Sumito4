@@ -24,6 +24,7 @@ import android.view.View;
 import java.util.LinkedList;
 
 import axelindustry.sumito4.IA.Ball;
+import axelindustry.sumito4.IA.BallMove;
 import axelindustry.sumito4.IA.Board;
 
 public class DrawView extends View {
@@ -477,16 +478,18 @@ public class DrawView extends View {
     }
 
     protected void executeMovement(){
-        colour = 1 - colour;
-        int nb = board.doUserMove(move).size();
-        if(nb > 1) {
-            int vectorX = selectList.get(1).getX() - startBall.getX(), vectorY = selectList.get(1).getY() - startBall.getY();
-            for (DrawBall e : balls) {
-                if ((e.getX() == startBall.getX() + nb * vectorX
-                        && e.getY() == startBall.getY() + nb * vectorY)
-                        || (e.getX() == startBall.getX() + (nb - 1) * vectorX
-                        && e.getY() == startBall.getY() + (nb - 1) * vectorY)) {
-                    selectList.add(e);
+        if(movement_rel_offset == 0) {
+            colour = 1 - colour;
+            LinkedList<BallMove> ballMove = board.doUserMove(move);
+
+            if (ballMove.size() > 1) {
+                for (BallMove m : ballMove) {
+
+                    for (DrawBall e : balls) {
+                        if (e.getColour() == colour && e.getX() == m.fromJ && e.getY() == m.fromI) {
+                            selectList.add(e);
+                        }
+                    }
                 }
             }
         }
