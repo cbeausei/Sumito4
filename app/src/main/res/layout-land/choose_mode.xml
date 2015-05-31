@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent"
+    android:background="@drawable/fond"
+    android:gravity="center"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter"
+        android:layout_above="@+id/jouerdeuxjoueurslocal"
+        android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@id/jouerdeuxjoueurslocal"
+        android:id="@+id/namegame"
+        />
+
+
+
+    <Button
+        android:id="@+id/jouerdeuxjoueurslocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueurslocal"
+        android:background="@drawable/bouton"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/jouerdeuxjoueursbluetooth"
+        />
+
+    <Button
+        android:id="@+id/jouerdeuxjoueursbluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueursbluetooth"
+        android:background="@drawable/bouton"
+        android:layout_alignLeft="@+id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@+id/jouerdeuxjoueurslocal"
+        android:layout_above="@+id/partiesolo"
+        />
+
+    <Button
+        android:id="@+id/partiesolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/partiesolo"
+        android:background="@drawable/bouton"
+        android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@id/jouerdeuxjoueurslocal"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
