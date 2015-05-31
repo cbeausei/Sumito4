@@ -3,6 +3,8 @@ package axelindustry.sumito4;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,8 +14,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.UUID;
 
 import axelindustry.sumito4.IA.BallMove;
 
@@ -51,9 +55,11 @@ public class BluetoothActivity extends Activity {
         Set<BluetoothDevice> devices;
         devices = bluetoothAdapter.getBondedDevices();
         String [] str= new String[devices.size()];
+        int cpt = 0;
         for (BluetoothDevice blueDevice : devices) {
             //Toast.makeText(BluetoothActivity.this, "Device = " + blueDevice.getName(), Toast.LENGTH_SHORT).show();
-            //str[cpt]=blueDevice.getName();
+            str[cpt]=blueDevice.getName();
+            cpt ++;
         }
         switch (devices.size())
         {
@@ -118,37 +124,79 @@ public class BluetoothActivity extends Activity {
         B1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 0) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
         B2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 1) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
         B3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 2) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
         B4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 3) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
         B5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 4) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
         B6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cpt = 0;
+                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
+                    if(cpt == 5) {
+                        connect(blueDevice);
+                        break;
+                    }
+                    cpt ++;
+                }
             }
         });
     }
@@ -159,5 +207,22 @@ public class BluetoothActivity extends Activity {
         }
     }
 
+    private void connect(BluetoothDevice device){
+        final BluetoothSocket socket;
+        BluetoothSocket tmp = null;
+        try {
+            tmp = device.createRfcommSocketToServiceRecord(new UUID(200, 100));
+        } catch (IOException e) { }
+        socket = tmp;
+        try {
+            socket.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+            if(socket.isConnected())
+                Toast.makeText(BluetoothActivity.this,"Yep", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(BluetoothActivity.this,"Nope", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
