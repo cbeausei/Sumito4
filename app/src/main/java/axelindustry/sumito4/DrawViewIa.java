@@ -156,10 +156,12 @@ public class DrawViewIa extends DrawView {
             handler.postDelayed(movementLauncher, 40);
         }
         else{
-            state = INITIAL_STATE;
             if(movement_rel_offset == 100) {
                 Handler handler = new Handler();
                 handler.postDelayed(mMyRunnable, 1000);
+            }
+            else{
+                state = INITIAL_STATE;
             }
             refresh();
             this.invalidate();
