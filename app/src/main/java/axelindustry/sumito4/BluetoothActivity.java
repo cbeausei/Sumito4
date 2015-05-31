@@ -9,7 +9,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.Set;
+
+import axelindustry.sumito4.IA.BallMove;
 
 public class BluetoothActivity extends Activity {
 
@@ -38,6 +41,12 @@ public class BluetoothActivity extends Activity {
         devices = bluetoothAdapter.getBondedDevices();
         for (BluetoothDevice blueDevice : devices) {
             Toast.makeText(BluetoothActivity.this, "Device = " + blueDevice.getName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void movementExecuted(LinkedList<BallMove> ballMove){
+        for(BallMove m: ballMove) {
+            Toast.makeText(BluetoothActivity.this, "(" + m.fromI + ", " + m.fromJ + ") -> (" + m.toI + ", " + m.toJ + ")", Toast.LENGTH_SHORT).show();
         }
     }
 
