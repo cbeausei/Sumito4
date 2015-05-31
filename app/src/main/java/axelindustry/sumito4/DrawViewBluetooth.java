@@ -69,7 +69,8 @@ public class DrawViewBluetooth extends View {
     DrawBall startBall;
     Bitmap plateau, fond, bouleNoire, bouleBlanche, bouleBleue, tick, cross;
     Bitmap[] arrows;
-    Boolean[] list;
+    Boolean[] list;;
+    BluetoothActivity activity;
     // x and y will contain the coordinates of any user event. For some weired reason, these coordinates are not integers...
     float x = 10, y = 20, start_x, start_y;
     /* w and h will match the dimensions of the screen
@@ -81,6 +82,7 @@ public class DrawViewBluetooth extends View {
 
     public DrawViewBluetooth(Context context) {
         super(context);
+        activity = (BluetoothActivity)context;
         colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
@@ -471,6 +473,7 @@ public class DrawViewBluetooth extends View {
         if(movement_rel_offset == 0) {
             colour = 1 - colour;
             LinkedList<BallMove> ballMove = board.doUserMove(move);
+            activity.movementExecuted(ballMove);
 
             if (ballMove.size() > 1) {
                 for (BallMove m : ballMove) {
