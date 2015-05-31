@@ -15,7 +15,32 @@
         android:layout_above="@+id/jouerdeuxjoueurslocal"
         android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
         android:layout_alignRight="@id/jouerdeuxjoueurslocal"
-        android:id="@+id/image"
+        android:id="@+id/namegame"
+        />
+
+
+
+    <Button
+        android:id="@+id/jouerdeuxjoueurslocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueurslocal"
+        android:background="@drawable/bouton"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="39dp"
+        android:layout_above="@+id/jouerdeuxjoueursbluetooth"
+        />
+
+    <Button
+        android:id="@+id/jouerdeuxjoueursbluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deuxjoueursbluetooth"
+        android:background="@drawable/bouton"
+        android:layout_alignLeft="@+id/jouerdeuxjoueurslocal"
+        android:layout_alignRight="@+id/jouerdeuxjoueurslocal"
+        android:layout_marginBottom="39dp"
+        android:layout_above="@+id/partiesolo"
         />
 
     <Button
@@ -24,33 +49,9 @@
         android:layout_height="wrap_content"
         android:text="@string/partiesolo"
         android:background="@drawable/bouton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
         android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
         android:layout_alignRight="@id/jouerdeuxjoueurslocal"
-
+        android:layout_alignParentBottom="true"
         />
-
-
-    <Button
-        android:id="@+id/jouerdeuxjoueurslocal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/deuxjoueurslocal"
-
-        android:background="@drawable/bouton"
-        android:layout_centerVertical="true" />
-
-    <Button
-        android:id="@+id/jouerdeuxjoueursbluetooth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/deuxjoueursbluetooth"
-        android:background="@drawable/bouton"
-        android:layout_above="@+id/partiesolo"
-        android:layout_alignLeft="@+id/partiesolo"
-        android:layout_alignStart="@+id/partiesolo"
-        android:layout_marginBottom="39dp" />
-
 
 </RelativeLayout>
