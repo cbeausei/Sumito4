@@ -50,6 +50,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name=".testButton"
+            android:label="test">
+        </activity>
+        <activity
             android:name=".BluetoothActivity"
             android:label="@string/title_activity_bluetooth" >
         </activity>

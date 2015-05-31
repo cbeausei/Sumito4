@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -37,6 +39,9 @@ public class BluetoothActivity extends Activity {
         Button B4=(Button) findViewById(R.id.connection4);
         Button B5=(Button) findViewById(R.id.connection5);
         Button B6=(Button) findViewById(R.id.connection6);
+        Button serveur=(Button) findViewById(R.id.serveur);
+        Button client=(Button) findViewById(R.id.client);
+
         //DrawViewBluetooth drawView = new DrawViewBluetooth(this);
         //drawView.setBackgroundColor(Color.WHITE);
         //setContentView(drawView);
@@ -120,17 +125,21 @@ public class BluetoothActivity extends Activity {
                 B6.setText(str[5]);
                 break;
         }
+        Button myButton = new Button(this);
+        myButton.setText("Push Me");
+
+
 
         B1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int cpt = 0;
                 for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 0) {
+                    if (cpt == 0) {
                         connect(blueDevice);
                         break;
                     }
-                    cpt ++;
+                    cpt++;
                 }
             }
         });
@@ -199,7 +208,20 @@ public class BluetoothActivity extends Activity {
                 }
             }
         });
+        serveur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        client.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
+
 
     public void movementExecuted(LinkedList<BallMove> ballMove){
         for(BallMove m: ballMove) {
