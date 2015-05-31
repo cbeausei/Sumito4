@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,6 +30,9 @@ import static java.lang.Thread.sleep;
 
 public class DrawViewIa extends DrawView {
 
+    SoundPool mySound;
+    int soundId;
+
 
     private Boolean ia;
     private Bot bot1;
@@ -43,6 +49,8 @@ public class DrawViewIa extends DrawView {
 
     public DrawViewIa(Context context,Boolean testIA,int difficulty, int agressivity) {
         super(context);
+        mySound=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        soundId=mySound.load(getContext(),R.raw.aba,1);
         turn=0;
         bot1=new Bot(0,difficulty,agressivity,this.board);
         ia=testIA;
@@ -54,6 +62,8 @@ public class DrawViewIa extends DrawView {
 
     public DrawViewIa(Context context,Boolean testIA,int difficulty, int agressivity,int defi) {
         this(context,testIA,difficulty,agressivity);
+        mySound=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        soundId=mySound.load(getContext(),R.raw.aba,1);
         board.initiateChallenge(defi);
         refresh();
     }
@@ -74,6 +84,10 @@ public class DrawViewIa extends DrawView {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         if(turn==1) {
                             bot1.play(board);
+
+
+                            mySound.play(soundId,1,1,1,0,1);
+
                             refresh();
 
                             turn=2;
@@ -83,6 +97,8 @@ public class DrawViewIa extends DrawView {
                         else{
                             bot2.play(board);
                             refresh();
+
+                            mySound.play(soundId,1,1,1,0,1);
 
                             turn=1;
                             this.invalidate();
@@ -101,6 +117,7 @@ public class DrawViewIa extends DrawView {
 
     protected void playIa(){
         LinkedList <BallMove> movementBalls = bot1.play(board);
+        mySound.play(soundId,1,1,1,0,1);
         BallMove ball = movementBalls.getFirst();
         int absc = ball.toJ - ball.fromJ, ord = ball.toI - ball.fromI;
         if(absc == 1 && ord == 0){
@@ -136,6 +153,7 @@ public class DrawViewIa extends DrawView {
     @Override
     protected void executeMovement(){
         if(movement_rel_offset == 0) {
+            mySound.play(soundId,1,1,1,0,1);
             LinkedList<BallMove> ballMove = board.doUserMove(move);
 
             if (ballMove.size() > 1) {

@@ -19,6 +19,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -34,6 +36,8 @@ import axelindustry.sumito4.IA.Board;
 
 public class DrawView extends View {
     Canvas canvas = new Canvas();
+    SoundPool mySound;
+    int soundId;
 
     protected Runnable movementLauncher = new Runnable()
     {
@@ -112,6 +116,9 @@ public class DrawView extends View {
         selectList = new LinkedList();
         board = new Board();
 
+        //Sound
+        mySound=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        soundId=mySound.load(getContext(),R.raw.aba,1);
 
         //Score
         score=board.getSize();
@@ -521,6 +528,7 @@ public class DrawView extends View {
 
     protected void executeMovement(){
         if(movement_rel_offset == 0) {
+            mySound.play(soundId,1,1,1,0,1);
             colour = 1 - colour;
             LinkedList<BallMove> ballMove = board.doUserMove(move);
 
