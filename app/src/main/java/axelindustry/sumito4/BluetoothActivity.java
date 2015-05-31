@@ -33,18 +33,10 @@ public class BluetoothActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.devicesbluetoothlayout);
 
-        Button B1=(Button) findViewById(R.id.connection1);
-        Button B2=(Button) findViewById(R.id.connection2);
-        Button B3=(Button) findViewById(R.id.connection3);
-        Button B4=(Button) findViewById(R.id.connection4);
-        Button B5=(Button) findViewById(R.id.connection5);
-        Button B6=(Button) findViewById(R.id.connection6);
-        Button serveur=(Button) findViewById(R.id.serveur);
-        Button client=(Button) findViewById(R.id.client);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layoutbluetooth);
+        RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
 
-        //DrawViewBluetooth drawView = new DrawViewBluetooth(this);
-        //drawView.setBackgroundColor(Color.WHITE);
-        //setContentView(drawView);
+
         onActivityResult(0, 0, new Intent());
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -59,155 +51,11 @@ public class BluetoothActivity extends Activity {
         startActivityForResult(enableBlueTooth, 1);
         Set<BluetoothDevice> devices;
         devices = bluetoothAdapter.getBondedDevices();
-        String [] str= new String[devices.size()];
-        int cpt = 0;
-        for (BluetoothDevice blueDevice : devices) {
-            //Toast.makeText(BluetoothActivity.this, "Device = " + blueDevice.getName(), Toast.LENGTH_SHORT).show();
-            str[cpt]=blueDevice.getName();
-            cpt ++;
-        }
-        switch (devices.size())
-        {
-            case 0:
-                B1.setVisibility(View.GONE);
-                B2.setVisibility(View.GONE);
-                B3.setVisibility(View.GONE);
-                B4.setVisibility(View.GONE);
-                B5.setVisibility(View.GONE);
-                B6.setVisibility(View.GONE);
-                break;
-            case 1:
-                B1.setText(str[0]);
-                B2.setVisibility(View.GONE);
-                B3.setVisibility(View.GONE);
-                B4.setVisibility(View.GONE);
-                B5.setVisibility(View.GONE);
-                B6.setVisibility(View.GONE);
-                break;
-            case 2:
-                B1.setText(str[0]);
-                B2.setText(str[1]);
-                B3.setVisibility(View.GONE);
-                B4.setVisibility(View.GONE);
-                B5.setVisibility(View.GONE);
-                B6.setVisibility(View.GONE);
-                break;
-            case 3:
-                B1.setText(str[0]);
-                B2.setText(str[1]);
-                B3.setText(str[2]);
-                B4.setVisibility(View.GONE);
-                B5.setVisibility(View.GONE);
-                B6.setVisibility(View.GONE);
-                break;
-            case 4:
-                B1.setText(str[0]);
-                B2.setText(str[1]);
-                B3.setText(str[2]);
-                B4.setVisibility(View.GONE);
-                B5.setVisibility(View.GONE);
-                B6.setVisibility(View.GONE);
-                break;
-            case 5:
-                B1.setText(str[0]);
-                B2.setText(str[1]);
-                B3.setText(str[2]);
-                B4.setText(str[3]);
-                B5.setText(str[4]);
-                B6.setVisibility(View.GONE);
-                break;
-            case 6:
-                B1.setText(str[0]);
-                B2.setText(str[1]);
-                B3.setText(str[2]);
-                B4.setText(str[3]);
-                B5.setText(str[4]);
-                B6.setText(str[5]);
-                break;
-        }
-        Button myButton = new Button(this);
-        myButton.setText("Push Me");
+        Button [] buttons= new Button[devices.size()];
 
+        Button serveur=(Button) findViewById(R.id.serveur);
+        Button client=(Button) findViewById(R.id.client);
 
-
-        B1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if (cpt == 0) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt++;
-                }
-            }
-        });
-        B2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 1) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt ++;
-                }
-            }
-        });
-        B3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 2) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt ++;
-                }
-            }
-        });
-        B4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 3) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt ++;
-                }
-            }
-        });
-        B5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 4) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt ++;
-                }
-            }
-        });
-        B6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cpt = 0;
-                for (BluetoothDevice blueDevice : bluetoothAdapter.getBondedDevices()) {
-                    if(cpt == 5) {
-                        connect(blueDevice);
-                        break;
-                    }
-                    cpt ++;
-                }
-            }
-        });
         serveur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,6 +68,31 @@ public class BluetoothActivity extends Activity {
 
             }
         });
+
+        int cpt = 0;
+
+        for ( final BluetoothDevice blueDevice : devices) {
+            //Toast.makeText(BluetoothActivity.this, "Device = " + blueDevice.getName(), Toast.LENGTH_SHORT).show();
+            buttons[cpt] = new Button(this);
+            buttons[cpt].setText(blueDevice.getName());
+            buttons[cpt].setBackgroundResource(R.drawable.bouton);
+            ll.addView(buttons[cpt], lp);
+            buttons[cpt].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                           connect(blueDevice);
+                }
+            });
+            cpt++;
+
+        }
+
+
+        //DrawViewBluetooth drawView = new DrawViewBluetooth(this);
+        //drawView.setBackgroundColor(Color.WHITE);
+        //setContentView(drawView);
+
+
     }
 
 
