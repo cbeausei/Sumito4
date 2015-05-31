@@ -1,7 +1,10 @@
 package axelindustry.sumito4.IA;
 
 import android.app.Activity;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.support.v7.app.ActionBarActivity;
 
 import java.util.LinkedList;
 
@@ -11,7 +14,9 @@ import axelindustry.sumito4.R;
 /**
  * Created by Clement on 09/04/2015.
  */
-public class Bot extends Activity{
+public class Bot extends ActionBarActivity{
+    SoundPool mySound;
+    int abaId;
     private Board board;
     private MoveWayList moveWayList;
     private int difficulty;
@@ -284,9 +289,9 @@ public class Bot extends Activity{
 
     public LinkedList<BallMove> play(Board board) {
 
-        //MediaPlayer player;
-        //player=MediaPlayer.create(this,R.raw.aba);
-        //player.start();
+        mySound=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        abaId=mySound.load(this,R.raw.aba,1);
+        mySound.play(abaId,1,1,1,0,1);
 
         this.board=board;
         if (difficulty==0) {
