@@ -312,7 +312,7 @@ public class DrawView extends View {
                 staticLayoutCreation();
             }
             canvas.save();
-            canvas.translate(w/3, h /3);
+            canvas.translate(0,h/3);
             if(staticLayout!=null) {
                 staticLayout.draw(canvas);
             }
