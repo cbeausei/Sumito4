@@ -240,7 +240,7 @@ public class DrawView extends View {
         p.setColor(Color.BLACK);
         p.setLinearText(true);
         mTextPaint = new TextPaint(p);
-        if(score[0]>score[1]) {
+        if(score[1]>score[0]) {
             victorymsg = "Les boules blanches ont gagné !";
         }
         else {

@@ -64,10 +64,10 @@ public class DrawViewTutorial extends DrawView {
         p.setColor(Color.WHITE);
         p.setLinearText(true);
         mTextPaint=new TextPaint(p);
-        beginofselection="Pour selectionner une,deux ou trois boules passez votre doigts sur celles-ci";
-        endtutorial="Bravo vous avez réussi le tutoriel de séléction vous pouvez continuez à tester si vous le souhaitez";
-        processingselection="Relevez votre doigt lorsque vous êtes satisfait de la séléction ";
-        endofselection="Maintenant pour choisir votre mouvement restez appuyé  sur une des boules sélectionnées";
+        beginofselection="Pour sélectionner une, deux ou trois boules passez votre doigt sur celles-ci";
+        endtutorial="Bravo, vous avez réussi le tutoriel de séléction. Vous pouvez continuer à tester si vous le souhaitez";
+        processingselection="Relevez votre doigt lorsque vous êtes satisfaits de la sélection";
+        endofselection="Maintenant, pour choisir votre mouvement restez appuyé  sur une des boules sélectionnées";
         processingmovementchoice="Maintenez votre doigt appuyé tout en parcourant l'écran et relachez lorsque vous êtes dans la direction souhaitée";
         endLayout = new StaticLayout(endtutorial, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         beginofselectionLayout=new StaticLayout(beginofselection, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);

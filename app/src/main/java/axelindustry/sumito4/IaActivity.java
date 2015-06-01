@@ -19,13 +19,13 @@ public class IaActivity extends Activity {
 
         if(niveaudifficulté!=null) {
             if (niveaudifficulté.contentEquals("facile")) {
-                Log.d("afficher", "facile");
+               // Log.d("afficher", "facile");
                 DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
                 drawViewIa.setBackgroundColor(Color.WHITE);
                 setContentView(drawViewIa);
             }
             if (niveaudifficulté.contentEquals("moyen")) {
-                Log.d("afficher", "moyen");
+                //Log.d("afficher", "moyen");
                 /*OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this,false,0,1);
                 oldSelectiondontdelete.setBackgroundColor(Color.WHITE);
                 setContentView(oldSelectiondontdelete);
@@ -35,8 +35,8 @@ public class IaActivity extends Activity {
                 setContentView(drawViewIa);
             }
             if (niveaudifficulté.contentEquals("difficile")){
-                Log.d("afficher", "difficile");
-                DrawViewIa drawViewIa = new DrawViewIa(this,true,0,1);
+                //Log.d("afficher", "difficile");
+                DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
                 drawViewIa.setBackgroundColor(Color.WHITE);
                 setContentView(drawViewIa);
             }
