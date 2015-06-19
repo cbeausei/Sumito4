@@ -2,7 +2,6 @@
     <string name="app_name">Sumilone</string>
 
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="Nouvellepartie">Nouvelle partie</string>
     <string name="Tutoriel">Tutoriel</string>
@@ -11,22 +10,37 @@
     <string name="Jouer">Jouer</string>
     <string name="deuxjoueurslocal">Jouer contre un humain en local</string>
     <string name="deuxjoueursbluetooth">Jouer contre un humain en bluetooth (Disponible prochainement)</string>
+
     <string name="partiesolo">Partie solo</string>
     <string name="facile">Facile</string>
     <string name="moyen">Moyen</string>
     <string name="difficile">Difficile</string>
+    <string name="expert">Expert</string>
     <string name="commencerpartie">Commencer la partie</string>
     <string name="choisirdifficulte">Choisissez votre niveau de difficulté</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_choose">ChooseActivity</string>
-    <string name="Daisy_defi1">Daisy</string>
-    <string name="Alien_defi2">Alien</string>
-    <string name="Domination_defi3">Domination</string>
-    <string name="Infiltration_defi4">Infiltration</string>
+
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_activity_choose" translatable="false">ChooseActivity</string>
+
+    <string name="victorymessage1">Les boules blanches ont gagné !</string>
+    <string name="victorymessage2">Les boules noires ont gagné !</string>
+
+    <string name="beginofselection">Pour sélectionner une, deux ou trois boules, passez votre doigt sur celles-ci.</string>
+    <string name="endtutorial">Bravo, vous avez réussi le tutoriel de sélection. Vous pouvez continuer à tester si vous le souhaitez.</string>
+    <string name="processingselection">Relevez votre doigt lorsque vous êtes satisfaits de la sélection.</string>
+    <string name="endofselection">Maintenant, pour choisir votre mouvement, restez appuyé  sur une des boules sélectionnées.</string>
+    <string name="processingmovementchoice">Maintenez votre doigt appuyé tout en parcourant l\'écran et relachez lorsque vous êtes dans la direction souhaitée.</string>
+
+
+    <string name="Daisy_defi1" translatable="false">Daisy</string>
+    <string name="Alien_defi2" translatable="false">Alien</string>
+    <string name="Domination_defi3" translatable="false">Domination</string>
+    <string name="Infiltration_defi4" translatable="false">Infiltration</string>
     <string name="Wall_defi5">Wall</string>
     <string name="Fujiyama_defi6">Fujiyama</string>
     <string name="Snakes_defi7">Snakes</string>
-    <string name="Checkboard_defi8">Checkboard</string>
+    <string name="Checkboard_defi8" translatable="false">Checkboard</string>
+
     <string name="Informations">Informations</string>
     <string name="infos">Sumito\n\nProjet Télécom Bretagne\n\nRéalisé par :\n\nBeauseigneur Clément\nQuercia Bruno\nShi Jinglei\nStrubel Axel\n\nEncadré par :\n\nMallet Julien</string>
     <string name="regles">"                   Version Francaise\n" +

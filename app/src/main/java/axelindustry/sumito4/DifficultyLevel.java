@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
  */
 public class DifficultyLevel extends Activity {
 
-    final private String [] choice={"facile","moyen","difficile"};
+    final private String [] choice={getString(R.string.facile),getString(R.string.moyen),getString(R.string.difficile)};
 
 
     @Override

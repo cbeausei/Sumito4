@@ -241,10 +241,10 @@ public class DrawView extends View {
         p.setLinearText(true);
         mTextPaint = new TextPaint(p);
         if(score[1]>score[0]) {
-            victorymsg = "Les boules blanches ont gagné !";
+            victorymsg = getContext().getString(R.string.victorymessage1);
         }
         else {
-            victorymsg="Les boules noires ont gagné !";
+            victorymsg=getContext().getString((R.string.victorymessage2));
         }
         staticLayout = new StaticLayout(victorymsg, mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
     }

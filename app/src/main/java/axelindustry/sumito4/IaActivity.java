@@ -18,13 +18,13 @@ public class IaActivity extends Activity {
         niveaudifficulté=intent.getExtras().getString("Niveaudifficulté");
 
         if(niveaudifficulté!=null) {
-            if (niveaudifficulté.contentEquals("facile")) {
+            if (niveaudifficulté.contentEquals(getString(R.string.facile))) {
                // Log.d("afficher", "facile");
                 DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
                 drawViewIa.setBackgroundColor(Color.WHITE);
                 setContentView(drawViewIa);
             }
-            if (niveaudifficulté.contentEquals("moyen")) {
+            if (niveaudifficulté.contentEquals(getString(R.string.moyen))) {
                 //Log.d("afficher", "moyen");
                 /*OldSelectiondontdelete oldSelectiondontdelete = new OldSelectiondontdelete(this,false,0,1);
                 oldSelectiondontdelete.setBackgroundColor(Color.WHITE);
@@ -34,7 +34,7 @@ public class IaActivity extends Activity {
                 drawViewIa.setBackgroundColor(Color.WHITE);
                 setContentView(drawViewIa);
             }
-            if (niveaudifficulté.contentEquals("difficile")){
+            if (niveaudifficulté.contentEquals(getString(R.string.difficile))){
                 //Log.d("afficher", "difficile");
                 DrawViewIa drawViewIa = new DrawViewIa(this,false,0,1);
                 drawViewIa.setBackgroundColor(Color.WHITE);
