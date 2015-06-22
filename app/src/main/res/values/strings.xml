@@ -54,7 +54,7 @@
                 "le 3 contre 1,\n" +
                 "le 2 contre 1\n" +
                 "Dès que la sixième bille d’un joueur est éjectée du tablier de jeu, son adversaire a gagné.\n"</string>
-    <string name="rules">Règles</string>
+    <string name="Rules">Règles</string>
     <string name="title_activity_bluetooth">BluetoothActivity</string>
 
 </resources>
