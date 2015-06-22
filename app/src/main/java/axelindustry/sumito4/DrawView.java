@@ -106,6 +106,7 @@ public class DrawView extends View {
 
     public DrawView(Context context) {
         super(context);
+
         colour = 0;
         // let's store the bitmaps in memory
         bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
@@ -135,8 +136,8 @@ public class DrawView extends View {
         state = INITIAL_STATE;
 
         // the board and background are stored too
-        plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
-        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
+        plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadreresized);
+        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fondresized);
         tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
         cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
         arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
