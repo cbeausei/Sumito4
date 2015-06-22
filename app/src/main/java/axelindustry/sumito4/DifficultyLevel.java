@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
  */
 public class DifficultyLevel extends Activity {
 
-    final private String [] choice={getString(R.string.facile),getString(R.string.moyen),getString(R.string.difficile)};
 
 
     @Override
@@ -32,16 +31,16 @@ public class DifficultyLevel extends Activity {
                 switch (difficulty_level.getCheckedRadioButtonId())
                 {
                     case R.id.facile:
-                        difficulty_levels=choice[0];
+                        difficulty_levels=getResources().getString(R.string.facile);
                         break;
                     case R.id.moyen:
-                        difficulty_levels=choice[1];
+                        difficulty_levels=getResources().getString(R.string.moyen);
                         break;
                     case R.id.difficile:
-                        difficulty_levels=choice[2];
+                        difficulty_levels=getResources().getString(R.string.difficile);
                         break;
                     default:
-                        difficulty_levels=choice[0];
+                        difficulty_levels=getResources().getString(R.string.expert);
 
                 }
                 MainActivity.putExtra("Niveaudifficulté",difficulty_levels);
