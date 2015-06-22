@@ -12,7 +12,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         DrawView drawView = new DrawView(this);
-        drawView.setBackgroundColor(Color.WHITE);
         setContentView(drawView);
     }
 

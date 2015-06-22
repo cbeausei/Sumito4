@@ -256,6 +256,9 @@ public class DrawView extends View {
      */
     @Override
     public void onDraw(final Canvas canvas) {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {}
         this.canvas = canvas;
 
         // h contains the previously-computed height of the screen. There is no need to re-compute all dimensions unless this height has changed
