@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sumilone</string>
+
+
+    <string name="action_settings">启动</string>
+    <string name="Nouvellepartie">新游戏</string>
+    <string name="Tutoriel">游戏教程</string>
+    <string name="Paramètres">参数设定</string>
+    <string name="Défis">挑战模式</string>
+    <string name="Jouer">开始游戏</string>
+    <string name="deuxjoueurslocal">双人对战</string>
+    <string name="deuxjoueursbluetooth">蓝牙对战</string>
+
+    <string name="partiesolo">人机对战</string>
+    <string name="facile">简单</string>
+    <string name="moyen">中等</string>
+    <string name="difficile">困难</string>
+    <string name="expert">专家级</string>
+    <string name="commencerpartie">开始对战</string>
+    <string name="choisirdifficulte">选择困难模式</string>
+
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_activity_choose" translatable="false">ChooseActivity</string>
+
+    <string name="victorymessage1">白棋获胜 !</string>
+    <string name="victorymessage2">黑棋获胜 !</string>
+
+    <string name="beginofselection">用手指一次划过想要移动的棋子（最多三颗）.</string>
+    <string name="endtutorial">GOOD JOB,现在已经完成教程部分，您可以选择重复训练.</string>
+    <string name="processingselection">选择完成后抬起手指.</string>
+    <string name="endofselection">现在选择棋子移动方向,按住选中的任意一颗棋子.</string>
+    <string name="processingmovementchoice">保持按住状态,将手指移向所选择方向后放开.</string>
+
+
+    <string name="Daisy_defi1" translatable="false">黛西</string>
+    <string name="Alien_defi2" translatable="false">外星人</string>
+    <string name="Domination_defi3" translatable="false">独裁者</string>
+    <string name="Infiltration_defi4" translatable="false">渗透</string>
+    <string name="Wall_defi5">墙壁</string>
+    <string name="Fujiyama_defi6">富士山</string>
+    <string name="Snakes_defi7">蛇</string>
+    <string name="Checkboard_defi8" translatable="false">棋盘</string>
+
+    <string name="Informations">开发人员</string>
+    <string name="infos">Sumito\n\n布列塔尼电信 项目开发\n\n开发人员 :\n\nBeauseigneur Clément\nQuercia Bruno\nShi Jinglei\nStrubel Axel\n\n指导 :\n\nMallet Julien</string>
+    <string name="regles">"每次可直线移动一颗,两颗或三颗棋子,或平行式移动.推动对手的棋子:三推二,三推一或二推一.先将对手的6颗棋子推出界外者,即获胜.\n"</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+
+</resources>

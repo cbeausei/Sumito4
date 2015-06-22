@@ -4,15 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class MainMenuController extends Activity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+        Log.v("onCreate", "maxMemory:" + Long.toString(maxMemory));
         setContentView(R.layout.menu_principal);
+
 
         Button newGame=(Button) findViewById(R.id.nouvellepartie);
         newGame.setOnClickListener(new View.OnClickListener() {
