@@ -53,7 +53,7 @@
                 "3 vs 2,\n" +
                 "3 vs 1,\n" +
                 "2 vs 1\n" +
-                "As son as the sixth ball of a player is ejected from the board, this player's opponent has won.\n"</string>
+                "As soon as the sixth ball of a player is ejected from the board, this player's opponent has won.\n"</string>
     <string name="Rules">Rules</string>
     <string name="title_activity_bluetooth">BluetoothActivity</string>
 
