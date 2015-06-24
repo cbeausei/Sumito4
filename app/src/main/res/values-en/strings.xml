@@ -1,5 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sumilone</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="Nouvellepartie">Nouvelle partie</string>
+    <string name="Tutoriel">Tutorial</string>
+    <string name="Paramètres">Parameters</string>
+    <string name="Défis">Challenge</string>
     <string name="Jouer">Play</string>
+    <string name="deuxjoueurslocal">1 vs 1 (local)</string>
+    <string name="deuxjoueursbluetooth">1 vs 1 (bluetooth) - Feature to come</string>
+
+    <string name="partiesolo">Solo game</string>
+    <string name="facile">Easy</string>
+    <string name="moyen">Medium</string>
+    <string name="difficile">Tricky</string>
+    <string name="expert">Expert</string>
+    <string name="commencerpartie">Start game</string>
+    <string name="choisirdifficulte">Choose your difficulty level</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_choose">ChooseActivity</string>
+
+    <string name="victorymessage1">The white balls win!</string>
+    <string name="victorymessage2">The black balls win!</string>
+
+    <string name="beginofselection">To select one, two or three balls, swipe your fingers over those.</string>
+    <string name="endtutorial">Congratulations, you have succeeded the selection tutorial. You may continue testing if you wish.</string>
+    <string name="processingselection">Release your finger when you are pleased with your selection.</string>
+    <string name="endofselection">Now, to choose the movement, keep your finger pressed on one of the balls you have selected.</string>
+    <string name="processingmovementchoice">Keep your finger down while moving it on the screen, and release it when you are pleased with the direction you have selected.</string>
+
+
+    <string name="Daisy_defi1">Daisy</string>
+    <string name="Alien_defi2">Alien</string>
+    <string name="Domination_defi3">Domination</string>
+    <string name="Infiltration_defi4">Infiltration</string>
+    <string name="Wall_defi5">Wall</string>
+    <string name="Fujiyama_defi6">Fujiyama</string>
+    <string name="Snakes_defi7">Snakes</string>
+    <string name="Checkboard_defi8">Checkboard</string>
+
+    <string name="Informations">Information</string>
+    <string name="infos">Sumilone\n\nTélécom Bretagne project\n\nDeveloped by :\n\nBeauseigneur Clément\nQuercia Bruno\nShi Jinglei\nStrubel Axel\n\nSupervised par :\n\nMallet Julien</string>
+    <string name="regles">"                   English version\n" +
+                "The player who has the black balls starts. Each player in turn move 1," +
+                "2 or 3 balls in one movement to neighbor positions. You can move in any  of the 6 directions.\n" +
+                "To push the opponent balls, a player must be in a sumito state, ie to have" +
+                " superior numbers. A ball of 3 or more lines can never be pushed by the opponent. The possible sumitos " +
+                "are hence :\n" +
+                "\n" +
+                "3 vs 2,\n" +
+                "3 vs 1,\n" +
+                "2 vs 1\n" +
+                "As son as the sixth ball of a player is ejected from the board, this player's opponent has won.\n"</string>
+    <string name="Rules">Rules</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+
 </resources>
+
