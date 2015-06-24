@@ -43,7 +43,7 @@
     <string name="Checkboard_defi8" translatable="false">棋盘</string>
 
     <string name="Informations">开发人员</string>
-    <string name="infos">Sumito\n\n布列塔尼电信 项目开发\n\n开发人员 :\n\nBeauseigneur Clément\nQuercia Bruno\nShi Jinglei\nStrubel Axel\n\n指导 :\n\nMallet Julien</string>
+    <string name="infos">Sumilone\n\n布列塔尼电信 项目开发\n\n开发人员 :\n\nBeauseigneur Clément\nQuercia Bruno\nShi Jinglei\nStrubel Axel\n\n指导 :\n\nMallet Julien</string>
     <string name="regles">"每次可直线移动一颗,两颗或三颗棋子,或平行式移动.推动对手的棋子:三推二,三推一或二推一.先将对手的6颗棋子推出界外者,即获胜.\n"</string>
     <string name="Rules">规则</string>
     <string name="title_activity_bluetooth">BluetoothActivity</string>
