@@ -20,15 +20,15 @@ public class Bot extends Activity{
     //private int seuil=-1;
     private MoveList[] possibles;
     private int iaColor;
-    private int[][] aggressivityTable={{0, 0, 0, 0, 13, 13, 13, 13, 13},
-            {0, 0, 0, 13, 14, 14, 14, 14, 13},
-            {0, 0, 13, 14, 15, 15, 15, 14, 13},
-            {0, 13, 14, 15, 16, 16, 15, 14, 13},
-            {13, 14, 15, 16, 17, 16, 15, 14, 13},
-            {13, 14, 15, 16, 16, 15, 14, 13, 0},
-            {13, 14, 15, 15, 15, 14, 13, 0, 0},
-            {13, 14, 14, 14, 14, 13, 0, 0, 0},
-            {13, 13, 13, 13, 13, 0, 0, 0, 0}};
+    private int[][] aggressivityTable={{0, 0, 0, 0, 10, 10, 10, 10, 10},
+            {0, 0, 0, 10, 14, 14, 14, 14, 10},
+            {0, 0, 10, 14, 15, 15, 15, 14, 10},
+            {0, 10, 14, 15, 16, 16, 15, 14, 10},
+            {10, 14, 15, 16, 17, 16, 15, 14, 10},
+            {10, 14, 15, 16, 16, 15, 14, 10, 0},
+            {10, 14, 15, 15, 15, 14, 10, 0, 0},
+            {10, 14, 14, 14, 14, 10, 0, 0, 0},
+            {10, 10, 10, 10, 10, 0, 0, 0, 0}};
 
     public Bot(int iaColor,int difficulty,int aggressivity,Board board) {
         this.board=board;
@@ -289,7 +289,7 @@ public class Bot extends Activity{
         //player.start();
 
         this.board=board;
-        if (difficulty==0) {
+        if (difficulty==1) {
             findPossibles(iaColor,board);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
@@ -297,7 +297,7 @@ public class Bot extends Activity{
             board.doMoveList(moveWayList);
             return(board.differences(boardTemp,board));
         }
-        if (difficulty==1) {
+        if (difficulty==0) {
             findPossibles(iaColor,board);
             MoveList possiblesTemp=possibles[iaColor];
             MoveWayList moveWayListTemp=new MoveWayList();
@@ -320,7 +320,7 @@ public class Bot extends Activity{
             board.doMoveList(moveWayList);
             return(board.differences(boardTemp,board));
         }
-        if (difficulty==2) {
+        if (difficulty==3) {
             findPossibles(iaColor,board);
             MoveList possiblesTemp=possibles[iaColor];
             MoveWayList moveWayListTemp=new MoveWayList();
@@ -346,7 +346,7 @@ public class Bot extends Activity{
             board.doMoveList(moveWayList);
             return(board.differences(boardTemp,board));
         }
-        if (difficulty==3) {
+        if (difficulty==2) {
             findPossibles(iaColor,board);
             MoveWayList moveWayList=bestMove2(iaColor,board);
             Board boardTemp= new Board(board);
