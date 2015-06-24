@@ -289,7 +289,7 @@ public class Bot extends Activity{
         //player.start();
 
         this.board=board;
-        if (difficulty==2) {
+        if (difficulty==1) {
             findPossibles(iaColor,board);
             //possibles[iaColor].display();
             MoveWayList moveWayList=bestMove(iaColor,board);
@@ -297,7 +297,7 @@ public class Bot extends Activity{
             board.doMoveList(moveWayList);
             return(board.differences(boardTemp,board));
         }
-        if (difficulty==1) {
+        if (difficulty==0) {
             findPossibles(iaColor,board);
             MoveList possiblesTemp=possibles[iaColor];
             MoveWayList moveWayListTemp=new MoveWayList();
@@ -346,7 +346,7 @@ public class Bot extends Activity{
             board.doMoveList(moveWayList);
             return(board.differences(boardTemp,board));
         }
-        if (difficulty==0) {
+        if (difficulty==2) {
             findPossibles(iaColor,board);
             MoveWayList moveWayList=bestMove2(iaColor,board);
             Board boardTemp= new Board(board);
