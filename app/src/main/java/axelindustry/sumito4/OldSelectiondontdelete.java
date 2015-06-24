@@ -57,9 +57,9 @@ public class OldSelectiondontdelete extends View {
     public OldSelectiondontdelete(Context context) {
         super(context);
         // let's store the bitmaps in memory
-        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
-        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
-        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
+        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoirebigsize);
+        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblancherebigsize);
+        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleuebigsize);
 
         balls = new LinkedList();
         selectList = new LinkedList();
@@ -83,9 +83,9 @@ public class OldSelectiondontdelete extends View {
     public OldSelectiondontdelete(Context context, Boolean testIA, int difficulty, int agressivity){
         super(context);
         // let's store the bitmaps in memory
-        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
-        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
-        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
+        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoirebigsize);
+        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblancherebigsize);
+        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleuebigsize);
 
         balls = new LinkedList();
         selectList = new LinkedList();

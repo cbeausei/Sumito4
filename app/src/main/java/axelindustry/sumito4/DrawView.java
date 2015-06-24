@@ -138,8 +138,6 @@ public class DrawView extends View {
         // the board and background are stored too
         plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
         fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
-        tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
-        cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
         arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche1),
                 BitmapFactory.decodeResource(getResources(), R.drawable.fleche2),
@@ -220,8 +218,6 @@ public class DrawView extends View {
 
         // the background is easier to draw: there must just be no hole
         fond = Bitmap.createScaledBitmap(fond, Math.max(w, h), Math.max(w, h), true);
-        tick = Bitmap.createScaledBitmap(tick, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
-        cross = Bitmap.createScaledBitmap(cross, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
         bouleBlanche = Bitmap.createScaledBitmap(bouleBlanche, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
         bouleNoire = Bitmap.createScaledBitmap(bouleNoire, (int)(rel_b_h * height), (int)(rel_b_h * height), true);
 
@@ -258,7 +254,7 @@ public class DrawView extends View {
     @Override
     public void onDraw(final Canvas canvas) {
         try {
-            Thread.sleep(10);
+            Thread.sleep(5);
         } catch (InterruptedException e) {}
         this.canvas = canvas;
 

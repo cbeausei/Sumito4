@@ -85,9 +85,9 @@ public class DrawViewBluetooth extends View {
         activity = (BluetoothActivity)context;
         colour = 0;
         // let's store the bitmaps in memory
-        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoire);
-        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblanche);
-        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleue);
+        bouleNoire = BitmapFactory.decodeResource(getResources(), R.drawable.boulenoirebigsize);
+        bouleBlanche = BitmapFactory.decodeResource(getResources(), R.drawable.bouleblancherebigsize);
+        bouleBleue = BitmapFactory.decodeResource(getResources(), R.drawable.boulebleuebigsize);
 
         balls = new LinkedList();
         selectList = new LinkedList();
