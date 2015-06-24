@@ -136,8 +136,8 @@ public class DrawView extends View {
         state = INITIAL_STATE;
 
         // the board and background are stored too
-        plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadreresized);
-        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fondresized);
+        plateau = BitmapFactory.decodeResource(getResources(), R.drawable.cadre);
+        fond = BitmapFactory.decodeResource(getResources(), R.drawable.fond);
         tick = BitmapFactory.decodeResource(getResources(), R.drawable.tick);
         cross = BitmapFactory.decodeResource(getResources(), R.drawable.croix);
         arrows = new Bitmap[]{BitmapFactory.decodeResource(getResources(), R.drawable.fleche0),
@@ -258,7 +258,7 @@ public class DrawView extends View {
     @Override
     public void onDraw(final Canvas canvas) {
         try {
-            Thread.sleep(50);
+            Thread.sleep(10);
         } catch (InterruptedException e) {}
         this.canvas = canvas;
 
