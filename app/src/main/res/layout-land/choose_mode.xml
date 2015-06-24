@@ -13,8 +13,8 @@
         android:src="@drawable/logo"
         android:scaleType="fitCenter"
         android:layout_above="@+id/jouerdeuxjoueurslocal"
-        android:layout_alignLeft="@id/jouerdeuxjoueurslocal"
-        android:layout_alignRight="@id/jouerdeuxjoueurslocal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:id="@+id/namegame"
         />
 
